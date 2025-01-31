@@ -5,13 +5,13 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    private readonly DbFactory _dbFactory;
+    private readonly AppDbContext _context;
     private DbSet<T> _dbSet;
-    protected DbSet<T> DbSet => _dbSet ??= _dbFactory.DbContext.Set<T>();
+    protected DbSet<T> DbSet => _dbSet ??= _context.Set<T>();
 
-    public Repository(DbFactory dbFactory)
+    public Repository(AppDbContext context)
     {
-        _dbFactory = dbFactory;
+        _context = context;
     }
 
     public async Task AddAsync(T entity)

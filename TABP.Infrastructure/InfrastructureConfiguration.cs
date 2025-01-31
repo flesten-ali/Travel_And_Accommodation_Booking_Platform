@@ -25,8 +25,6 @@ public static class InfrastructureConfiguration
         services.AddDbContext<AppDbContext>(options =>
           options.UseSqlServer(configuration.GetConnectionString("SqlServer"))
         );
-        services.AddScoped<Func<AppDbContext>>((provider) => () => provider.GetService<AppDbContext>());
-        services.AddScoped<DbFactory>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;

@@ -4,24 +4,24 @@ namespace TABP.Infrastructure.Persistence.DbContexts;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly DbFactory _dbFactory;
+    private readonly AppDbContext _context;
     private IDbContextTransaction _transaction;
 
-    public UnitOfWork(DbFactory dbFactory)
+    public UnitOfWork(AppDbContext context)
     {
-        _dbFactory = dbFactory;
+        _context = context;
     }
 
     public void BeginTransaction()
     {
-        _transaction = _dbFactory.DbContext.Database.BeginTransaction();
+        _transaction = _context.Database.BeginTransaction();
     }
 
     public async Task CommitAsync()
     {
         try
         {
-            await _dbFactory.DbContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             await _transaction.CommitAsync();
         }
         catch
@@ -46,6 +46,6 @@ public class UnitOfWork : IUnitOfWork
 
     public Task<int> SaveChangesAsync()
     {
-        return _dbFactory.DbContext.SaveChangesAsync();
+        return _context.SaveChangesAsync();
     }
 }

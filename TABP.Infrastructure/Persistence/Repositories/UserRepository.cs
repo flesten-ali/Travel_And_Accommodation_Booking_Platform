@@ -9,7 +9,7 @@ public class UserRepository : Repository<User>, IUserRepository
 {
     private readonly IPasswordHasher _passwordHasher;
 
-    public UserRepository(DbFactory dbFactory, IPasswordHasher passwordHasher) : base(dbFactory)
+    public UserRepository(AppDbContext context, IPasswordHasher passwordHasher) : base(context)
     {
         _passwordHasher = passwordHasher;
     }
