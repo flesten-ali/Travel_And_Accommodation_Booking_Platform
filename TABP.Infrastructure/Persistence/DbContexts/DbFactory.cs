@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 namespace TABP.Infrastructure.Persistence.DbContexts;
+
 public class DbFactory : IDisposable
 {
     private readonly Func<AppDbContext> _instanceFunc;

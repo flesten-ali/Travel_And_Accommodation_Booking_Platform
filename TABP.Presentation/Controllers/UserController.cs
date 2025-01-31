@@ -6,6 +6,7 @@ using TABP.Application.Users.Register;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Auth;
 namespace TABP.Presentation.Controllers;
+
 [Route("api/users")]
 [ApiController]
 public class UserController : ControllerBase

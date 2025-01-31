@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Users.Register;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Auth;
-
 namespace TABP.Presentation.Controllers;
+
 [Route("api/admins")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-
 public class AdminController : ControllerBase
 {
     private readonly IMediator _mediator;

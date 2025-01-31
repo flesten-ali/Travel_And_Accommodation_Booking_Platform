@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Infrastructure.Persistence.DbContexts;
-
 namespace TABP.Infrastructure.Persistence.Repositories;
+
 public class Repository<T> : IRepository<T> where T : class
 {
     private readonly DbFactory _dbFactory;

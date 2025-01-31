@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using TABP.Presentation.DTOs.Auth;
+namespace TABP.Presentation.Validators.Auth;
 
-namespace TABP.Presentation.Validations.Auth;
 public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
 {
     public LoginUserRequestValidator()

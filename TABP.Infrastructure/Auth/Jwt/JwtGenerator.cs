@@ -6,8 +6,8 @@ using System.Text;
 using TABP.Domain.Entities;
 using TABP.Domain.Interfaces.Auth;
 using TABP.Domain.Models;
-
 namespace TABP.Infrastructure.Auth.Jwt;
+
 public class JwtGenerator : IJwtGenerator
 {
     private readonly JwtConfig _jwtConfig;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using TABP.Domain.Interfaces.Persistence;
-
 namespace TABP.Infrastructure.Persistence.DbContexts;
+
 public class UnitOfWork : IUnitOfWork
 {
     private readonly DbFactory _dbFactory;

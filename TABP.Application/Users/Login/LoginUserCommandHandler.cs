@@ -26,11 +26,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUs
 
     public async Task<LoginUserResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user =  await _userRepository.AuthenticateUser(request.Email,request.Password);
-        if (user == null)
-        {
-            throw new UnauthorizedAccessException("Invalid email or password");
-        }
+        var user = await _userRepository.AuthenticateUser(request.Email, request.Password) ?? throw new UnauthorizedAccessException("Invalid email or password");
         var token = _jwtGenerator.GenerateToken(user);
         return _mapper.Map<LoginUserResponse>(token);
     }

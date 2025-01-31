@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace TABP.Domain.Entities;
+
 public abstract class EntityBase<TKey> : IEntityBase<TKey>
 {
     [Key]

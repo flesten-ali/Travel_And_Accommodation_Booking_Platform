@@ -1,4 +1,5 @@
 ﻿namespace TABP.Infrastructure.Auth.Jwt;
+
 public class JwtConfig
 {
     public required string Key { get; set; }

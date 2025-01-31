@@ -6,6 +6,7 @@ using TABP.Domain.Interfaces.Auth;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 namespace TABP.Application.Users.Register;
+
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserResponse>
 {
     private readonly IUserRepository _userRepository;
@@ -18,7 +19,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         IPasswordHasher passwordHash,
         IMapper mapper,
         IUnitOfWork unitOfWork
-        )
+    )
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHash;
@@ -34,11 +35,11 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         }
 
         var user = _mapper.Map<User>(request);
+
         user.PasswordHash = _passwordHasher.Hash(request.Password);
-
         await _userRepository.AddAsync(user);
-
         await _unitOfWork.SaveChangesAsync();
+
         return _mapper.Map<RegisterUserResponse>(user);
     }
 }

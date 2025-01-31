@@ -5,8 +5,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TABP.Domain.Interfaces.Auth;
-
 namespace TABP.Infrastructure.Auth.Jwt;
+
 public static class JwtAuthConfiguration
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -21,20 +21,19 @@ public static class JwtAuthConfiguration
         {
             using var scope = services.BuildServiceProvider().CreateScope();
 
-            var config = scope.ServiceProvider
-              .GetRequiredService<IOptions<JwtConfig>>().Value;
+            var config = scope.ServiceProvider.GetRequiredService<IOptions<JwtConfig>>().Value;
 
             var key = Encoding.UTF8.GetBytes(config.Key);
 
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
                 ValidIssuer = config.Issuer,
+                ValidateAudience = true,
                 ValidAudience = config.Audience,
+                ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
         });

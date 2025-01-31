@@ -3,12 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using TABP.Presentation.Controllers;
-using TABP.Presentation.Validations.Auth;
-
+using TABP.Presentation.Validators.Auth;
 namespace TABP.Presentation;
+
 public static class PresentationConfiguration
 {
-
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         var presentaionAssembly = typeof(UserController).Assembly;

@@ -8,7 +8,6 @@ using TABP.Infrastructure.Auth;
 using TABP.Infrastructure.Auth.Jwt;
 using TABP.Infrastructure.Persistence.DbContexts;
 using TABP.Infrastructure.Persistence.Repositories;
-
 namespace TABP.Infrastructure;
 
 public static class InfrastructureConfiguration
