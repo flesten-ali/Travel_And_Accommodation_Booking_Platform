@@ -1,0 +1,6 @@
+@TABP.WebAPI_HostAddress = http://localhost:5220
+
+GET {{TABP.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
