@@ -15,4 +15,7 @@ public class User : EntityBase<Guid>
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public string Role { get; set; } = Roles.Guest;
+    public ICollection<Review> Reviews { get; set; } = [];
+    public ICollection<Booking> Bookings { get; set; } = [];
+    public ICollection<CartItem> CartItems { get; set; } = [];
 }

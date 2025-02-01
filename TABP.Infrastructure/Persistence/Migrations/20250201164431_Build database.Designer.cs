@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TABP.Infrastructure.Persistence.DbContexts;
 
@@ -11,9 +12,11 @@ using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250201164431_Build database")]
+    partial class Builddatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,8 +181,7 @@ namespace TABP.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<double>("Percentage")
-                        .HasPrecision(8, 2)
-                        .HasColumnType("float(8)");
+                        .HasColumnType("float");
 
                     b.Property<Guid>("RoomClassId")
                         .HasColumnType("uniqueidentifier");

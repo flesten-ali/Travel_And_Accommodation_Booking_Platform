@@ -14,7 +14,7 @@ namespace TABP.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250130150206_user-roles")]
-    partial class userroles
+    partial class UserRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,9 +11,9 @@ public class JwtGenerator : IJwtGenerator
 {
     private readonly JwtConfig _jwtConfig;
 
-    public JwtGenerator(IOptions<JwtConfig> jwtConfig)
+    public JwtGenerator(JwtConfig jwtConfig)
     {
-        _jwtConfig = jwtConfig.Value;
+        _jwtConfig = jwtConfig;
     }
 
     public JwtToken GenerateToken(User user)

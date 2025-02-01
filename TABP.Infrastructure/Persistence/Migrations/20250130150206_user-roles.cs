@@ -5,7 +5,7 @@
 namespace TABP.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class userroles : Migration
+    public partial class UserRoles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
