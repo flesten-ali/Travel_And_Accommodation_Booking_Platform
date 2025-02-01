@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -10,10 +10,19 @@ namespace TABP.Infrastructure.Auth.Jwt;
 
 public static class JwtAuthConfiguration
 {
+    public static IServiceCollection AddOptionsValidator(this IServiceCollection services)
+    {
+        return services.AddValidatorsFromAssemblyContaining<JwtOptionsValidator>(ServiceLifetime.Singleton);
+    }
+
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtConfig>(configuration.GetSection(nameof(JwtConfig)));
-        services.TryAddSingleton(sp=>sp.GetRequiredService<IOptions<JwtConfig>>().Value);
+        services.AddOptionsValidator();
+
+        services.AddOptions<JwtConfig>()
+            .Bind(configuration.GetSection(nameof(JwtConfig)))
+            .ValidateFluently()
+            .ValidateOnStart();
 
         services.AddAuthentication(options =>
         {

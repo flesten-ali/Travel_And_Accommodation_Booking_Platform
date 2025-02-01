@@ -2,8 +2,8 @@
 
 public class JwtConfig
 {
-    public required string Key { get; set; }
-    public required string Issuer { get; set; }
-    public required string Audience { get; set; }
-    public required double ExpirationTimeInMinutes { get; set; }
+    public string Key { get; set; }
+    public string Issuer { get; set; }
+    public string Audience { get; set; }
+    public double ExpirationTimeInMinutes { get; set; }
 }
