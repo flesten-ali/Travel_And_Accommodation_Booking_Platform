@@ -5,10 +5,13 @@ namespace TABP.Infrastructure.Auth.Jwt;
 
 public static class FluentValidationOptionsBuilder
 {
-    public static OptionsBuilder<TOptions> ValidateFluently<TOptions>(this OptionsBuilder<TOptions> optionsBuilder) where TOptions : class
+    public static OptionsBuilder<TOptions> ValidateFluently<TOptions>(this OptionsBuilder<TOptions> optionsBuilder)
+        where TOptions : class
     {
         optionsBuilder.Services.AddSingleton<IValidateOptions<TOptions>>(
-            sp => new FluentValidationValidateOptions<TOptions>(optionsBuilder.Name, sp.GetRequiredService<IValidator<TOptions>>())
+            sp => new FluentValidationValidateOptions<TOptions>(
+                optionsBuilder.Name, sp.GetRequiredService<IValidator<TOptions>>()
+            )
         );
         return optionsBuilder;
     }
