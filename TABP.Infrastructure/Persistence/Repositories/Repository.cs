@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using TABP.Domain.Entities;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 
-public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
+public class Repository<T> : IRepository<T> where T : class
 {
     private readonly AppDbContext _context;
     private DbSet<T> _dbSet;
@@ -19,15 +17,5 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
     public async Task AddAsync(T entity)
     {
         await DbSet.AddAsync(entity);
-    }
-
-    public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
-    {
-        return await DbSet.AnyAsync(predicate);
-    }
-
-    public async Task<IEnumerable<T>> GetAllByIdAsync(IEnumerable<Guid> Ids)
-    {
-        return await DbSet.Where(entity => Ids.Contains(entity.Id)).ToListAsync();
     }
 }
