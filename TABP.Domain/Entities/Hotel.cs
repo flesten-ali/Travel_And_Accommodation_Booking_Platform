@@ -5,8 +5,8 @@ public class Hotel : EntityBase<Guid>
     public string Name { get; set; }
     public string? Description { get; set; }
     public int Rate { get; set; }
-    public int LongitudeCoordinates { get; set; }
-    public int LatitudeCoordinates { get; set; }
+    public double LongitudeCoordinates { get; set; }
+    public double LatitudeCoordinates { get; set; }
     public City City { get; set; }
     public Guid CityId { get; set; }
     public Owner Owner { get; set; }
