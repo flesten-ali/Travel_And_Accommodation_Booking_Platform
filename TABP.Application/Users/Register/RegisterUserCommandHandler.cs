@@ -31,7 +31,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
     {
         if (await _userRepository.EmailExistsAsync(request.Email))
         {
-            throw new UserEmailExistException(request.Email);
+            throw new ExistsException($"User with email {request.Email} is exits");
         }
 
         var user = _mapper.Map<User>(request);
