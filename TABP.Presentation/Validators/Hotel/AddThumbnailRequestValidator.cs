@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using TABP.Presentation.DTOs;
 
-namespace TABP.Presentation.Validators.Hotels;
+namespace TABP.Presentation.Validators.Hotel;
 public class AddThumbnailRequestValidator : AbstractValidator<AddThumbnailRequest>
 {
     public AddThumbnailRequestValidator()

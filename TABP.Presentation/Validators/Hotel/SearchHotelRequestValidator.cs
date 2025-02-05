@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using TABP.Presentation.DTOs.Hotel;
 
-namespace TABP.Presentation.Validators.Hotels;
+namespace TABP.Presentation.Validators.Hotel;
 public class SearchHotelRequestValidator : AbstractValidator<SearchHotelRequest>
 {
     public SearchHotelRequestValidator()
