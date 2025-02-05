@@ -12,9 +12,9 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    public void BeginTransaction()
+    public async Task BeginTransactionAsync()
     {
-        _transaction = _context.Database.BeginTransaction();
+        _transaction = await _context.Database.BeginTransactionAsync();
     }
 
     public async Task CommitAsync()
