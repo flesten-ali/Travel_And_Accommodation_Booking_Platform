@@ -2,7 +2,7 @@
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
-using TABP.Domain.Interfaces.Services;
+using TABP.Domain.Interfaces.Services.Image;
 using TABP.Infrastructure.Persistence.DbContexts;
 
 namespace TABP.Infrastructure.Persistence.Repositories;
