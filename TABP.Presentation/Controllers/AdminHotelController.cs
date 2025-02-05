@@ -24,7 +24,7 @@ public class AdminHotelController : ControllerBase
     }
 
     [HttpPost("add-hotel")]
-    public async Task<IActionResult> AddHotel([FromBody] AddHotelRequest request)
+    public async Task<IActionResult> Add([FromBody] AddHotelRequest request)
     {
         var command = _mapper.Map<AddHotelCommand>(request);
         return Ok(await _mediator.Send(command));

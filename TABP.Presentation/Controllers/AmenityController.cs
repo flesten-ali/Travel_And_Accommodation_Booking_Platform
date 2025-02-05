@@ -18,7 +18,7 @@ public class AmenityController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpPost]
+    [HttpPost("add-amenity")]
     public async Task<IActionResult> Add([FromBody] AddAmenityRequest request)
     {
         var command = _mapper.Map<AddAmenityCommand>(request);
