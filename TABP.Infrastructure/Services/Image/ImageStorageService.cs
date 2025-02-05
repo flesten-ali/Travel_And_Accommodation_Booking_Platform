@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using TABP.Domain.Exceptions;
-using TABP.Domain.Interfaces.Services;
-namespace TABP.Infrastructure.Services;
+using TABP.Domain.Interfaces.Services.Image;
+namespace TABP.Infrastructure.Services.Image;
 
 public class ImageStorageService : IImageStorageService
 {
