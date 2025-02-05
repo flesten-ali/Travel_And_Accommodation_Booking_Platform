@@ -44,6 +44,7 @@ public static class InfrastructureConfiguration
         services.AddScoped<IRoomClassRepository, RoomClassRepository>();
         services.AddScoped<IImageRepository, ImageRepository>();
         services.AddScoped<ICityRepository, CityRepository>();
+        services.AddScoped<IRoomRepository, RoomRepository>();
         return services;
     }
 
