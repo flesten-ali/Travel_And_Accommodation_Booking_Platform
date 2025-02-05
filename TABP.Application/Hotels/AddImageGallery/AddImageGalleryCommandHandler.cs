@@ -4,7 +4,7 @@ using TABP.Domain.Entities;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
-using TABP.Domain.Interfaces.Services;
+using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Hotels.AddImageGallery;
 internal class AddImageGalleryCommandHandler : IRequestHandler<AddImageGalleryCommand, Guid>

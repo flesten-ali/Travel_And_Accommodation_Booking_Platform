@@ -5,7 +5,7 @@ using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
-using TABP.Domain.Interfaces.Services;
+using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Hotels.AddThumbnail;
 public class AddThumbnailCommandHandler : IRequestHandler<AddThumbnailCommand, Guid>
