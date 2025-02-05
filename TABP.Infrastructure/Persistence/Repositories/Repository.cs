@@ -30,4 +30,9 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
     {
         return await DbSet.Where(entity => Ids.Contains(entity.Id)).ToListAsync();
     }
+
+    public async Task<T?> GetByIdAsync(Guid id)
+    {
+        return await DbSet.Where(e=>e.Id ==  id).FirstOrDefaultAsync();
+    }
 }
