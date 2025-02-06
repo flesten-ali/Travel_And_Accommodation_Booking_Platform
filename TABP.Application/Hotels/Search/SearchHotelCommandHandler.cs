@@ -68,8 +68,7 @@ public class SearchHotelCommandHandler :
             (string.IsNullOrEmpty(request.City) ||
              hotel.City.Name.ToLower().Equals(request.City.ToLower())) &&
 
-             (!request.CheckInDate.HasValue || !request.CheckOutDate.HasValue ||
-             hotel.RoomClasses.Any(rc =>
+             (hotel.RoomClasses.Any(rc =>
                rc.Rooms.Count(room =>
                 room.Bookings.All(b => b.CheckOutDate <= request.CheckInDate || b.CheckInDate >= request.CheckOutDate)
                 ) >= request.NumberOfRooms)

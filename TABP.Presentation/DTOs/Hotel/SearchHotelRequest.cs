@@ -4,8 +4,8 @@ namespace TABP.Presentation.DTOs.Hotel;
 public class SearchHotelRequest
 {
     public string City { get; set; }
-    public DateTime? CheckInDate { get; set; }
-    public DateTime? CheckOutDate { get; set; }
+    public DateTime CheckInDate { get; set; }
+    public DateTime CheckOutDate { get; set; }
     public int ChildrenCapacity { get; set; }
     public int AdultsCapacity { get; set; }
     public int NumberOfRooms { get; set; }
