@@ -9,11 +9,11 @@ public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
         RuleFor(u => u.Email)
           .NotEmpty()
           .EmailAddress()
-          .WithMessage("Email address is required!");
+          .WithMessage("Email address is required.");
 
         RuleFor(u => u.Password)
             .NotEmpty()
-            .WithMessage("password is required!");
+            .WithMessage("Password is required.");
 
     }
 }

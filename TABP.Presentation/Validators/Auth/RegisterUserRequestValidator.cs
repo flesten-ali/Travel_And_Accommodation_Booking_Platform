@@ -9,7 +9,7 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
         RuleFor(u => u.Email)
             .NotEmpty()
             .EmailAddress()
-            .WithMessage("Email address is required!");
+            .WithMessage("Email address is required.");
 
         RuleFor(u => u.UserName)
             .NotEmpty()
