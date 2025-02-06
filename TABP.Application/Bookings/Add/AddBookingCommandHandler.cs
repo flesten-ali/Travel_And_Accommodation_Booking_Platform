@@ -68,7 +68,7 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
         {
             var booking = new Booking
             {
-                BookingDate = request.BookingDate,
+                BookingDate = DateTime.UtcNow,
                 CheckInDate = request.CheckInDate,
                 CheckOutDate = request.CheckOutDate,
                 PaymentMethod = request.PaymentMethod,
