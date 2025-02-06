@@ -26,7 +26,6 @@ internal class FluentValidationValidateOptions<TOptions> : IValidateOptions<TOpt
         Name = name;
         _validator = validator;
     }
-
     public string? Name { get; }
 
     public ValidateOptionsResult Validate(string? name, TOptions options)
