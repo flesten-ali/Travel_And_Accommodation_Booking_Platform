@@ -89,7 +89,11 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
                 PaymentStatus = PaymentStatus.Completed,
                 TotalPrice = booking.TotalPrice,
                 HotelAddress = rooms.FirstOrDefault()?.RoomClass.Hotel.City.Address!,
-                RoomDetails = GenerateRoomDetails(rooms!)
+                RoomDetails = rooms.Select(room => new RoomDetails
+                {
+                    Floor = room.Floor,
+                    RoomNumber = room.RoomNumber,
+                }).ToList()
             };
 
             var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(invoice);
@@ -111,21 +115,6 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
             await _unitOfWork.RollbackAsync();
             throw;
         }
-    }
-
-    private ICollection<RoomDetails> GenerateRoomDetails(IEnumerable<Room> rooms)
-    {
-        List<RoomDetails> roomDetails = [];
-        foreach (var room in rooms)
-        {
-            var rd = new RoomDetails
-            {
-                Floor = room.Floor,
-                RoomNumber = room.RoomNumber,
-            };
-            roomDetails.Add(rd);
-        }
-        return roomDetails;
     }
 
     private double CalculateTotalPric(IEnumerable<Room> rooms, DateTime checkInDate, DateTime checkOutDate)

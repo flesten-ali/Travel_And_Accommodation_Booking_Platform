@@ -17,4 +17,8 @@
     <ProjectReference Include="..\TABP.Domain\TABP.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Bookings\GetPdfConfirmation\" />
+  </ItemGroup>
+
 </Project>
