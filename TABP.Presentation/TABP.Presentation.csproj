@@ -20,4 +20,8 @@
     <ProjectReference Include="..\TABP.Application\TABP.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validators\Booking\" />
+  </ItemGroup>
+
 </Project>
