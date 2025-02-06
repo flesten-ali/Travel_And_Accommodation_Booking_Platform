@@ -85,7 +85,7 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
                 InvoiceId = Guid.NewGuid(),
                 CheckInDate = booking.CheckInDate,
                 CheckOutDate = booking.CheckOutDate,
-                IssueDate = DateTime.Now,
+                IssueDate = DateTime.UtcNow,
                 PaymentStatus = PaymentStatus.Completed,
                 TotalPrice = booking.TotalPrice,
                 HotelAddress = rooms.FirstOrDefault()?.RoomClass.Hotel.City.Address!,
