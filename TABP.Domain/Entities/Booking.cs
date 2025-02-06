@@ -8,8 +8,8 @@ public class Booking : EntityBase<Guid>
     public DateTime CheckOutDate { get; set; }
     public DateTime BookingDate { get; set; }
     public string? Remarks { get; set; }
-    public double TotalPrice { get; set; }
     public User User { get; set; }
     public Guid UserId { get; set; }
     public ICollection<Room> Rooms { get; set; } = [];
+    public Invoice Invoice { get; set; }
 }

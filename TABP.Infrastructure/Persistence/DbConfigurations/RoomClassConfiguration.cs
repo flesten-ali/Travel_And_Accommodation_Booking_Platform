@@ -8,6 +8,5 @@ public class RoomClassConfiguration : IEntityTypeConfiguration<RoomClass>
     public void Configure(EntityTypeBuilder<RoomClass> builder)
     {
         builder.Property(r => r.RoomType).HasConversion<string>();
-
     }
 }
