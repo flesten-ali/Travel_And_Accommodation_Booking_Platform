@@ -20,7 +20,7 @@ public class AddBookingRequestValidator : AbstractValidator<AddBookingRequest>
 
         RuleFor(b => b.CheckOutDate)
             .GreaterThan(b => b.CheckInDate)
-            .WithMessage("Check-out date must be after the Check-in date.");
+            .WithMessage("Check-out date must be after the check-in date.");
 
         RuleFor(b => b.PaymentMethod)
             .IsInEnum()
