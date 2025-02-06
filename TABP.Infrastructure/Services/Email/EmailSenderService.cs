@@ -13,20 +13,24 @@ public class EmailSenderService : IEmailSenderService
         _smtpConfig = smtpConfig;
     }
 
-    public async Task SendEmailAsync(string recipient, string subject, string body, EmailAttachment emailAttachment)
+    public async Task SendEmailAsync(string recipient, string subject, string body, List<EmailAttachment> emailAttachments)
     {
         var emailToSend = new MimeMessage();
         emailToSend.From.Add(MailboxAddress.Parse(_smtpConfig.From));
         emailToSend.To.Add(MailboxAddress.Parse(recipient));
         emailToSend.Subject = subject;
-        BodyBuilder bodyBuilder = new()
-        {
-            HtmlBody = body,
-        };
+        BodyBuilder bodyBuilder = new() { HtmlBody = body };
 
-        bodyBuilder.Attachments.Add(emailAttachment.FileName,
-                                    emailAttachment.FileContent,
-                                    ContentType.Parse(emailAttachment.ContentType));
+        if (emailAttachments != null)
+        {
+            foreach (var emailAttachment in emailAttachments)
+            {
+                bodyBuilder.Attachments.Add(emailAttachment.FileName,
+                                        emailAttachment.FileContent,
+                                        ContentType.Parse(emailAttachment.ContentType));
+            }
+        }
+
         emailToSend.Body = bodyBuilder.ToMessageBody();
 
         var smtp = new SmtpClient();

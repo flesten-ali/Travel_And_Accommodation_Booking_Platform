@@ -102,7 +102,7 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
                 ContentType = "application/pdf"
             };
 
-            await _emailSenderService.SendEmailAsync(user.Email, "Your Booking Invoice", invoiceHtml, emailAttachment);
+            await _emailSenderService.SendEmailAsync(user.Email, "Your Booking Invoice", invoiceHtml, [emailAttachment]);
             await _unitOfWork.CommitAsync();
             return booking.Id;
         }
