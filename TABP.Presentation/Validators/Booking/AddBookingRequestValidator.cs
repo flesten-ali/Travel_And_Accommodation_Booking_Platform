@@ -1,16 +1,16 @@
 ﻿using FluentValidation;
 using TABP.Presentation.DTOs.Booking;
 
-namespace TABP.Presentation.Validators.Hotel;
+namespace TABP.Presentation.Validators.Booking;
 public class AddBookingRequestValidator : AbstractValidator<AddBookingRequest>
 {
     public AddBookingRequestValidator()
     {
-        RuleFor(b=>b.UserId)
+        RuleFor(b => b.UserId)
             .NotNull()
             .WithMessage("User ID is required.");
 
-        RuleFor(b=>b.RoomIds)
+        RuleFor(b => b.RoomIds)
             .NotEmpty()
             .WithMessage("At least one room must be selected.");
 
@@ -19,7 +19,7 @@ public class AddBookingRequestValidator : AbstractValidator<AddBookingRequest>
             .WithMessage("Check-in date must be in the future.");
 
         RuleFor(b => b.CheckOutDate)
-            .GreaterThan(b=>b.CheckInDate)
+            .GreaterThan(b => b.CheckInDate)
             .WithMessage("Check-out date must be after the Check-in date.");
 
         RuleFor(b => b.PaymentMethod)
