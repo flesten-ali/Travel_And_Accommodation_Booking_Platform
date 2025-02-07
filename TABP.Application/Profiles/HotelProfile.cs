@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using TABP.Application.Hotels.Add;
-using TABP.Application.Hotels.AddImageGallery;
-using TABP.Application.Hotels.AddThumbnail;
-using TABP.Application.Hotels.Search;
+using TABP.Application.Hotels.Commands.AddHotel;
+using TABP.Application.Hotels.Commands.AddImageGallery;
+using TABP.Application.Hotels.Commands.AddThumbnail;
+using TABP.Application.Hotels.Queries.Search;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Models;
