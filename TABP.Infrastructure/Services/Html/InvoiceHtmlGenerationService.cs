@@ -1,10 +1,10 @@
-﻿using TABP.Domain.Interfaces.Services.Html;
-using TABP.Domain.Models;
+﻿using TABP.Domain.Entities;
+using TABP.Domain.Interfaces.Services.Html;
 
 namespace TABP.Infrastructure.Services.Html;
 public class InvoiceHtmlGenerationService : IInvoiceHtmlGenerationService
 {
-    public string GenerateHtml(Invoice invoice)
+    public string GenerateHtml(Booking booking)
     {
         var html =
        $@"
@@ -113,12 +113,12 @@ public class InvoiceHtmlGenerationService : IInvoiceHtmlGenerationService
                         </div>
 
                         <div class=""invoice-info"">
-                            <p><strong>Invoice ID:</strong> {invoice.InvoiceId}</p>
-                            <p><strong>Issue Date:</strong> {invoice.IssueDate:yyyy-MM-dd}</p>
-                            <p><strong>Check-in Date:</strong> {invoice.CheckInDate:yyyy-MM-dd}</p>
-                            <p><strong>Check-out Date:</strong> {invoice.CheckOutDate:yyyy-MM-dd}</p>
-                            <p><strong>Hotel Address:</strong> {invoice.HotelAddress}</p>
-                            <p><strong>Payment Status:</strong> {invoice.PaymentStatus}</p>
+                            <p><strong>Invoice ID:</strong> {booking.Invoice.Id}</p>
+                            <p><strong>Issue Date:</strong> {booking.Invoice.IssueDate:yyyy-MM-dd}</p>
+                            <p><strong>Check-in Date:</strong> {booking.CheckInDate:yyyy-MM-dd}</p>
+                            <p><strong>Check-out Date:</strong> {booking.CheckOutDate:yyyy-MM-dd}</p>
+                            <p><strong>Hotel Address:</strong> {booking.Rooms.FirstOrDefault()?.RoomClass.Hotel.City}</p>
+                            <p><strong>Payment Status:</strong> {booking.Invoice.PaymentStatus}</p>
                         </div>
 
                         <div class=""invoice-table"">
@@ -131,7 +131,7 @@ public class InvoiceHtmlGenerationService : IInvoiceHtmlGenerationService
                                 </thead>
                                 <tbody>";
 
-        foreach (var room in invoice.RoomDetails)
+        foreach (var room in booking.Rooms)
         {
             html += $@"
                                     <tr>
@@ -146,7 +146,7 @@ public class InvoiceHtmlGenerationService : IInvoiceHtmlGenerationService
                         </div>
 
                         <div class=""invoice-footer"">
-                            <p><strong>Total Price: </strong>${invoice.TotalPrice:F2}</p>
+                            <p><strong>Total Price: </strong>${booking.Invoice.TotalPrice:F2}</p>
                         </div>
 
                     </body>

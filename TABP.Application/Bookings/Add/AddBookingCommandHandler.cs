@@ -8,7 +8,6 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Email;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Pdf;
-using TABP.Domain.Models;
 
 namespace TABP.Application.Bookings.Add;
 public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
@@ -85,23 +84,7 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
             };
             await _bookingRepository.AddAsync(booking);
 
-            var invoiceResponse = new InvoiceResponse
-            {
-                InvoiceId = booking.Invoice.Id,
-                CheckInDate = booking.CheckInDate,
-                CheckOutDate = booking.CheckOutDate,
-                IssueDate = booking.Invoice.IssueDate,
-                PaymentStatus = PaymentStatus.Completed,
-                TotalPrice = booking.Invoice.TotalPrice,
-                HotelAddress = rooms.FirstOrDefault()?.RoomClass.Hotel.City.Address!,
-                RoomDetails = rooms.Select(room => new RoomDetails
-                {
-                    Floor = room.Floor,
-                    RoomNumber = room.RoomNumber,
-                }).ToList()
-            };
-
-            var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(invoiceResponse);
+            var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
             var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml);
 
             var emailAttachment = new EmailAttachment
