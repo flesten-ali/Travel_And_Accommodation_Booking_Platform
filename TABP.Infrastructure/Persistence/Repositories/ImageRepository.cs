@@ -8,11 +8,11 @@ using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 public class ImageRepository : Repository<Image>, IImageRepository
 {
-    private readonly IImageStorageService _imageStorageService;
+    private readonly IImageUploadService _imageUploadService;
 
-    public ImageRepository(AppDbContext context, IImageStorageService imageStorageService) : base(context)
+    public ImageRepository(AppDbContext context, IImageUploadService imageUploadService) : base(context)
     {
-        _imageStorageService = imageStorageService;
+        _imageUploadService = imageUploadService;
     }
 
     public async Task DeleteByIdAsync(Guid enittyId, ImageType imageType)
@@ -28,7 +28,7 @@ public class ImageRepository : Repository<Image>, IImageRepository
         {
             foreach (var image in images)
             {
-                await _imageStorageService.DeleteFileAsync(image.ImageUrl);
+                await _imageUploadService.DeleteAsync(image.PublicId);
                 DbSet.Remove(image);
             }
         }
