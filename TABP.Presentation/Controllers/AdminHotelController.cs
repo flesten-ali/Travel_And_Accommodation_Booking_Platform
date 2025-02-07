@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Hotels.Commands.AddHotel;
+using TABP.Application.Hotels.Commands.AddImageGallery;
 using TABP.Application.Hotels.Commands.AddThumbnail;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs;
@@ -34,6 +35,14 @@ public class AdminHotelController : ControllerBase
     public async Task<IActionResult> AddHotelThumbnail(AddThumbnailRequest request)
     {
         var command = _mapper.Map<AddThumbnailCommand>(request);
+        await _mediator.Send(command);
+        return Ok(command);
+    }
+
+    [HttpPost("add-hotel-gallery")]
+    public async Task<IActionResult> AddHotelGallery(AddImageGalleryRequest request)
+    {
+        var command = _mapper.Map<AddImageGalleryCommand>(request);
         await _mediator.Send(command);
         return Ok(command);
     }
