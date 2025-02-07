@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using TABP.Application.Hotels.Search;
+using TABP.Application.Hotels.Queries.Search;
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Controllers;
 
@@ -23,7 +23,7 @@ public class HotelController : ControllerBase
     [HttpPost("search")]
     public async Task<IActionResult> Search([FromBody] SearchHotelRequest request)
     {
-        var command = _mapper.Map<SearchHotelCommand>(request);
+        var command = _mapper.Map<SearchHotelQuery>(request);
         var paginatedList = await _mediator.Send(command);
 
         Response.Headers.Append("X-Pagination",
