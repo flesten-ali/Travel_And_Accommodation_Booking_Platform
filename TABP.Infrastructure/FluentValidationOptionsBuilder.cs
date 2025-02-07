@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-namespace TABP.Infrastructure.Auth.Jwt;
+namespace TABP.Infrastructure;
 
 public static class FluentValidationOptionsBuilder
 {

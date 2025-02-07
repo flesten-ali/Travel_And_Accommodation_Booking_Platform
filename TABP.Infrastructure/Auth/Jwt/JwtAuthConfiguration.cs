@@ -10,15 +10,10 @@ namespace TABP.Infrastructure.Auth.Jwt;
 
 public static class JwtAuthConfiguration
 {
-    public static IServiceCollection AddOptionsValidator(this IServiceCollection services)
-    {
-        return services.AddValidatorsFromAssemblyContaining<JwtOptionsValidator>(ServiceLifetime.Singleton);
-    }
+     
 
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptionsValidator();
-
         services.AddOptions<JwtConfig>()
             .Bind(configuration.GetSection(nameof(JwtConfig)))
             .ValidateFluently()

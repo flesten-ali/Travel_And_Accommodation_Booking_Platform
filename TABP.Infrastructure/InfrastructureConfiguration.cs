@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -26,8 +27,14 @@ public static class InfrastructureConfiguration
     {
         return services.AddDatabase(configuration)
                        .AddRespositories()
+                       .AddOptionsValidator()
                        .AddServices(configuration)
                        .AddJwtAuthentication(configuration);
+    }
+
+    public static IServiceCollection AddOptionsValidator(this IServiceCollection services)
+    {
+        return services.AddValidatorsFromAssemblyContaining<JwtOptionsValidator>(ServiceLifetime.Singleton);
     }
 
     public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
@@ -59,22 +66,23 @@ public static class InfrastructureConfiguration
     {
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
-        services.AddOptions<StorageFolderConfig>()
-                 .Bind(configuration.GetSection(nameof(StorageFolderConfig)));
-
         services.AddSingleton<IPdfService, PdfService>();
 
         services.AddSingleton<IInvoiceHtmlGenerationService, InvoiceHtmlGenerationService>();
 
         services.AddOptions<SMTPConfig>()
-                .Bind(configuration.GetSection(nameof(SMTPConfig)));
+                .Bind(configuration.GetSection(nameof(SMTPConfig)))
+                .ValidateFluently()
+                .ValidateOnStart();
         services.AddSingleton(sp => sp.GetRequiredService<IOptions<SMTPConfig>>().Value);
 
         services.AddSingleton<IEmailSenderService, EmailSenderService>();
 
         services.AddOptions<CloudinaryConfig>()
-                 .Bind(configuration.GetSection(nameof(JwtConfig)));
-        services.AddSingleton(sp=>sp.GetRequiredService<IOptions<CloudinaryConfig>>().Value);
+                 .Bind(configuration.GetSection(nameof(CloudinaryConfig)))
+                 .ValidateFluently()
+                 .ValidateOnStart();
+        services.AddSingleton(sp => sp.GetRequiredService<IOptions<CloudinaryConfig>>().Value);
 
         services.AddSingleton<IImageUploadService, CloudinaryImageUploadService>();
 
