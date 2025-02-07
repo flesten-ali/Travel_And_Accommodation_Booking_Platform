@@ -20,10 +20,12 @@ public class HotelProfile : Profile
 
         CreateMap<AddThumbnailCommand, Image>()
             .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
-            .ForMember(dest => dest.ImageableType, opt => opt.MapFrom(src => ImageableType.Hotel));
+            .ForMember(dest => dest.ImageableType, opt => opt.MapFrom(src => ImageableType.Hotel))
+            .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Thumbnail));
 
         CreateMap<AddImageGalleryCommand, Image>()
         .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
-        .ForMember(dest => dest.ImageableType, opt => opt.MapFrom(src => ImageableType.Hotel));
+        .ForMember(dest => dest.ImageableType, opt => opt.MapFrom(src => ImageableType.Hotel))
+        .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Gallery));
     }
 }

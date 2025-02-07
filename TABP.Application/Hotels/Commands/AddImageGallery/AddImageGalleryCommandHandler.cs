@@ -39,7 +39,6 @@ internal class AddImageGalleryCommandHandler : IRequestHandler<AddImageGalleryCo
         var publicId = Guid.NewGuid().ToString();
         var imageUrl = await _imageUploadService.UploadAsync(request.Image, publicId);
 
-        // use auto mapper 
         var image = _mapper.Map<Image>(request);
         image.ImageUrl = imageUrl;
         image.PublicId = publicId;
