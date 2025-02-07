@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using TABP.Application.Hotels.Queries.Search;
-using TABP.Application.RoomClasses.Queries;
+using TABP.Application.Hotels.Queries.GetDetails;
+using TABP.Application.Hotels.Queries.SearchHotels;
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Controllers;
 
@@ -24,7 +24,7 @@ public class HotelController : ControllerBase
     [HttpPost("search")]
     public async Task<IActionResult> Search([FromBody] SearchHotelRequest request)
     {
-        var command = _mapper.Map<SearchHotelQuery>(request);
+        var command = _mapper.Map<SearchHotelsQuery>(request);
         var paginatedList = await _mediator.Send(command);
 
         Response.Headers.Append("X-Pagination",
@@ -33,10 +33,10 @@ public class HotelController : ControllerBase
         return Ok(paginatedList.Items);
     }
 
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetHotelById(Guid id)
+    [HttpGet("GetDetails{id:guid}")]
+    public async Task<IActionResult> GetHotelDetails(Guid id)
     {
-        var query = new GetDetailsByHotelIdQuery()
+        var query = new GetHotelDetailsQuery()
         {
             HotelId = id
         };
