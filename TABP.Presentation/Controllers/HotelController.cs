@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TABP.Application.Hotels.Queries.Search;
+using TABP.Application.RoomClasses.Queries;
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Controllers;
 
@@ -30,5 +31,16 @@ public class HotelController : ControllerBase
             JsonSerializer.Serialize(paginatedList.PaginationMetaData));
 
         return Ok(paginatedList.Items);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetHotelById(Guid id)
+    {
+        var query = new GetDetailsByHotelIdQuery()
+        {
+            HotelId = id
+        };
+        var response = await _mediator.Send(query);
+        return Ok(response);
     }
 }
