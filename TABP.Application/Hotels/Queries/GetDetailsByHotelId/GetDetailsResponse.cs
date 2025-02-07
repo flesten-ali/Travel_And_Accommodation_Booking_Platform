@@ -1,6 +1,7 @@
 ﻿namespace TABP.Application.Hotels.Queries.GetDetailsByHotelId;
 public class GetDetailsResponse
 {
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
     public string City { get; set; }
