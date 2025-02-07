@@ -74,20 +74,25 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
                 PaymentMethod = request.PaymentMethod,
                 Remarks = request.Remarks,
                 UserId = request.UserId,
-                TotalPrice = CalculateTotalPric(rooms, request.CheckInDate, request.CheckOutDate),
                 Rooms = rooms.ToList(),
                 User = user,
+                Invoice =
+                {
+                    IssueDate = DateTime.UtcNow,
+                    PaymentStatus = PaymentStatus.Completed,
+                    TotalPrice = CalculateTotalPrice(rooms, request.CheckInDate, request.CheckOutDate),
+                }
             };
             await _bookingRepository.AddAsync(booking);
 
-            var invoice = new Invoice
+            var invoiceResponse = new InvoiceResponse
             {
-                InvoiceId = Guid.NewGuid(),
+                InvoiceId = booking.Invoice.Id,
                 CheckInDate = booking.CheckInDate,
                 CheckOutDate = booking.CheckOutDate,
-                IssueDate = DateTime.UtcNow,
+                IssueDate = booking.Invoice.IssueDate,
                 PaymentStatus = PaymentStatus.Completed,
-                TotalPrice = booking.TotalPrice,
+                TotalPrice = booking.Invoice.TotalPrice,
                 HotelAddress = rooms.FirstOrDefault()?.RoomClass.Hotel.City.Address!,
                 RoomDetails = rooms.Select(room => new RoomDetails
                 {
@@ -96,7 +101,7 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
                 }).ToList()
             };
 
-            var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(invoice);
+            var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(invoiceResponse);
             var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml);
 
             var emailAttachment = new EmailAttachment
@@ -117,16 +122,21 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
         }
     }
 
-    private double CalculateTotalPric(IEnumerable<Room> rooms, DateTime checkInDate, DateTime checkOutDate)
+    private static double CalculateTotalPrice(IEnumerable<Room> rooms, DateTime checkInDate, DateTime checkOutDate)
     {
-        var total = 0.0;
-        foreach (var room in rooms)
+        var total = rooms.Sum(room =>
         {
             var price = room.RoomClass.Price;
-            var discount = room.RoomClass.Discounts.Where(d => d.RoomClassId == room.RoomClassId).Max(d => d.Percentage);
-            total += price - (price * (discount / 100));
-        }
-        var stayDuration = checkOutDate.Day - checkInDate.Day;
+            var discount = room.RoomClass.Discounts
+                               .Select(d => d.Percentage)
+                               .DefaultIfEmpty(0)
+                               .Max();
+
+            var discoutedPrice = price * (1 - discount / 100);
+            return discoutedPrice;
+        });
+
+        var stayDuration = (checkOutDate - checkInDate).Days;
         return stayDuration * total;
     }
 }
