@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -6,21 +7,22 @@ namespace TABP.Application.Hotels.Queries.GetHotelDetails;
 public class GetHotelDetailsQueryHandler : IRequestHandler<GetHotelDetailsQuery, GetHotelDetailsResponse>
 {
     private readonly IHotelRepository _hotelRepository;
+    private readonly IMapper _mapper;
 
-    public GetHotelDetailsQueryHandler(IHotelRepository hotelRepository)
+    public GetHotelDetailsQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
     {
         _hotelRepository = hotelRepository;
+        _mapper = mapper;
     }
     public async Task<GetHotelDetailsResponse> Handle(GetHotelDetailsQuery request, CancellationToken cancellationToken)
     {
-        
+        var hotel = await _hotelRepository.GetHotelByIdAsync(request.HotelId, h => h.Gallery.Where(g => g.ImageableId == h.Id));
 
-        return new GetHotelDetailsResponse();
+        if (hotel == null)
+        {
+            throw new NotFoundException("Hotel not found");
+        }
 
-
-
-
-
-
+        return _mapper.Map<GetHotelDetailsResponse>(hotel);
     }
 }

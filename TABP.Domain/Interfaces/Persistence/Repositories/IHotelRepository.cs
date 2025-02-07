@@ -11,5 +11,5 @@ public interface IHotelRepository : IRepository<Hotel>
         int pageSize,
         int pageCount);
 
-    Task<Hotel?> GetHotelByIdAsync(Guid hotelId);
+    Task<Hotel?> GetHotelByIdAsync(Guid hotelId, params Expression<Func<Hotel, object>>[] includeProperties);
 }

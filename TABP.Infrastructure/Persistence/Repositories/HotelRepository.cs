@@ -9,16 +9,16 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class HotelRepository(AppDbContext context) : Repository<Hotel>(context), IHotelRepository
 {
-    public async Task<Hotel?> GetHotelByIdAsync(Guid hotelId)
+    public Task<Hotel?> GetHotelByIdAsync(Guid hotelId, params Expression<Func<Hotel, object>>[] includeProperties)
     {
-        var hotel = await DbSet.Where(h => h.Id == hotelId)
-                          .Include(h => h.Reviews)
-                          .ThenInclude(r => r.User)
-                          .Include(h => h.RoomClasses)
-                          .Include(h => h.City)
-                          .Include(h => h.Gallery)
-                          .FirstOrDefaultAsync();
-        return hotel;
+        var hotel = DbSet.Where(h => h.Id == hotelId);
+
+        foreach (var includeProperty in includeProperties)
+        {
+            hotel = hotel.Include(includeProperty);
+        }
+
+        return hotel.FirstOrDefaultAsync();
     }
 
     public async Task<PaginatedList<SearchHotelResult>> SearchHotels(
