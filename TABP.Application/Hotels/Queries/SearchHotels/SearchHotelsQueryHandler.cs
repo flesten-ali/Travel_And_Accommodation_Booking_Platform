@@ -5,22 +5,22 @@ using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
-namespace TABP.Application.Hotels.Queries.Search;
+namespace TABP.Application.Hotels.Queries.SearchHotels;
 
-public class SearchHotelQueryHandler :
-    IRequestHandler<SearchHotelQuery, PaginatedList<SearchHotelResponse>>
+public class SearchHotelsQueryHandler :
+    IRequestHandler<SearchHotelsQuery, PaginatedList<SearchHotelResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
 
-    public SearchHotelQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
+    public SearchHotelsQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
     {
         _hotelRepository = hotelRepository;
         _mapper = mapper;
     }
 
     public async Task<PaginatedList<SearchHotelResponse>> Handle(
-        SearchHotelQuery request,
+        SearchHotelsQuery request,
         CancellationToken cancellationToken)
     {
         var filter = BuildFilterExpression(request);
@@ -30,7 +30,7 @@ public class SearchHotelQueryHandler :
         return _mapper.Map<PaginatedList<SearchHotelResponse>>(result);
     }
 
-    private static Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> BuildSort(SearchHotelQuery request)
+    private static Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> BuildSort(SearchHotelsQuery request)
     {
         return request.SortBy?.ToLower() switch
         {
@@ -50,7 +50,7 @@ public class SearchHotelQueryHandler :
         };
     }
 
-    private static Expression<Func<Hotel, bool>> BuildFilterExpression(SearchHotelQuery request)
+    private static Expression<Func<Hotel, bool>> BuildFilterExpression(SearchHotelsQuery request)
     {
         return hotel =>
             (request.MinPrice == null || hotel.RoomClasses.Any(rc => rc.Price >= request.MinPrice)) &&

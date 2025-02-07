@@ -1,6 +1,6 @@
 ﻿using TABP.Domain.Entities;
 
-namespace TABP.Application.Hotels.Queries.Search;
+namespace TABP.Application.Hotels.Queries.SearchHotels;
 
 public class SearchHotelResponse
 {
