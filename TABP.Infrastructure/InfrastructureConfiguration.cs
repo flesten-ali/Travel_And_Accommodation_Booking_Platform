@@ -62,13 +62,6 @@ public static class InfrastructureConfiguration
         services.AddOptions<StorageFolderConfig>()
                  .Bind(configuration.GetSection(nameof(StorageFolderConfig)));
 
-        services.AddSingleton<IImageStorageService>(sp =>
-        {
-            var storageFolderConfig = sp.GetRequiredService<IOptions<StorageFolderConfig>>().Value;
-            var folderPath = Directory.GetCurrentDirectory() + storageFolderConfig.Name;
-            return new ImageStorageService(folderPath);
-        });
-
         services.AddSingleton<IPdfService, PdfService>();
 
         services.AddSingleton<IInvoiceHtmlGenerationService, InvoiceHtmlGenerationService>();
@@ -78,6 +71,13 @@ public static class InfrastructureConfiguration
         services.AddSingleton(sp => sp.GetRequiredService<IOptions<SMTPConfig>>().Value);
 
         services.AddSingleton<IEmailSenderService, EmailSenderService>();
+
+        services.AddOptions<CloudinaryConfig>()
+                 .Bind(configuration.GetSection(nameof(JwtConfig)));
+        services.AddSingleton(sp=>sp.GetRequiredService<IOptions<CloudinaryConfig>>().Value);
+
+        services.AddSingleton<IImageUploadService, CloudinaryImageUploadService>();
+
         return services;
     }
 }
