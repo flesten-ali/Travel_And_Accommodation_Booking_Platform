@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace TABP.Application.Hotels.AddThumbnail;
+namespace TABP.Application.Hotels.Commands.AddThumbnail;
 
 public class AddThumbnailCommand : IRequest<Guid>
 {

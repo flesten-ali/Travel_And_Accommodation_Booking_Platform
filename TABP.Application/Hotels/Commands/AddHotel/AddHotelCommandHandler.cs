@@ -5,7 +5,7 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
-namespace TABP.Application.Hotels.Add;
+namespace TABP.Application.Hotels.Commands.AddHotel;
 public class AddHotelCommandHandler : IRequestHandler<AddHotelCommand, Guid>
 {
     private readonly IHotelRepository _hotelRepository;

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-namespace TABP.Application.Hotels.Add;
+namespace TABP.Application.Hotels.Commands.AddHotel;
 
 public class AddHotelCommand : IRequest<Guid>
 {

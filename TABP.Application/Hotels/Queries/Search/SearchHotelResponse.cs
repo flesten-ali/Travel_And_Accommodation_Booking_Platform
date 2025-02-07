@@ -1,6 +1,6 @@
 ﻿using TABP.Domain.Entities;
 
-namespace TABP.Application.Hotels.Search;
+namespace TABP.Application.Hotels.Queries.Search;
 
 public class SearchHotelResponse
 {
@@ -9,7 +9,7 @@ public class SearchHotelResponse
     public Image Thumbnail { get; set; }
     public int StarRating { get; set; }
     public double PricePerNight { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
 }
 
 

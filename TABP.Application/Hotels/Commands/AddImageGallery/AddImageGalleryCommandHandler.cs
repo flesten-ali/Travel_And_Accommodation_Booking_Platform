@@ -1,51 +1,52 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Domain.Entities;
-using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Image;
 
-namespace TABP.Application.Hotels.AddThumbnail;
-public class AddThumbnailCommandHandler : IRequestHandler<AddThumbnailCommand, Guid>
+namespace TABP.Application.Hotels.Commands.AddImageGallery;
+internal class AddImageGalleryCommandHandler : IRequestHandler<AddImageGalleryCommand, Guid>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
-    private readonly IImageStorageService _imageStorageService;
+    private readonly IImageUploadService _imageUploadService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public AddThumbnailCommandHandler(
+    public AddImageGalleryCommandHandler(
         IHotelRepository hotelRepository,
         IImageRepository imageRepository,
-        IImageStorageService imageStorageService,
+        IImageUploadService imageUploadService,
         IUnitOfWork unitOfWork,
         IMapper mapper
     )
     {
         _hotelRepository = hotelRepository;
         _imageRepository = imageRepository;
-        _imageStorageService = imageStorageService;
+        _imageUploadService = imageUploadService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<Guid> Handle(AddThumbnailCommand request, CancellationToken cancellationToken)
+
+    public async Task<Guid> Handle(AddImageGalleryCommand request, CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
             throw new NotFoundException("Hotel is not found");
         }
-        request.HotelId = Guid.NewGuid();
-        var imageUrl = await _imageStorageService.UploadFileAsync(request.Thumbnail);
+        var publicId = Guid.NewGuid().ToString();
+        var imageUrl = await _imageUploadService.UploadAsync(request.Image, publicId);
 
+        // use auto mapper 
         var image = _mapper.Map<Image>(request);
         image.ImageUrl = imageUrl;
-
-        await _imageRepository.DeleteByIdAsync(image.ImageableId, ImageType.Thumbnail);
+        image.PublicId = publicId;
 
         await _imageRepository.AddAsync(image);
         await _unitOfWork.SaveChangesAsync();
+
         return image.Id;
     }
 }

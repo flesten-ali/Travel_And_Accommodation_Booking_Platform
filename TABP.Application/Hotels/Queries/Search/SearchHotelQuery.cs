@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using TABP.Domain.Enums;
 using TABP.Domain.Models;
-namespace TABP.Application.Hotels.Search;
+namespace TABP.Application.Hotels.Queries.Search;
 
-public class SearchHotelCommand : IRequest<PaginatedList<SearchHotelResponse>>
+public class SearchHotelQuery : IRequest<PaginatedList<SearchHotelResponse>>
 {
     public string City { get; set; }
     public DateTime CheckInDate { get; set; }
@@ -17,7 +17,7 @@ public class SearchHotelCommand : IRequest<PaginatedList<SearchHotelResponse>>
     public int? MinPrice { get; set; }
     public int? MaxPrice { get; set; }
     public int? StarRating { get; set; }
-    public int PageSize { get; set; } 
-    public int PageNumber { get; set; } 
+    public int PageSize { get; set; }
+    public int PageNumber { get; set; }
     public ICollection<string>? Amenities { get; set; } = [];
 }
