@@ -1,7 +1,5 @@
-﻿using TABP.Domain.Entities;
-
-namespace TABP.Application.Hotels.Queries.GetHotelDetails;
-public class GetHotelDetailsResponse
+﻿namespace TABP.Application.Hotels.Queries.GetDetailsByHotelId;
+public class GetDetailsResponse
 {
     public string Name { get; set; }
     public string? Description { get; set; }
