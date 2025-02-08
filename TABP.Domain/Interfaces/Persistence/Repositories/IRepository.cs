@@ -9,5 +9,5 @@ public interface IRepository<T> where T : class
     Task<IEnumerable<T>> GetAllByIdAsync(IEnumerable<Guid> Ids);
     Task<T?> GetByIdAsync(Guid id);
 
-    Task<T?> GetByIdIncludeProperties(Guid entityId, params Expression<Func<Hotel, object>>[] includeProperties);
+    Task<T?> GetByIdIncludeProperties(Guid entityId, params Expression<Func<T, object>>[] includeProperties);
 }
