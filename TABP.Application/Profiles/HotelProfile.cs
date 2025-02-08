@@ -17,7 +17,7 @@ public class HotelProfile : Profile
 
         CreateMap<PaginatedList<SearchHotelResult>, PaginatedList<SearchHotelResponse>>();
 
-        CreateMap<AddHotelCommand, Hotel>();
+        CreateMap<CreateHotelCommand, Hotel>();
 
         CreateMap<AddThumbnailCommand, Image>()
             .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
