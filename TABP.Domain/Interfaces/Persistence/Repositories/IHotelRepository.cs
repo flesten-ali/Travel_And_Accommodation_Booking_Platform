@@ -10,6 +10,4 @@ public interface IHotelRepository : IRepository<Hotel>
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
         int pageCount);
-
-    Task<Hotel?> GetHotelByIdAsync(Guid hotelId, params Expression<Func<Hotel, object>>[] includeProperties);
 }
