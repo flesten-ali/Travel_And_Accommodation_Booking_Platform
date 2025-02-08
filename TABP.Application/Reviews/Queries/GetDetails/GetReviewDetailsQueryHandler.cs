@@ -19,11 +19,10 @@ public class GetReviewDetailsQueryHandler
 
     public async Task<PaginatedList<GetReviewDetailsQueryReponse>> Handle(
         GetReviewDetailsQuery request,
-        CancellationToken cancellationToken
-    )
+        CancellationToken cancellationToken)
     {
         var reviews = await _reviewRepository.GetByHotelIdAsync(request.HotelId, request.PageSize, request.PageNumber)
-            ?? throw new NotFoundException($"No reviews found for the hotel ID {request.HotelId}");
+              ?? throw new NotFoundException($"No reviews found for the hotel ID {request.HotelId}");
 
         return _mapper.Map<PaginatedList<GetReviewDetailsQueryReponse>>(reviews);
     }

@@ -36,6 +36,7 @@ internal class AddImageGalleryCommandHandler : IRequestHandler<AddImageGalleryCo
         {
             throw new NotFoundException("Hotel is not found");
         }
+
         var publicId = Guid.NewGuid().ToString();
         var imageUrl = await _imageUploadService.UploadAsync(request.Image, publicId);
 

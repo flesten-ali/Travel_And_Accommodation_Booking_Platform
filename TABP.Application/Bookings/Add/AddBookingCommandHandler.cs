@@ -44,11 +44,8 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
 
     public async Task<Guid> Handle(AddBookingCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.UserId);
-        if (user == null)
-        {
-            throw new NotFoundException("User not found");
-        }
+        var user = await _userRepository.GetByIdAsync(request.UserId) 
+            ?? throw new NotFoundException("User not found");
 
         if (user.Role != Roles.Guest)
         {
