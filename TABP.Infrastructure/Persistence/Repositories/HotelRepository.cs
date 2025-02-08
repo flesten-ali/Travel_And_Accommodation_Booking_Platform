@@ -41,6 +41,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
 
         var resultToReturn = selectedResult.GetRequestedPage(pageNumber, pageSize);
         var paginationMetaData = await resultToReturn.GetPaginationMetaDataAsync(pageNumber, pageSize);
-        return new PaginatedList<SearchHotelResult>(resultToReturn, paginationMetaData);
+
+        return new PaginatedList<SearchHotelResult>(await resultToReturn.ToListAsync(), paginationMetaData);
     }
 }
