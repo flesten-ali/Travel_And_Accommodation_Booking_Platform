@@ -71,7 +71,7 @@ public class SearchHotelsQueryHandler :
              hotel.RoomClasses.Any(rc =>
                rc.Rooms.Count(room =>
                 room.Bookings.All(b => b.CheckOutDate <= request.CheckInDate || b.CheckInDate >= request.CheckOutDate)
-                ) >= request.NumberOfRooms)
+                ) == request.NumberOfRooms)
                &&
 
         (request.Amenities == null || request.Amenities.Count == 0 ||
