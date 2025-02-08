@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Bookings.Commands.Create;
+using TABP.Application.Bookings.Queries.GetBooking;
 using TABP.Application.Bookings.Queries.PdfConfirmation;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Booking;
@@ -12,30 +13,38 @@ namespace TABP.Presentation.Controllers;
 [Route("api/bookings")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
-public class BookingController : ControllerBase
+public class BookingController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
+    private readonly IMediator _mediator = mediator;
+    private readonly IMapper _mapper = mapper;
 
-    public BookingController(IMediator mediator, IMapper mapper)
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> GetBooking(Guid id)
     {
-        _mediator = mediator;
-        _mapper = mapper;
+        var query = new GetBookingQuery { BookingId = id };
+
+        var booking = await _mediator.Send(query);
+
+        return Ok(booking);
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateBooking([FromBody] AddBookingRequest request)
     {
         var command = _mapper.Map<CreateBookingCommand>(request);
 
-        var result = await _mediator.Send(command);
+        var booking = await _mediator.Send(command);
 
-        return Ok(result);
+        return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
     }
 
     [HttpPost("{id:guid}/invoice")]
