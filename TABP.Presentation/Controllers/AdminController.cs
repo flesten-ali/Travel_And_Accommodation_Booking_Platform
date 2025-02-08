@@ -7,7 +7,7 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Auth;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/admins")]
+[Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 public class AdminController : ControllerBase

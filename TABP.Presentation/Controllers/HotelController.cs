@@ -8,7 +8,7 @@ using TABP.Application.Hotels.Queries.SearchHotels;
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/hotels")]
+[Route("api/[controller]")]
 [ApiController]
 public class HotelController : ControllerBase
 {

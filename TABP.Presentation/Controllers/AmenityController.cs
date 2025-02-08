@@ -5,7 +5,7 @@ using TABP.Application.Amenities.Add;
 using TABP.Presentation.DTOs.Amenity;
 
 namespace TABP.Presentation.Controllers;
-[Route("api/amenities")]
+[Route("api/[controller]")]
 [ApiController]
 public class AmenityController : ControllerBase
 {

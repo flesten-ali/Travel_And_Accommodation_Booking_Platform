@@ -7,7 +7,7 @@ using TABP.Application.Reviews.Queries.GetDetails;
 using TABP.Presentation.DTOs.Review;
 
 namespace TABP.Presentation.Controllers;
-[Route("api/reviews")]
+[Route("api/[controller]")]
 [ApiController]
 public class ReviewController : ControllerBase
 {

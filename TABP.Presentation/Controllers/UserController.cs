@@ -7,7 +7,7 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Auth;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/users")]
+[Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {

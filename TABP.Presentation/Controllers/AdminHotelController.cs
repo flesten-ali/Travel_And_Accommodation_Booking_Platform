@@ -10,7 +10,7 @@ using TABP.Presentation.DTOs;
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/admin/hotels")]
+[Route("api/[controller]")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 public class AdminHotelController : ControllerBase

@@ -7,7 +7,7 @@ using TABP.Application.RoomClasses.Queries.GetDetails;
 using TABP.Presentation.DTOs.RoomClass;
 
 namespace TABP.Presentation.Controllers;
-[Route("api/room-classes")]
+[Route("api/[controller]")]
 [ApiController]
 public class RoomClassController : ControllerBase
 {
