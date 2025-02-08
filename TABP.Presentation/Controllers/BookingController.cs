@@ -27,11 +27,11 @@ public class BookingController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("get-pdf-cofirmation/{id:guid}")]
-    public async Task<IActionResult> GetPdfConfirmation(Guid  id)
+    [HttpPost("{id:guid}/get-pdf-cofirmation")]
+    public async Task<IActionResult> GetPdfConfirmation(Guid id)
     {
         var query = new GetPdfConfirmationQuery { BookingId = id };
-        var result  = await _mediator.Send(query);
+        var result = await _mediator.Send(query);
         return Ok(result);
     }
 }
