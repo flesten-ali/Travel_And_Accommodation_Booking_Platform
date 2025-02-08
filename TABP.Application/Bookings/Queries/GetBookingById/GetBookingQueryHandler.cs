@@ -4,7 +4,7 @@ using TABP.Application.Bookings.Common;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
-namespace TABP.Application.Bookings.Queries.GetBooking;
+namespace TABP.Application.Bookings.Queries.GetBookingById;
 public class GetBookingQueryHandler : IRequestHandler<GetBookingQuery, BookingResponse>
 {
     private readonly IBookingRepository _bookingRepository;

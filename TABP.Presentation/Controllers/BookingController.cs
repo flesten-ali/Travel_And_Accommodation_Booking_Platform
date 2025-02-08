@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Bookings.Commands.Create;
-using TABP.Application.Bookings.Queries.GetBooking;
 using TABP.Application.Bookings.Queries.PdfConfirmation;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Booking;
@@ -59,5 +58,10 @@ public class BookingController(IMediator mediator, IMapper mapper) : ControllerB
         var result = await _mediator.Send(query);
 
         return File(result.PdfContent, "application/pdf", "invoice.pdf");
+    }
+
+    private class GetBookingQuery : IRequest<object>
+    {
+        public Guid BookingId { get; set; }
     }
 }
