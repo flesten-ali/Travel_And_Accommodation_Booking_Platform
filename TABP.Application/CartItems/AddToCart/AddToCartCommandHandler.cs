@@ -1,0 +1,45 @@
+﻿using AutoMapper;
+using MediatR;
+using TABP.Domain.Entities;
+using TABP.Domain.Exceptions;
+using TABP.Domain.Interfaces.Persistence;
+using TABP.Domain.Interfaces.Persistence.Repositories;
+
+namespace TABP.Application.CartItems.AddToCart;
+public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand, Guid>
+{
+    private readonly ICartItemRepository _cartItemRepository;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IRoomClassRepository _roomClassRepository;
+    private readonly IUserRepository _userRepository;
+
+    public AddToCartCommandHandler(
+        ICartItemRepository cartItemRepository,
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IRoomClassRepository roomClassRepository,
+        IUserRepository userRepository)
+    {
+        _cartItemRepository = cartItemRepository;
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
+        _roomClassRepository = roomClassRepository;
+        _userRepository = userRepository;
+    }
+    public async Task<Guid> Handle(AddToCartCommand request, CancellationToken cancellationToken)
+    {
+        _ = await _userRepository.GetByIdAsync(request.UserId)
+            ?? throw new NotFoundException("User not found");
+
+        _ = await _roomClassRepository.GetByIdAsync(request.RoomClassId)
+            ?? throw new NotFoundException("Room class not found");
+
+        var cartItem = _mapper.Map<CartItem>(request);
+
+        await _cartItemRepository.AddAsync(cartItem);
+        await _unitOfWork.SaveChangesAsync();
+
+        return cartItem.Id;
+    }
+}
