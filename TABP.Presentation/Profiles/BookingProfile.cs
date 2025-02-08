@@ -7,6 +7,6 @@ public class BookingProfile : Profile
 {
     public BookingProfile()
     {
-        CreateMap<AddBookingRequest, AddBookingCommand>();
+        CreateMap<AddBookingRequest, CreateBookingCommand>();
     }
 }
