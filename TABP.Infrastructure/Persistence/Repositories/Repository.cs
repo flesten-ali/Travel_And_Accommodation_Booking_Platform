@@ -33,6 +33,18 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
 
     public async Task<T?> GetByIdAsync(Guid id)
     {
-        return await DbSet.Where(e=>e.Id ==  id).FirstOrDefaultAsync();
+        return await DbSet.Where(e => e.Id == id).FirstOrDefaultAsync();
+    }
+
+    public Task<T?> GetByIdIncludeProperties(Guid entityId, params Expression<Func<T, object>>[] includeProperties)
+    {
+        var entity = DbSet.Where(e => e.Id == entityId);
+
+        foreach (var includeProperty in includeProperties)
+        {
+            entity = entity.Include(includeProperty);
+        }
+
+        return entity.FirstOrDefaultAsync();
     }
 }
