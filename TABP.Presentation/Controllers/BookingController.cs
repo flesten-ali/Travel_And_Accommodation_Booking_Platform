@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TABP.Application.Bookings.Add;
+using TABP.Application.Bookings.Commands.Add;
 using TABP.Presentation.DTOs.Booking;
 
 namespace TABP.Presentation.Controllers;
