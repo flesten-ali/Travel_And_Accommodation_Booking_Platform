@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using TABP.Application.Bookings.Common;
 using TABP.Domain.Constants;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
@@ -10,7 +12,7 @@ using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Pdf;
 namespace TABP.Application.Bookings.Commands.Create;
 
-public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, Guid>
+public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, BookingResponse>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoomRepository _roomRepository;
@@ -20,6 +22,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
     private readonly IPdfService _pdfService;
     private readonly IInvoiceHtmlGenerationService _invoiceHtmlGenerationService;
     private readonly IEmailSenderService _emailSenderService;
+    private readonly IMapper _mapper;
 
     public CreateBookingCommandHandler(
         IUserRepository userRepository,
@@ -29,7 +32,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         IUnitOfWork unitOfWork,
         IPdfService pdfService,
         IInvoiceHtmlGenerationService invoiceHtmlGenerationService,
-        IEmailSenderService emailSenderService
+        IEmailSenderService emailSenderService,
+        IMapper mapper
     )
     {
         _userRepository = userRepository;
@@ -40,9 +44,10 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         _pdfService = pdfService;
         _invoiceHtmlGenerationService = invoiceHtmlGenerationService;
         _emailSenderService = emailSenderService;
+        _mapper = mapper;
     }
 
-    public async Task<Guid> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
+    public async Task<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException("User not found");
@@ -93,7 +98,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
 
             await _emailSenderService.SendEmailAsync(user.Email, "Your Booking Invoice", invoiceHtml, [emailAttachment]);
             await _unitOfWork.CommitAsync();
-            return booking.Id;
+            return _mapper.Map<BookingResponse>(booking);
         }
         catch
         {

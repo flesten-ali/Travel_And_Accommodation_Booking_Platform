@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using TABP.Application.Bookings.Common;
 using TABP.Domain.Enums;
 namespace TABP.Application.Bookings.Commands.Create;
 
-public class CreateBookingCommand : IRequest<Guid>
+public class CreateBookingCommand : IRequest<BookingResponse>
 {
     public PaymentMethod PaymentMethod { get; set; }
     public DateTime CheckInDate { get; set; }
