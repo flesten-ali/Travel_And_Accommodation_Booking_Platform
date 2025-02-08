@@ -8,9 +8,9 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Email;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Pdf;
+namespace TABP.Application.Bookings.Commands.Create;
 
-namespace TABP.Application.Bookings.Commands.Add;
-public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
+public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, Guid>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoomRepository _roomRepository;
@@ -21,7 +21,7 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
     private readonly IInvoiceHtmlGenerationService _invoiceHtmlGenerationService;
     private readonly IEmailSenderService _emailSenderService;
 
-    public AddBookingCommandHandler(
+    public CreateBookingCommandHandler(
         IUserRepository userRepository,
         IRoomRepository roomRepository,
         IHotelRepository hotelRepository,
@@ -42,7 +42,7 @@ public class AddBookingCommandHandler : IRequestHandler<AddBookingCommand, Guid>
         _emailSenderService = emailSenderService;
     }
 
-    public async Task<Guid> Handle(AddBookingCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException("User not found");
