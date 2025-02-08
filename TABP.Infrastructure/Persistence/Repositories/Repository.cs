@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TABP.Domain.Entities;
+using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
@@ -46,6 +47,19 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         }
 
         var entity = await query.FirstOrDefaultAsync(entity => entity.Id == entityId);
+
+        if (entity == null) return null;
+
+        if (typeof(T) == typeof(Hotel) && entity is Hotel hotel)
+        {
+            var thumbnail = await _context.Images
+                .FirstOrDefaultAsync(img => img.Id == hotel.ThumbnailId && img.ImageType == ImageType.Thumbnail);
+
+            if (thumbnail != null)
+            {
+                hotel.Thumbnail = thumbnail;
+            }
+        }
 
         return entity;
     }
