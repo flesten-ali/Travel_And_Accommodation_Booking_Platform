@@ -5,18 +5,18 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Bookings.Queries.GetBookingById;
-public class GetBookingQueryHandler : IRequestHandler<GetBookingQuery, BookingResponse>
+public class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, BookingResponse>
 {
     private readonly IBookingRepository _bookingRepository;
     private readonly IMapper _mapper;
 
-    public GetBookingQueryHandler(IBookingRepository bookingRepository, IMapper mapper)
+    public GetBookingByIdQueryHandler(IBookingRepository bookingRepository, IMapper mapper)
     {
         _bookingRepository = bookingRepository;
         _mapper = mapper;
     }
 
-    public async Task<BookingResponse> Handle(GetBookingQuery request, CancellationToken cancellationToken)
+    public async Task<BookingResponse> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdIncludeProperties(
             request.BookingId,
