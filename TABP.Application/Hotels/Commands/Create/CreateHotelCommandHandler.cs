@@ -5,8 +5,8 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
-namespace TABP.Application.Hotels.Commands.AddHotel;
-public class AddHotelCommandHandler : IRequestHandler<AddHotelCommand, Guid>
+namespace TABP.Application.Hotels.Commands.Create;
+public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Guid>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly ICityRepository _cityRepository;
@@ -16,7 +16,7 @@ public class AddHotelCommandHandler : IRequestHandler<AddHotelCommand, Guid>
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AddHotelCommandHandler(
+    public CreateHotelCommandHandler(
         IHotelRepository hotelRepository,
         ICityRepository cityRepository,
         IOwnerRepository ownerRepository,
@@ -34,7 +34,7 @@ public class AddHotelCommandHandler : IRequestHandler<AddHotelCommand, Guid>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(AddHotelCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateHotelCommand request, CancellationToken cancellationToken)
     {
         if (!await _cityRepository.ExistsAsync(city => city.Id == request.CityId))
         {
