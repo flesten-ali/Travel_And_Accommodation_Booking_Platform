@@ -10,7 +10,6 @@ using TABP.Domain.Interfaces.Services.Email;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Image;
 using TABP.Domain.Interfaces.Services.Pdf;
-using TABP.Domain.Models;
 using TABP.Infrastructure.Auth;
 using TABP.Infrastructure.Auth.Jwt;
 using TABP.Infrastructure.Persistence.DbContexts;
@@ -59,6 +58,7 @@ public static class InfrastructureConfiguration
         services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IBookingRepository, BookingRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
         return services;
     }
 
