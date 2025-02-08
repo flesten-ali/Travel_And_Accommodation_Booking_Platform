@@ -15,4 +15,5 @@ public class RoomClass : EntityBase<Guid>
     public Guid HotelId { get; set; }
     public ICollection<Amenity> Amenities { get; set; } = [];
     public ICollection<Room> Rooms { get; set; } = [];
+    public ICollection<CartItem> CartItems { get; set; } = [];
 }
