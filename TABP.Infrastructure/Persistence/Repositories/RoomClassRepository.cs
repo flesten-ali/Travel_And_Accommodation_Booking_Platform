@@ -18,6 +18,7 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
 
         var requestedPage = roomClasses.GetRequestedPage(pageNumber, pageSize);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
-        return new PaginatedList<RoomClass>(requestedPage, paginationMetaData);
+
+        return new PaginatedList<RoomClass>(await requestedPage.ToListAsync(), paginationMetaData);
     }
 }
