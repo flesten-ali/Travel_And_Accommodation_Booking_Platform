@@ -16,7 +16,7 @@ public class GetHotelDetailsQueryHandler : IRequestHandler<GetHotelDetailsQuery,
     }
     public async Task<GetHotelDetailsResponse> Handle(GetHotelDetailsQuery request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.GetHotelByIdAsync(request.HotelId, h => h.Gallery.Where(g => g.ImageableId == h.Id));
+        var hotel = await _hotelRepository.GetByIdIncludeProperties(request.HotelId, h => h.Gallery.Where(g => g.ImageableId == h.Id));
 
         if (hotel == null)
         {
