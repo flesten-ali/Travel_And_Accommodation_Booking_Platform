@@ -24,7 +24,7 @@ public class CloudinaryImageUploadService : IImageUploadService
         using var memoryStream = new MemoryStream();
         await file.CopyToAsync(memoryStream);
         memoryStream.Position = 0;
-        // allowded
+       
         var uploadparams = new ImageUploadParams
         {
             File = new FileDescription(file.FileName, file.OpenReadStream()),
