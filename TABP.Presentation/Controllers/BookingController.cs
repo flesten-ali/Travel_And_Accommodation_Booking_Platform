@@ -29,7 +29,6 @@ public class BookingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
     public async Task<IActionResult> CreateBooking([FromBody] AddBookingRequest request)
     {
         var command = _mapper.Map<CreateBookingCommand>(request);
