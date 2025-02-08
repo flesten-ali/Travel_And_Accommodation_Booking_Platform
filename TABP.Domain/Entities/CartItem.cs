@@ -7,5 +7,6 @@ public class CartItem : EntityBase<Guid>
     public string? Remarks { get; set; }
     public User User { get; set; }
     public Guid UserId { get; set; }
-    public ICollection<RoomClass> RoomClasses { get; set; } = [];
+    public RoomClass RoomClass { get; set; }
+    public Guid RoomClassId { get; set; }
 }
