@@ -18,7 +18,6 @@ public class GetBookingQueryHandler : IRequestHandler<GetBookingQuery, BookingRe
 
     public async Task<BookingResponse> Handle(GetBookingQuery request, CancellationToken cancellationToken)
     {
-        // get include invoice and rooms 
         var booking = await _bookingRepository.GetByIdIncludeProperties(
             request.BookingId,
             b => b.Invoice,
