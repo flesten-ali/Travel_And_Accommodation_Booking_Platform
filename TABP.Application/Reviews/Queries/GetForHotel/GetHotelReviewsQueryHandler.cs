@@ -6,7 +6,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Application.Reviews.Queries.GetDetails;
 public class GetHotelReviewsQueryHandler
-    : IRequestHandler<GetHotelReviewsQuery, PaginatedList<GetHotelReviewsQueryReponse>>
+    : IRequestHandler<GetHotelReviewsQuery, PaginatedList<HotelReviewsQueryReponse>>
 {
     private readonly IReviewRepository _reviewRepository;
     private readonly IMapper _mapper;
@@ -17,13 +17,13 @@ public class GetHotelReviewsQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<GetHotelReviewsQueryReponse>> Handle(
+    public async Task<PaginatedList<HotelReviewsQueryReponse>> Handle(
         GetHotelReviewsQuery request,
         CancellationToken cancellationToken)
     {
         var reviews = await _reviewRepository.GetByHotelIdAsync(request.HotelId, request.PageSize, request.PageNumber)
               ?? throw new NotFoundException($"No reviews found for the hotel ID {request.HotelId}");
 
-        return _mapper.Map<PaginatedList<GetHotelReviewsQueryReponse>>(reviews);
+        return _mapper.Map<PaginatedList<HotelReviewsQueryReponse>>(reviews);
     }
 }

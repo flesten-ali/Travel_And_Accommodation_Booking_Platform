@@ -1,5 +1,5 @@
 ﻿namespace TABP.Application.Reviews.Queries.GetDetails;
-public class GetHotelReviewsQueryReponse
+public class HotelReviewsQueryReponse
 {
     public string Comment { get; set; }
     public int Rate { get; set; }

@@ -2,7 +2,7 @@
 using TABP.Domain.Models;
 
 namespace TABP.Application.Reviews.Queries.GetDetails;
-public class GetHotelReviewsQuery : IRequest<PaginatedList<GetHotelReviewsQueryReponse>>
+public class GetHotelReviewsQuery : IRequest<PaginatedList<HotelReviewsQueryReponse>>
 {
     public Guid HotelId { get; set; }
     public int PageSize { get; set; }
