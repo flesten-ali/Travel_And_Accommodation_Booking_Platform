@@ -5,20 +5,20 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
 namespace TABP.Application.RoomClasses.Queries.GetDetails;
-public class GetRoomClassDetailsQueryHandler
-    : IRequestHandler<GetRoomClassDetailsQuery, PaginatedList<GetRoomClassDetailsQueryResponse>>
+public class GetHotelRoomClassesQueryHandler
+    : IRequestHandler<GetHotelRoomClassesQuery, PaginatedList<GetHotelRoomClassesQueryResponse>>
 {
     private readonly IRoomClassRepository _roomClassRepository;
     private readonly IMapper _mapper;
 
-    public GetRoomClassDetailsQueryHandler(IRoomClassRepository roomClassRepository,
+    public GetHotelRoomClassesQueryHandler(IRoomClassRepository roomClassRepository,
         IMapper mapper)
     {
         _roomClassRepository = roomClassRepository;
         _mapper = mapper;
     }
-    public async Task<PaginatedList<GetRoomClassDetailsQueryResponse>> Handle(
-        GetRoomClassDetailsQuery request,
+    public async Task<PaginatedList<GetHotelRoomClassesQueryResponse>> Handle(
+        GetHotelRoomClassesQuery request,
     CancellationToken cancellationToken
     )
     {
@@ -30,6 +30,6 @@ public class GetRoomClassDetailsQueryHandler
             throw new NotFoundException($"No room classes found for the hotel with ID {request.HotelId}");
         }
 
-        return _mapper.Map<PaginatedList<GetRoomClassDetailsQueryResponse>>(roomClasses);
+        return _mapper.Map<PaginatedList<GetHotelRoomClassesQueryResponse>>(roomClasses);
     }
 }

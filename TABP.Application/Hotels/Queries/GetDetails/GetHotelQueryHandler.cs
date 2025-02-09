@@ -4,17 +4,17 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 namespace TABP.Application.Hotels.Queries.GetDetails;
 
-public class GetHotelDetailsQueryHandler : IRequestHandler<GetHotelDetailsQuery, GetHotelDetailsResponse>
+public class GetHotelQueryHandler : IRequestHandler<GetHotelQuery, GetHotelResponse>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
 
-    public GetHotelDetailsQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
+    public GetHotelQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
     {
         _hotelRepository = hotelRepository;
         _mapper = mapper;
     }
-    public async Task<GetHotelDetailsResponse> Handle(GetHotelDetailsQuery request, CancellationToken cancellationToken)
+    public async Task<GetHotelResponse> Handle(GetHotelQuery request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdIncludeProperties(request.HotelId, h => h.Gallery.Where(g => g.ImageableId == h.Id));
 
@@ -23,6 +23,6 @@ public class GetHotelDetailsQueryHandler : IRequestHandler<GetHotelDetailsQuery,
             throw new NotFoundException("Hotel not found");
         }
 
-        return _mapper.Map<GetHotelDetailsResponse>(hotel);
+        return _mapper.Map<GetHotelResponse>(hotel);
     }
 }

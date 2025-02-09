@@ -1,7 +1,7 @@
 ﻿using MediatR;
 namespace TABP.Application.Hotels.Queries.GetDetails;
 
-public class GetHotelDetailsQuery : IRequest<GetHotelDetailsResponse>
+public class GetHotelQuery : IRequest<GetHotelResponse>
 {
     public Guid HotelId { get; set; }
 }

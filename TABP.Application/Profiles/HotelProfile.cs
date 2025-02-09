@@ -31,7 +31,7 @@ public class HotelProfile : Profile
         .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Gallery));
 
 
-        CreateMap<Hotel, GetHotelDetailsResponse>()
+        CreateMap<Hotel, GetHotelResponse>()
             .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.GalleryUrls, opt => opt.MapFrom(src => src.Gallery.Select(g => g.ImageUrl)));
 

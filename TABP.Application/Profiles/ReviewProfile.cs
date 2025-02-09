@@ -8,9 +8,9 @@ public class ReviewProfile : Profile
 {
     public ReviewProfile()
     {
-        CreateMap<Review, GetReviewDetailsQueryReponse>()
+        CreateMap<Review, GetHotelReviewsQueryReponse>()
             .ForMember(dest => dest.ReviwerName, opt => opt.MapFrom(src => src.User.UserName));
 
-        CreateMap<PaginatedList<Review>, PaginatedList<GetReviewDetailsQueryReponse>>();
+        CreateMap<PaginatedList<Review>, PaginatedList<GetHotelReviewsQueryReponse>>();
     }
 }

@@ -1,5 +1,5 @@
 ﻿namespace TABP.Application.Hotels.Queries.GetDetails;
-public class GetHotelDetailsResponse
+public class GetHotelResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
