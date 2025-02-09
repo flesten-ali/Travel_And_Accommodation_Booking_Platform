@@ -22,7 +22,7 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetHotelReviewsDetails(Guid hotelId, [FromQuery] GetHotelReviewsRequest request)
+    public async Task<IActionResult> GetHotelReviews(Guid hotelId, [FromQuery] GetHotelReviewsRequest request)
     {
         var query = _mapper.Map<GetHotelReviewsQuery>(request);
         query.HotelId = hotelId;
