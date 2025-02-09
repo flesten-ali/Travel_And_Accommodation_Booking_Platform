@@ -1,34 +1,38 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TABP.Application.RoomClasses.Queries.GetDetails;
+using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.RoomClass;
-
 namespace TABP.Presentation.Controllers;
-[Route("api/[controller]")]
+
+[Route("api/{hotelId:guid}/room-classes")]
 [ApiController]
-public class RoomClassesController : ControllerBase
+[Authorize(Roles = Roles.Admin)]
+public class RoomClassesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
+    private readonly IMediator _mediator = mediator;
+    private readonly IMapper _mapper = mapper;
 
-    public RoomClassesController(IMediator mediator, IMapper mapper)
-    {
-        _mediator = mediator;
-        _mapper = mapper;
-    }
-
-    [HttpPost("GetDetails")]
-    public async Task<IActionResult> GetRoomClassDetails([FromBody] GetRoomClassDetailsRequest request)
+    [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // think about remove from here/ may fet in the hotel controller/ see this when add rest of crud
+    public async Task<IActionResult> GetHotelRoomClasses(Guid HotelId, [FromQuery] GetHotelRoomClassesRequest request)
     {
         var query = _mapper.Map<GetHotelRoomClassesQuery>(request);
-        var paginatedList = await _mediator.Send(query);
+        query.HotelId = HotelId;
+
+        var roomClasses = await _mediator.Send(query);
 
         Response.Headers.Append("X-Pagination",
-            JsonSerializer.Serialize(paginatedList.PaginationMetaData));
+            JsonSerializer.Serialize(roomClasses.PaginationMetaData));
 
-        return Ok(paginatedList.Items);
+        return Ok(roomClasses.Items);
     }
 }
