@@ -113,7 +113,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         return NoContent();
     }
 
-    [HttpGet]
+    [HttpGet("featured-deals")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
