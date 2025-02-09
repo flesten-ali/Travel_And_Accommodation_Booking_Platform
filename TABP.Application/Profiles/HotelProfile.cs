@@ -31,12 +31,12 @@ public class HotelProfile : Profile
         .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Gallery));
 
 
-        CreateMap<Hotel, GetHotelResponse>()
+        CreateMap<Hotel, HotelDetailsResponse>()
             .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.GalleryUrls, opt => opt.MapFrom(src => src.Gallery.Select(g => g.ImageUrl)));
 
         CreateMap<Hotel, HotelResponse>()
-            .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name)) 
+            .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
             .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.ThumbnailUrl, opt => opt.MapFrom(src => src.Thumbnail.ImageUrl));
     }
