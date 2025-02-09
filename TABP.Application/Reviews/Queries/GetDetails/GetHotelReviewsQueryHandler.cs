@@ -6,7 +6,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Application.Reviews.Queries.GetDetails;
 public class GetHotelReviewsQueryHandler
-    : IRequestHandler<GetReviewDetailsQuery, PaginatedList<GetHotelReviewsQueryReponse>>
+    : IRequestHandler<GetHotelReviewsQuery, PaginatedList<GetHotelReviewsQueryReponse>>
 {
     private readonly IReviewRepository _reviewRepository;
     private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public class GetHotelReviewsQueryHandler
     }
 
     public async Task<PaginatedList<GetHotelReviewsQueryReponse>> Handle(
-        GetReviewDetailsQuery request,
+        GetHotelReviewsQuery request,
         CancellationToken cancellationToken)
     {
         var reviews = await _reviewRepository.GetByHotelIdAsync(request.HotelId, request.PageSize, request.PageNumber)
