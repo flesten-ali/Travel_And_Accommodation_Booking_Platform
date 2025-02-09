@@ -13,7 +13,7 @@ namespace TABP.Presentation.Controllers;
 [Route("api/bookings")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
-public class BookingController(IMediator mediator, IMapper mapper) : ControllerBase
+public class BookingsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;

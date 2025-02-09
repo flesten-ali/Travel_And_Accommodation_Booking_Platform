@@ -10,7 +10,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/amenities")]
 [ApiController]
-public class AmenityController(IMediator mediator, IMapper mapper) : ControllerBase
+public class AmenitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;

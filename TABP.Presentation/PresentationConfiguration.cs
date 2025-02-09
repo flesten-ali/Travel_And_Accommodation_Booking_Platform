@@ -10,7 +10,7 @@ public static class PresentationConfiguration
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-        var presentaionAssembly = typeof(UserController).Assembly;
+        var presentaionAssembly = typeof(UsersController).Assembly;
         services.AddSwagger()
                 .AddMapper()
                 .AddFluentValidations()

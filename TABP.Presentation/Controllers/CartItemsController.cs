@@ -7,12 +7,12 @@ using TABP.Presentation.DTOs.CartItem;
 namespace TABP.Presentation.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class CartItemController : ControllerBase
+public class CartItemsController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public CartItemController(IMediator mediator, IMapper mapper)
+    public CartItemsController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;

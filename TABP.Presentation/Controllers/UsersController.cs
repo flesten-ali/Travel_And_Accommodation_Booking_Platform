@@ -11,12 +11,12 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/users")]
 [ApiController]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public UserController(IMediator mediator, IMapper mapper)
+    public UsersController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;

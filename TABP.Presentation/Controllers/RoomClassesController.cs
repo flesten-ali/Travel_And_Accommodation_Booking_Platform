@@ -9,12 +9,12 @@ using TABP.Presentation.DTOs.RoomClass;
 namespace TABP.Presentation.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class RoomClassController : ControllerBase
+public class RoomClassesController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public RoomClassController(IMediator mediator, IMapper mapper)
+    public RoomClassesController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;

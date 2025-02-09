@@ -9,12 +9,12 @@ using TABP.Presentation.DTOs.Review;
 namespace TABP.Presentation.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ReviewController : ControllerBase
+public class ReviewsController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public ReviewController(IMediator mediator, IMapper mapper)
+    public ReviewsController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;

@@ -18,7 +18,7 @@ namespace TABP.Presentation.Controllers;
 [Route("api/hotels")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class HotelController(IMediator mediator, IMapper mapper) : ControllerBase
+public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;
