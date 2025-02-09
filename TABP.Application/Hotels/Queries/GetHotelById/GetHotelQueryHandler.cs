@@ -5,12 +5,12 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Hotels.Queries.GetHotelById;
-public class GetHotelByIdQueryHandler : IRequestHandler<GetHotelByIdQuery, HotelResponse>
+public class GetHotelQueryHandler : IRequestHandler<GetHotelByIdQuery, HotelResponse>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
 
-    public GetHotelByIdQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
+    public GetHotelQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
     {
         _hotelRepository = hotelRepository;
         _mapper = mapper;
