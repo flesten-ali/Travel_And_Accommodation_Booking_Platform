@@ -2,9 +2,9 @@
 using TABP.Presentation.DTOs.Amenity;
 
 namespace TABP.Presentation.Validators.Amenity;
-public class AddAmenityRequestValidator : AbstractValidator<AddAmenityRequest>
+public class CreateAmenityRequestValidator : AbstractValidator<CreateAmenityRequest>
 {
-    public AddAmenityRequestValidator()
+    public CreateAmenityRequestValidator()
     {
         RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Amenity name is required.")
