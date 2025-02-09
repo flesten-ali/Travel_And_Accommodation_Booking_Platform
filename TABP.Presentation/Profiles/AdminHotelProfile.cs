@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TABP.Application.Hotels.Commands.AddHotel;
+using TABP.Application.Hotels.Commands.Create;
 using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Presentation.DTOs;
