@@ -1,7 +1,7 @@
 ﻿using MediatR;
-namespace TABP.Application.Amenities.Add;
+namespace TABP.Application.Amenities.Create;
 
-public class AddAmenityCommand : IRequest<Guid>
+public class CreateAmenityCommand : IRequest<Guid>
 {
     public string Name { get; set; }
     public string? Description { get; set; }

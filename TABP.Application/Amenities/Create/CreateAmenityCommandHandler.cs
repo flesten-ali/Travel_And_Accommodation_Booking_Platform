@@ -4,16 +4,16 @@ using TABP.Domain.Entities;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
-namespace TABP.Application.Amenities.Add;
+namespace TABP.Application.Amenities.Create;
 
-public class AddAmenityCommandHandler : IRequestHandler<AddAmenityCommand, Guid>
+public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand, Guid>
 {
     private readonly IAmenityRepository _amenityRepository;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRoomClassRepository _roomClassRepository;
 
-    public AddAmenityCommandHandler(IAmenityRepository amenityRepository, IMapper mapper, IUnitOfWork unitOfWork, IRoomClassRepository roomClassRepository)
+    public CreateAmenityCommandHandler(IAmenityRepository amenityRepository, IMapper mapper, IUnitOfWork unitOfWork, IRoomClassRepository roomClassRepository)
     {
         _amenityRepository = amenityRepository;
         _mapper = mapper;
@@ -21,7 +21,7 @@ public class AddAmenityCommandHandler : IRequestHandler<AddAmenityCommand, Guid>
         _roomClassRepository = roomClassRepository;
     }
 
-    public async Task<Guid> Handle(AddAmenityCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
     {
         if (await _amenityRepository.ExistsAsync(a => a.Name == request.Name))
         {
