@@ -1,7 +1,8 @@
 ﻿using MediatR;
+using TABP.Application.Hotels.Common;
 namespace TABP.Application.Hotels.Commands.Create;
 
-public class CreateHotelCommand : IRequest<Guid>
+public class CreateHotelCommand : IRequest<HotelResponse>
 {
     public string Name { get; set; }
     public string? Description { get; set; }

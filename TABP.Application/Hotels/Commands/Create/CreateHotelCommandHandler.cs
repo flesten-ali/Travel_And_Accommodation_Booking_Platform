@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Application.Hotels.Common;
 using TABP.Domain.Entities;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Hotels.Commands.Create;
-public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Guid>
+public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, HotelResponse>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly ICityRepository _cityRepository;
@@ -34,17 +35,13 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Gui
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateHotelCommand request, CancellationToken cancellationToken)
+    public async Task<HotelResponse> Handle(CreateHotelCommand request, CancellationToken cancellationToken)
     {
-        if (!await _cityRepository.ExistsAsync(city => city.Id == request.CityId))
-        {
-            throw new NotFoundException("City not found");
-        }
+        var city = await _cityRepository.GetByIdAsync(request.CityId)
+            ?? throw new NotFoundException("City not found");
 
-        if (!await _ownerRepository.ExistsAsync(owner => owner.Id == request.OwnerId))
-        {
-            throw new NotFoundException("Owner not found");
-        }
+        var owner = await _ownerRepository.GetByIdAsync(request.OwnerId)
+            ?? throw new NotFoundException("Owner not found");
 
         if (!await _hotelRepository.ExistsAsync(hotel =>
            hotel.LatitudeCoordinates == request.LatitudeCoordinates && hotel.LongitudeCoordinates == request.LongitudeCoordinates))
@@ -53,10 +50,12 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Gui
         }
 
         var hotel = _mapper.Map<Hotel>(request);
+        hotel.City = city;
+        hotel.Owner = owner;
 
         await _hotelRepository.AddAsync(hotel);
         await _unitOfWork.SaveChangesAsync();
 
-        return hotel.Id;
+        return _mapper.Map<HotelResponse>(hotel);
     }
 }

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using TABP.Application.Hotels.Commands.AddHotel;
 using TABP.Application.Hotels.Commands.AddImageGallery;
 using TABP.Application.Hotels.Commands.AddThumbnail;
+using TABP.Application.Hotels.Commands.Create;
+using TABP.Application.Hotels.Common;
 using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.SearchHotels;
 using TABP.Domain.Entities;
@@ -33,5 +34,10 @@ public class HotelProfile : Profile
         CreateMap<Hotel, GetHotelDetailsResponse>()
             .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.GalleryUrls, opt => opt.MapFrom(src => src.Gallery.Select(g => g.ImageUrl)));
+
+        CreateMap<Hotel, HotelResponse>()
+            .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name)) 
+            .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
+            .ForMember(dest => dest.ThumbnailUrl, opt => opt.MapFrom(src => src.Thumbnail.ImageUrl));
     }
 }
