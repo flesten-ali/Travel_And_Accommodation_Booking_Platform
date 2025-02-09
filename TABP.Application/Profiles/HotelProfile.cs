@@ -4,6 +4,7 @@ using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Application.Hotels.Common;
 using TABP.Application.Hotels.Queries.GetDetails;
+using TABP.Application.Hotels.Queries.GetFeaturedDeals;
 using TABP.Application.Hotels.Queries.SearchHotels;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
@@ -39,5 +40,7 @@ public class HotelProfile : Profile
             .ForMember(dest => dest.OwnerName, opt => opt.MapFrom(src => src.Owner.Name))
             .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.ThumbnailUrl, opt => opt.MapFrom(src => src.Thumbnail.ImageUrl));
+
+        CreateMap<FeaturedDealResult, FeaturedDealResponse>();
     }
 }
