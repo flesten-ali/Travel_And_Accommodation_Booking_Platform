@@ -6,7 +6,7 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.CartItems.AddToCart;
-public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand, Guid>
+public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand>
 {
     private readonly ICartItemRepository _cartItemRepository;
     private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand, Guid>
         _roomClassRepository = roomClassRepository;
         _userRepository = userRepository;
     }
-    public async Task<Guid> Handle(AddToCartCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(AddToCartCommand request, CancellationToken cancellationToken)
     {
         _ = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException("User not found");
@@ -40,6 +40,6 @@ public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand, Guid>
         await _cartItemRepository.AddAsync(cartItem);
         await _unitOfWork.SaveChangesAsync();
 
-        return cartItem.Id;
+        return Unit.Value;
     }
 }
