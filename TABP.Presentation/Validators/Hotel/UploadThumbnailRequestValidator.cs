@@ -7,9 +7,6 @@ public class UploadThumbnailRequestValidator : AbstractValidator<UploadThumbnail
 {
     public UploadThumbnailRequestValidator()
     {
-        RuleFor(x => x.HotelId)
-             .NotEmpty().WithMessage("HotelId is required.");
-
         RuleFor(x => x.Thumbnail)
             .NotNull().WithMessage("Thumbnail file is required.")
             .SetValidator(new ImageFileValidator());

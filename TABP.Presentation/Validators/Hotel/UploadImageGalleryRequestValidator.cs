@@ -8,9 +8,6 @@ public class UploadImageGalleryRequestValidator : AbstractValidator<UploadImageG
 {
     public UploadImageGalleryRequestValidator()
     {
-        RuleFor(x => x.HotelId)
-            .NotEmpty().WithMessage("HotelId is required.");
-
         RuleFor(x => x.Image)
             .NotNull().WithMessage("Thumbnail file is required.")
            .SetValidator(new ImageFileValidator());
