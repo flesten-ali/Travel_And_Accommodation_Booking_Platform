@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 
 namespace TABP.Presentation.DTOs.Hotel;
-public class AddImageGalleryRequest
+public class UploadImageGalleryRequest
 {
-    public Guid HotelId { get; set; }
     public IFormFile Image { get; set; }
 }

@@ -3,9 +3,9 @@ using TABP.Presentation.DTOs;
 using TABP.Presentation.Validators.Hotel.Common;
 
 namespace TABP.Presentation.Validators.Hotel;
-public class AddThumbnailRequestValidator : AbstractValidator<AddThumbnailRequest>
+public class UploadThumbnailRequestValidator : AbstractValidator<UploadThumbnailRequest>
 {
-    public AddThumbnailRequestValidator()
+    public UploadThumbnailRequestValidator()
     {
         RuleFor(x => x.HotelId)
              .NotEmpty().WithMessage("HotelId is required.");

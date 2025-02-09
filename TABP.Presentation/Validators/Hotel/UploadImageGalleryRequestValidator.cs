@@ -4,9 +4,9 @@ using TABP.Presentation.DTOs.Hotel;
 using TABP.Presentation.Validators.Hotel.Common;
 
 namespace TABP.Presentation.Validators.Hotel;
-public class AddImageGalleryRequestValidator : AbstractValidator<AddImageGalleryRequest>
+public class UploadImageGalleryRequestValidator : AbstractValidator<UploadImageGalleryRequest>
 {
-    public AddImageGalleryRequestValidator()
+    public UploadImageGalleryRequestValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("HotelId is required.");

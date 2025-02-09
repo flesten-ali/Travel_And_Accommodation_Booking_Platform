@@ -2,9 +2,9 @@
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Validators.Hotel;
 
-public class AddHotelRequestValidator : AbstractValidator<AddHotelRequest>
+public class CreateHotelRequestValidator : AbstractValidator<CreateHotelRequest>
 {
-    public AddHotelRequestValidator()
+    public CreateHotelRequestValidator()
     {
         RuleFor(x => x.Name)
               .NotEmpty().WithMessage("Hotel name is required.")
