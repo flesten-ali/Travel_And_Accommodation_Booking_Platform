@@ -1,5 +1,5 @@
 ﻿namespace TABP.Presentation.DTOs.RoomClass;
-public class GetRoomClassDetailsRequest
+public class GetHotelRoomClassesRequest
 {
     public Guid HotelId { get; set; }
     public int PageSize { get; set; }

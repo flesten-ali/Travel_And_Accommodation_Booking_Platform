@@ -7,6 +7,6 @@ public class RoomClassProfile : Profile
 {
     public RoomClassProfile()
     {
-        CreateMap<GetRoomClassDetailsRequest, GetHotelRoomClassesQuery>();
+        CreateMap<GetHotelRoomClassesRequest, GetHotelRoomClassesQuery>();
     }
 }

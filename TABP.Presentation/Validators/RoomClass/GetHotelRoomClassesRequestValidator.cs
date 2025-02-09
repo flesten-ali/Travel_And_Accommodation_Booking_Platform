@@ -2,9 +2,9 @@
 using TABP.Presentation.DTOs.RoomClass;
 
 namespace TABP.Presentation.Validators.RoomClass;
-public class GetRoomClassDetailsRequestValidator : AbstractValidator<GetRoomClassDetailsRequest>
+public class GetHotelRoomClassesRequestValidator : AbstractValidator<GetHotelRoomClassesRequest>
 {
-    public GetRoomClassDetailsRequestValidator()
+    public GetHotelRoomClassesRequestValidator()
     {
         RuleFor(r => r.HotelId)
             .NotEmpty().WithMessage("HotelId is required.");
