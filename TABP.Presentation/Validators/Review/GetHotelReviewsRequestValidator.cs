@@ -2,9 +2,9 @@
 using TABP.Application.Reviews.Queries.GetDetails;
 namespace TABP.Presentation.Validators.Review;
 
-public class GetReviewDetailsRequestValidator : AbstractValidator<GetReviewDetailsQuery>
+public class GetHotelReviewsRequestValidator : AbstractValidator<GetReviewDetailsQuery>
 {
-    public GetReviewDetailsRequestValidator()
+    public GetHotelReviewsRequestValidator()
     {
         RuleFor(r => r.HotelId)
             .NotEmpty().WithMessage("HotelId is required.");

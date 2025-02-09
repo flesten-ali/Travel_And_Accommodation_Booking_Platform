@@ -45,7 +45,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetHotelDetails(Guid id)
     {
-        var query = new GetHotelDetailsQuery()
+        var query = new GetHotelQuery()
         {
             HotelId = id
         };

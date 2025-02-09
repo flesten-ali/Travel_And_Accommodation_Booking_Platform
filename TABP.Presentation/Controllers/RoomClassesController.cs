@@ -23,7 +23,7 @@ public class RoomClassesController : ControllerBase
     [HttpPost("GetDetails")]
     public async Task<IActionResult> GetRoomClassDetails([FromBody] GetRoomClassDetailsRequest request)
     {
-        var query = _mapper.Map<GetRoomClassDetailsQuery>(request);
+        var query = _mapper.Map<GetHotelRoomClassesQuery>(request);
         var paginatedList = await _mediator.Send(query);
 
         Response.Headers.Append("X-Pagination",

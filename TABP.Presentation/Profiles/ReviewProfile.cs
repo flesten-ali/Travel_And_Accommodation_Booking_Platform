@@ -7,6 +7,6 @@ public class ReviewProfile : Profile
 {
     public ReviewProfile()
     {
-        CreateMap<GetReviewDetailsRequest, GetReviewDetailsQuery>();
+        CreateMap<GetHotelReviewsRequest, GetHotelReviewsQuery>();
     }
 }
