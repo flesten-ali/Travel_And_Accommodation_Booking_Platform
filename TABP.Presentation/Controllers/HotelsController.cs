@@ -8,6 +8,7 @@ using TABP.Application.Hotels.Commands.Create;
 using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Application.Hotels.Queries.GetDetails;
+using TABP.Application.Hotels.Queries.GetFeaturedDeals;
 using TABP.Application.Hotels.Queries.GetHotelById;
 using TABP.Application.Hotels.Queries.SearchHotels;
 using TABP.Domain.Constants;
@@ -110,5 +111,18 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         await _mediator.Send(command);
 
         return NoContent();
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetFeaturedDeals(int numberOfDeals)
+    {
+        var query = new GetFeaturedDealsQuery { NumberOfDeals = numberOfDeals };
+
+        var featuredDeals = await _mediator.Send(query);
+
+        return Ok(featuredDeals);
     }
 }
