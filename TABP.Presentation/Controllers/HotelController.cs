@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using TABP.Application.Hotels.Commands.AddImageGallery;
-using TABP.Application.Hotels.Commands.AddThumbnail;
 using TABP.Application.Hotels.Commands.Create;
+using TABP.Application.Hotels.Commands.ImageGallery;
+using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.GetHotelById;
 using TABP.Application.Hotels.Queries.SearchHotels;
@@ -88,7 +88,7 @@ public class HotelController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UploadHotelThumbnail(Guid id, [FromForm] UploadThumbnailRequest request)
     {
-        var command = _mapper.Map<AddThumbnailCommand>(request);
+        var command = _mapper.Map<UploadThumbnailCommand>(request);
         command.HotelId = id;
 
         await _mediator.Send(command);
@@ -104,7 +104,7 @@ public class HotelController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UploadHotelGalleryImages(Guid id, [FromForm] UploadImageGalleryRequest request)
     {
-        var command = _mapper.Map<AddImageGalleryCommand>(request);
+        var command = _mapper.Map<UploadImageGalleryCommand>(request);
         command.HotelId = id;
 
         await _mediator.Send(command);

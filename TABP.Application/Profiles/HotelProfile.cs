@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using TABP.Application.Hotels.Commands.AddImageGallery;
-using TABP.Application.Hotels.Commands.AddThumbnail;
 using TABP.Application.Hotels.Commands.Create;
+using TABP.Application.Hotels.Commands.ImageGallery;
+using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Application.Hotels.Common;
 using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.SearchHotels;
@@ -20,12 +20,12 @@ public class HotelProfile : Profile
 
         CreateMap<CreateHotelCommand, Hotel>();
 
-        CreateMap<AddThumbnailCommand, Image>()
+        CreateMap<UploadThumbnailCommand, Image>()
             .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
             .ForMember(dest => dest.ImageableType, opt => opt.MapFrom(src => ImageableType.Hotel))
             .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Thumbnail));
 
-        CreateMap<AddImageGalleryCommand, Image>()
+        CreateMap<UploadImageGalleryCommand, Image>()
         .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
         .ForMember(dest => dest.ImageableType, opt => opt.MapFrom(src => ImageableType.Hotel))
         .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Gallery));

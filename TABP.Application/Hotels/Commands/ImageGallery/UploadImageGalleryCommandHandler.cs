@@ -6,8 +6,8 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Image;
 
-namespace TABP.Application.Hotels.Commands.AddImageGallery;
-internal class AddImageGalleryCommandHandler : IRequestHandler<AddImageGalleryCommand, Guid>
+namespace TABP.Application.Hotels.Commands.ImageGallery;
+internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGalleryCommand, Guid>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
@@ -15,7 +15,7 @@ internal class AddImageGalleryCommandHandler : IRequestHandler<AddImageGalleryCo
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public AddImageGalleryCommandHandler(
+    public UploadImageGalleryCommandHandler(
         IHotelRepository hotelRepository,
         IImageRepository imageRepository,
         IImageUploadService imageUploadService,
@@ -30,7 +30,7 @@ internal class AddImageGalleryCommandHandler : IRequestHandler<AddImageGalleryCo
         _mapper = mapper;
     }
 
-    public async Task<Guid> Handle(AddImageGalleryCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UploadImageGalleryCommand request, CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
