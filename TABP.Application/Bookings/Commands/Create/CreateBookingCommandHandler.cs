@@ -109,10 +109,13 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
 
     private static double CalculateTotalPrice(IEnumerable<Room> rooms, DateTime checkInDate, DateTime checkOutDate)
     {
+        var currentDate = DateTime.UtcNow;
+
         var total = rooms.Sum(room =>
         {
             var price = room.RoomClass.Price;
             var discount = room.RoomClass.Discounts
+                               .Where(d => d.StartDate <= currentDate && d.EndDate > currentDate)
                                .Select(d => d.Percentage)
                                .DefaultIfEmpty(0)
                                .Max();
