@@ -1,5 +1,5 @@
 ﻿namespace TABP.Presentation.DTOs.Hotel;
-public class AddHotelRequest
+public class CreateHotelRequest
 {
     public string Name { get; set; }
     public string? Description { get; set; }
