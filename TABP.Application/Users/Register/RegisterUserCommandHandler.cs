@@ -7,7 +7,7 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 namespace TABP.Application.Users.Register;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserResponse>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
@@ -27,7 +27,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RegisterUserResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         if (await _userRepository.EmailExistsAsync(request.Email))
         {
@@ -40,6 +40,6 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         await _userRepository.AddAsync(user);
         await _unitOfWork.SaveChangesAsync();
 
-        return _mapper.Map<RegisterUserResponse>(user);
+        return Unit.Value;
     }
 }

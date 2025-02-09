@@ -10,7 +10,7 @@ public class UserProfile : Profile
     {
         CreateMap<RegisterUserCommand, User>()
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
-        CreateMap<User, RegisterUserResponse>();
+
         CreateMap<JwtToken, LoginUserResponse>();
     }
 }

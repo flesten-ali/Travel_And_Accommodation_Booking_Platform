@@ -1,7 +1,7 @@
 ﻿using MediatR;
 namespace TABP.Application.Users.Register;
 
-public class RegisterUserCommand : IRequest<RegisterUserResponse>
+public class RegisterUserCommand : IRequest
 {
     public string UserName { get; set; }
     public string Email { get; set; }
