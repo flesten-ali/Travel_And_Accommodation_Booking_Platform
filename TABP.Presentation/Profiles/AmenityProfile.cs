@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TABP.Application.Amenities.Add;
+using TABP.Application.Amenities.Create;
 using TABP.Presentation.DTOs.Amenity;
 namespace TABP.Presentation.Profiles;
 
@@ -8,6 +8,6 @@ public class AmenityProfile : Profile
     public AmenityProfile()
     {
 
-        CreateMap<AddAmenityRequest, AddAmenityCommand>();
+        CreateMap<CreateAmenityRequest, CreateAmenityCommand>();
     }
 }
