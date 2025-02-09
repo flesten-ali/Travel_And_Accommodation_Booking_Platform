@@ -7,7 +7,7 @@ public class HotelResponse
     public int Rate { get; set; }
     public double LongitudeCoordinates { get; set; }
     public double LatitudeCoordinates { get; set; }
-    public string CityName { get; set; }//
-    public string OwnerName { get; set; }//
-    public string ThumbnailUrl { get; set; }//
+    public string CityName { get; set; }
+    public string OwnerName { get; set; }
+    public string ThumbnailUrl { get; set; }
 }
