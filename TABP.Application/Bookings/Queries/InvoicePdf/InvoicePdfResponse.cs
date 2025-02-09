@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 namespace TABP.Application.Bookings.Queries.PdfConfirmation;
-public class GetInvoicePdfResponse 
+public class InvoicePdfResponse 
 {
     public byte[] PdfContent { get; set; }
 }

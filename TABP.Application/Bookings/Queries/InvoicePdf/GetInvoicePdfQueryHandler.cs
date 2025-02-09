@@ -6,7 +6,7 @@ using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Pdf;
 
 namespace TABP.Application.Bookings.Queries.PdfConfirmation;
-public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, GetInvoicePdfResponse>
+public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, InvoicePdfResponse>
 {
     private readonly IBookingRepository _bookingRepository;
     private readonly IInvoiceHtmlGenerationService _invoiceHtmlGenerationService;
@@ -24,7 +24,7 @@ public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, Get
         _mapper = mapper;
     }
 
-    public async Task<GetInvoicePdfResponse> Handle(GetInvoicePdfQuery request, CancellationToken cancellationToken)
+    public async Task<InvoicePdfResponse> Handle(GetInvoicePdfQuery request, CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdAsync(request.BookingId)
             ?? throw new NotFoundException("Booking not found");
@@ -32,7 +32,7 @@ public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, Get
         var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
         var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml);
 
-        return new GetInvoicePdfResponse
+        return new InvoicePdfResponse
         {
             PdfContent = invoicePdf,
         };
