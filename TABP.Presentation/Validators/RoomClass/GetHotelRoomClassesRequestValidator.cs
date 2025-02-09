@@ -6,9 +6,6 @@ public class GetHotelRoomClassesRequestValidator : AbstractValidator<GetHotelRoo
 {
     public GetHotelRoomClassesRequestValidator()
     {
-        RuleFor(r => r.HotelId)
-            .NotEmpty().WithMessage("HotelId is required.");
-
         RuleFor(r => r.PageSize)
             .InclusiveBetween(1, 100).WithMessage("Page size must be between 1 and 100.");
 
