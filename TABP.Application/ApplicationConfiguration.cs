@@ -10,6 +10,7 @@ public static class ApplicationConfiguration
         return services.AddMediator()
                        .AddMapper();
     }
+  
     public static IServiceCollection AddMediator(this IServiceCollection services)
     {
         return services.AddMediatR(Assembly.GetExecutingAssembly());
