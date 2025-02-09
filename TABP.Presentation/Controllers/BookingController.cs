@@ -38,7 +38,7 @@ public class BookingController(IMediator mediator, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateBooking([FromBody] AddBookingRequest request)
+    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest request)
     {
         var command = _mapper.Map<CreateBookingCommand>(request);
 

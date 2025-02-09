@@ -2,9 +2,9 @@
 using TABP.Presentation.DTOs.Booking;
 
 namespace TABP.Presentation.Validators.Booking;
-public class AddBookingRequestValidator : AbstractValidator<AddBookingRequest>
+public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequest>
 {
-    public AddBookingRequestValidator()
+    public CreateBookingRequestValidator()
     {
         RuleFor(b => b.UserId)
             .NotNull()

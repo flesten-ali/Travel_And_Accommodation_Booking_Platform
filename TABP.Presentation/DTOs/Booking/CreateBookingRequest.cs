@@ -2,7 +2,7 @@
 using TABP.Domain.Enums;
 
 namespace TABP.Presentation.DTOs.Booking;
-public class AddBookingRequest
+public class CreateBookingRequest
 {
     public PaymentMethod PaymentMethod { get; set; }
     public DateTime CheckInDate { get; set; }
