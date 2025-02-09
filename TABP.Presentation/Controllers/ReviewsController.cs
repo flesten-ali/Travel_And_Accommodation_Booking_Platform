@@ -1,34 +1,37 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TABP.Application.Reviews.Queries.GetDetails;
+using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Review;
-
 namespace TABP.Presentation.Controllers;
-[Route("api/[controller]")]
+
+[Route("api/{hotelId:guid}/reviews")]
 [ApiController]
-public class ReviewsController : ControllerBase
+[Authorize(Roles = Roles.Guest)]
+public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
+    private readonly IMediator _mediator = mediator;
+    private readonly IMapper _mapper = mapper;
 
-    public ReviewsController(IMediator mediator, IMapper mapper)
+    [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetHotelReviews(Guid hotelId, [FromQuery] GetHotelReviewsRequest request)
     {
-        _mediator = mediator;
-        _mapper = mapper;
-    }
+        var query = _mapper.Map<GetHotelReviewsQuery>(request);
+        query.HotelId = hotelId;
 
-    [HttpPost]
-    public async Task<IActionResult> GetReviewDetails([FromBody] GetReviewDetailsRequest request)
-    {
-        var query = _mapper.Map<GetReviewDetailsQuery>(request);
-        var paginatedList = await _mediator.Send(query);
+        var reviews = await _mediator.Send(query);
 
         Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(paginatedList.PaginationMetaData));
+            JsonSerializer.Serialize(reviews.PaginationMetaData));
 
-        return Ok(paginatedList.Items);
+        return Ok(reviews.Items);
     }
 }
