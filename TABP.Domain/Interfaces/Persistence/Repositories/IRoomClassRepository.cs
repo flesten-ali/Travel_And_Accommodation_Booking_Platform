@@ -5,4 +5,6 @@ namespace TABP.Domain.Interfaces.Persistence.Repositories;
 public interface IRoomClassRepository : IRepository<RoomClass>
 {
     Task<PaginatedList<RoomClass>> GetByHotelIdAsync(Guid hotelId, int pageSize, int pageNumber);
+
+    Task<IEnumerable<FeaturedDealResult>> GetFeaturedDeals(int NumberOfDeals);
 }
