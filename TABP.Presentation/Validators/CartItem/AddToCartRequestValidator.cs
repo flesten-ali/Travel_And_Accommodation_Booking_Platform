@@ -7,9 +7,9 @@ public class AddToCartRequestValidator : AbstractValidator<AddToCartRequest>
     public AddToCartRequestValidator()
     {
         RuleFor(c => c.UserId)
-            .NotEmpty().WithMessage("UserId is required.");
+            .NotEmpty().WithMessage("User ID is required.");
 
         RuleFor(c => c.RoomClassId)
-         .NotEmpty().WithMessage("RoomClassId is required.");
+         .NotEmpty().WithMessage("RoomClass ID is required.");
     }
 }
