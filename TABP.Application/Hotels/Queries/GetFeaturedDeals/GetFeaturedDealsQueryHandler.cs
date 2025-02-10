@@ -16,10 +16,10 @@ public class GetFeaturedDealsQueryHandler : IRequestHandler<GetFeaturedDealsQuer
 
     public async Task<IEnumerable<FeaturedDealResponse>> Handle(GetFeaturedDealsQuery request, CancellationToken cancellationToken)
     {
-        if (request.NumberOfDeals < 1)
+        if (request.Limit < 1)
             throw new ArgumentException("The number of deals must be greater than zero");
 
-        var featuredDeals = await _roomClassRepository.GetFeaturedDeals(request.NumberOfDeals);
+        var featuredDeals = await _roomClassRepository.GetFeaturedDeals(request.Limit);
 
         return _mapper.Map<IEnumerable<FeaturedDealResponse>>(featuredDeals);
     }

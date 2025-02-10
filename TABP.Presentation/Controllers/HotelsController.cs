@@ -117,9 +117,9 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetFeaturedDeals(int numberOfDeals)
+    public async Task<IActionResult> GetFeaturedDeals(int limit)
     {
-        var query = new GetFeaturedDealsQuery { NumberOfDeals = numberOfDeals };
+        var query = new GetFeaturedDealsQuery { Limit = limit };
 
         var featuredDeals = await _mediator.Send(query);
 
