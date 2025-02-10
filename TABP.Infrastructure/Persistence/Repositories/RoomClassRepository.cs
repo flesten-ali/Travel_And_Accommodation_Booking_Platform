@@ -29,27 +29,30 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
             .Include(rc => rc.Discounts)
             .Include(rc => rc.Hotel)
             .ThenInclude(h => h.City)
-            .Select(rc => new
+            .GroupBy(x => x.Hotel)
+            .Select(g => new
             {
-                roomClass = rc,
-                discountedPrice = CalculateRoomClassPriceAfterDiscount(rc.Price, rc.Discounts)
+                Hotel = g.Key,
+                maxDiscountedPrice = g.Max(rc => CalculateRoomClassPriceAfterDiscount(rc.Price, rc.Discounts))
             })
-             .OrderByDescending(x => x.discountedPrice)
+             .OrderByDescending(x => x.maxDiscountedPrice)
              .Take(NumberOfDeals)
              .Select(x => new FeaturedDealResult
              {
-                 Description = x.roomClass.Hotel.Description,
-                 CityName = x.roomClass.Hotel.City.Name,
-                 Id = x.roomClass.Hotel.Id,
-                 Name = x.roomClass.Hotel.Name,
-                 StarRate = x.roomClass.Hotel.Rate,
+                 Description = x.Hotel.Description,
+                 CityName = x.Hotel.City.Name,
+                 Id = x.Hotel.Id,
+                 Name = x.Hotel.Name,
+                 StarRate = x.Hotel.Rate,
                  ThumbnailUrl = context.Images
-                               .Where(img => img.ImageableId == x.roomClass.Hotel.Id && img.ImageType == ImageType.Thumbnail)
+                               .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
                                .Select(img => img.ImageUrl)
                                .FirstOrDefault() ?? "",
-                 DiscountedPrice = x.discountedPrice,
-                 OriginalPrice = x.roomClass.Price,
-             }).ToListAsync();
+                 DiscountedPrice = x.maxDiscountedPrice,
+                 OriginalPrice = x.Hotel.RoomClasses.Max(rc => rc.Price),
+             })
+             .AsNoTracking()
+             .ToListAsync();
 
         return featuredDeals;
     }
