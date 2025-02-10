@@ -8,5 +8,6 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
     public void Configure(EntityTypeBuilder<Hotel> builder)
     {
         builder.Ignore(h => h.Gallery);
+        builder.Ignore(h => h.Thumbnail);
     }
 }

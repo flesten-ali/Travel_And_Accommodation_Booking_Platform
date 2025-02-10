@@ -36,7 +36,7 @@ public class UploadThumbnailCommandHandler : IRequestHandler<UploadThumbnailComm
         {
             throw new NotFoundException("Hotel is not found");
         }
-
+        //unit of 
         var publicId = Guid.NewGuid().ToString();
         var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId);
 

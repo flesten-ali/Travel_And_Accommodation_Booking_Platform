@@ -13,7 +13,6 @@ public class Hotel : EntityBase<Guid>
     public Guid OwnerId { get; set; }
     public ICollection<Image> Gallery { get; set; } = [];
     public Image Thumbnail { get; set; }
-    public Guid ThumbnailId { get; set; }
     public ICollection<RoomClass> RoomClasses { get; set; } = [];
     public ICollection<Review> Reviews { get; set; } = [];
 }
