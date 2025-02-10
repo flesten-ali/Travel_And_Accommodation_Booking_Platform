@@ -49,6 +49,11 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
 
     public async Task<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
     {
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
+        {
+            throw new NotFoundException("Hotel not found");
+        }
+
         var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException("User not found");
 
@@ -61,6 +66,11 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         if (rooms == null || rooms.Count() != request.RoomIds.Count())
         {
             throw new NotFoundException("One or more room not found");
+        }
+
+        if (rooms.Any(r => r.RoomClass.HotelId != request.HotelId))
+        {
+            throw new RoomNotBelongToHotelException("One or more rooms do not belong to the specified hotel");
         }
 
         await _unitOfWork.BeginTransactionAsync();

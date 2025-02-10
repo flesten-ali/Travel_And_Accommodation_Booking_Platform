@@ -6,6 +6,10 @@ public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequ
 {
     public CreateBookingRequestValidator()
     {
+        RuleFor(b => b.HotelId)
+           .NotNull()
+           .WithMessage("Hotel ID is required.");
+
         RuleFor(b => b.UserId)
             .NotNull()
             .WithMessage("User ID is required.");

@@ -5,6 +5,7 @@ namespace TABP.Application.Bookings.Commands.Create;
 
 public class CreateBookingCommand : IRequest<BookingResponse>
 {
+    public Guid HotelId { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public DateTime CheckInDate { get; set; }
     public DateTime CheckOutDate { get; set; }
