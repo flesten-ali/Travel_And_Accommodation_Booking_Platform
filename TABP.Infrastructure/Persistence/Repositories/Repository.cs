@@ -53,7 +53,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         if (typeof(T) == typeof(Hotel) && entity is Hotel hotel)
         {
             var thumbnail = await _context.Images
-                .FirstOrDefaultAsync(img => img.Id == hotel.ThumbnailId && img.ImageType == ImageType.Thumbnail);
+                .FirstOrDefaultAsync(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Thumbnail);
 
             if (thumbnail != null)
             {
