@@ -45,4 +45,32 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
 
         return recentlyVisitedHotels;
     }
+
+    public async Task<IEnumerable<TrendingCitiesResult>> GetTrendingCities(int limit)
+    {
+        var trendingHotels = await DbSet
+          .Select(b => new
+          {
+              city = b.Rooms.FirstOrDefault()!.RoomClass.Hotel.City,
+          })
+          .GroupBy(x => x.city)
+          .OrderByDescending(g => g.Count())
+          .Take(limit)
+          .Select(g => new
+          {
+              city = g.Key
+          })
+          .Select(x => new TrendingCitiesResult
+          {
+              Id = x.city.Id,
+              Name = x.city.Name,
+              ThumbnailUrl = context.Images.Where(img => img.ImageableId == x.city.Id && img.ImageType == ImageType.Thumbnail)
+                                           .Select(img => img.ImageUrl)
+                                           .FirstOrDefault() ?? "",
+          })
+          .AsNoTracking()
+          .ToListAsync();
+
+        return trendingHotels;
+    }
 }
