@@ -36,18 +36,27 @@ public class UploadThumbnailCommandHandler : IRequestHandler<UploadThumbnailComm
         {
             throw new NotFoundException("Hotel is not found");
         }
-        //unit of 
-        var publicId = Guid.NewGuid().ToString();
-        var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId);
 
-        var image = _mapper.Map<Image>(request);
-        image.ImageUrl = imageUrl;
-        image.PublicId = publicId;
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            var publicId = Guid.NewGuid().ToString();
+            var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId);
 
-        await _imageRepository.DeleteByIdAsync(image.ImageableId, ImageType.Thumbnail);
+            var image = _mapper.Map<Image>(request);
+            image.ImageUrl = imageUrl;
+            image.PublicId = publicId;
 
-        await _imageRepository.AddAsync(image);
-        await _unitOfWork.SaveChangesAsync();
-        return image.Id;
+            await _imageRepository.DeleteByIdAsync(image.ImageableId, ImageType.Thumbnail);
+
+            await _imageRepository.AddAsync(image);
+            await _unitOfWork.CommitAsync();
+            return image.Id;
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
     }
 }
