@@ -7,7 +7,6 @@ public class ImageConfiguration : IEntityTypeConfiguration<Image>
 {
     public void Configure(EntityTypeBuilder<Image> builder)
     {
-        builder.Property(m => m.ImageableType).HasConversion<string>();
         builder.Property(m => m.ImageType).HasConversion<string>();
     }
 }
