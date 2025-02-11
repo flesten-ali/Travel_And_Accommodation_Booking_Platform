@@ -26,7 +26,7 @@ public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, Inv
 
     public async Task<InvoicePdfResponse> Handle(GetInvoicePdfQuery request, CancellationToken cancellationToken)
     {
-        var booking = await _bookingRepository.GetByIdAsync(request.BookingId)
+        var booking = await _bookingRepository.GetByIdIncludeProperties(request.BookingId, b => b.Invoice)
             ?? throw new NotFoundException("Booking not found");
 
         var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
