@@ -22,11 +22,13 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     // think about remove from here/ may fet in the hotel controller/ see this when add rest of crud
-    public async Task<IActionResult> GetHotelRoomClasses(Guid HotelId, [FromQuery] GetHotelRoomClassesRequest request)
+    public async Task<IActionResult> GetHotelRoomClasses(Guid hotelId, [FromQuery] GetHotelRoomClassesRequest request)
     {
         var query = _mapper.Map<GetHotelRoomClassesQuery>(request);
-        query.HotelId = HotelId;
+        query.HotelId = hotelId;
 
         var roomClasses = await _mediator.Send(query);
 
