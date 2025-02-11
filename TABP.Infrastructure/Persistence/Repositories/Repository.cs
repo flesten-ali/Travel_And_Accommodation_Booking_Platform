@@ -55,9 +55,17 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
             var thumbnail = await _context.Images
                 .FirstOrDefaultAsync(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Thumbnail);
 
+            var gallery = await _context.Images
+                .Where(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Gallery).ToListAsync();
+
             if (thumbnail != null)
             {
                 hotel.Thumbnail = thumbnail;
+            }
+
+            if(gallery != null)
+            {
+                hotel.Gallery = gallery;
             }
         }
 
