@@ -12,7 +12,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;
 
-    [HttpGet]
+    [HttpGet("trending-cities")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTrendingCities(int limit)
     {
