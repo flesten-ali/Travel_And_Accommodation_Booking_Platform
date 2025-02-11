@@ -87,7 +87,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
                 UserId = request.UserId,
                 Rooms = rooms.ToList(),
                 User = user,
-                Invoice =
+                Invoice = new Invoice
                 {
                     IssueDate = DateTime.UtcNow,
                     PaymentStatus = PaymentStatus.Completed,
