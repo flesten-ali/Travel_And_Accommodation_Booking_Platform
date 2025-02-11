@@ -6,26 +6,28 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 namespace TABP.Application.Amenities.Create;
 
-public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand, Guid>
+public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand, AmenityResponse>
 {
     private readonly IAmenityRepository _amenityRepository;
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IRoomClassRepository _roomClassRepository;
 
-    public CreateAmenityCommandHandler(IAmenityRepository amenityRepository, IMapper mapper, IUnitOfWork unitOfWork, IRoomClassRepository roomClassRepository)
+    public CreateAmenityCommandHandler(
+        IAmenityRepository amenityRepository,
+        IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IRoomClassRepository roomClassRepository)
     {
         _amenityRepository = amenityRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _roomClassRepository = roomClassRepository;
     }
 
-    public async Task<Guid> Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
+    public async Task<AmenityResponse> Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
     {
         if (await _amenityRepository.ExistsAsync(a => a.Name == request.Name))
         {
-            throw new ExistsException("Amenity is exists");
+            throw new ExistsException("Amenity already exists");
         }
 
         var amenity = _mapper.Map<Amenity>(request);
@@ -33,6 +35,6 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
         await _amenityRepository.AddAsync(amenity);
         await _unitOfWork.SaveChangesAsync();
 
-        return amenity.Id;
+        return _mapper.Map<AmenityResponse>(amenity);
     }
 }
