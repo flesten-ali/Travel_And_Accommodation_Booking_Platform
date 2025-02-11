@@ -25,34 +25,37 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
 
     public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDeals(int NumberOfDeals)
     {
-        var featuredDeals = await DbSet
+        var query = await DbSet
             .Include(rc => rc.Discounts)
             .Include(rc => rc.Hotel)
-            .ThenInclude(h => h.City)
+               .ThenInclude(h => h.City)
             .GroupBy(x => x.Hotel)
+            .AsNoTracking()
+            .ToListAsync();
+
+        var featuredDeals = query
             .Select(g => new
             {
                 Hotel = g.Key,
-                maxDiscountedPrice = g.Max(rc => CalculateRoomClassPriceAfterDiscount(rc.Price, rc.Discounts))
+                MaxDiscountedPrice = g.Max(rc => CalculateRoomClassPriceAfterDiscount(rc.Price, rc.Discounts))
             })
-             .OrderByDescending(x => x.maxDiscountedPrice)
-             .Take(NumberOfDeals)
-             .Select(x => new FeaturedDealResult
-             {
-                 Description = x.Hotel.Description,
-                 CityName = x.Hotel.City.Name,
-                 Id = x.Hotel.Id,
-                 Name = x.Hotel.Name,
-                 StarRate = x.Hotel.Rate,
-                 ThumbnailUrl = context.Images
-                               .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
-                               .Select(img => img.ImageUrl)
-                               .FirstOrDefault() ?? "",
-                 DiscountedPrice = x.maxDiscountedPrice,
-                 OriginalPrice = x.Hotel.RoomClasses.Max(rc => rc.Price),
-             })
-             .AsNoTracking()
-             .ToListAsync();
+            .OrderByDescending(x => x.MaxDiscountedPrice)
+            .Take(NumberOfDeals)
+            .Select(x => new FeaturedDealResult
+            {
+                Description = x.Hotel.Description,
+                CityName = x.Hotel.City.Name,
+                Id = x.Hotel.Id,
+                Name = x.Hotel.Name,
+                StarRate = x.Hotel.Rate,
+                ThumbnailUrl = context.Images
+                                      .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
+                                      .Select(img => img.ImageUrl)
+                                      .FirstOrDefault() ?? "",
+                DiscountedPrice = x.MaxDiscountedPrice,
+                OriginalPrice = x.Hotel.RoomClasses.Max(rc => rc.Price),
+            })
+           .ToList();
 
         return featuredDeals;
     }
