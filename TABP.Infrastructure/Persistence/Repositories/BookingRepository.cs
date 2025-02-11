@@ -10,38 +10,41 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
 {
     public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotels(Guid guestId, int limit)
     {
-        var recentlyVisitedHotels = await DbSet
-            .Where(b => b.UserId == guestId)
-            .Include(b => b.Invoice)
-            .Include(b => b.Rooms)
-            .ThenInclude(r => r.RoomClass)
-            .ThenInclude(rc => rc.Hotel)
-            .GroupBy(b => b.Rooms.FirstOrDefault()!.RoomClass.Hotel)
-            .Select(g => new
-            {
-                hotel = g.Key,
-                recentBookingInThisHotel = g.OrderByDescending(b => b.BookingDate).FirstOrDefault()!,
-            })
-            .OrderByDescending(x => x.recentBookingInThisHotel.BookingDate)
-            .Take(limit)
-            .Select(x => new RecentlyVisitedHotelsResult
-            {
-                Id = x.hotel.Id,
-                Name = x.hotel.Name,
-                CityName = x.hotel.City.Name,
-                Rate = x.hotel.Rate,
-                ThumbnailUrl = context.Images
-                                      .Where(img => img.ImageableId == x.hotel.Id && img.ImageType == ImageType.Thumbnail)
-                                      .Select(img => img.ImageUrl)
-                                      .FirstOrDefault() ?? "",
-                BookingDate = x.recentBookingInThisHotel.BookingDate,
-                CheckInDate = x.recentBookingInThisHotel.CheckInDate,
-                CheckOutDate = x.recentBookingInThisHotel.CheckOutDate,
-                BookingId = x.recentBookingInThisHotel.Id,
-                Price = x.recentBookingInThisHotel.Invoice.TotalPrice
-            })
-            .AsNoTracking()
-            .ToListAsync();
+        var query = await DbSet
+                         .Include(b => b.Invoice)
+                         .Include(b => b.Rooms)
+                            .ThenInclude(r => r.RoomClass)
+                              .ThenInclude(rc => rc.Hotel)
+                         .OrderByDescending(b => b.BookingDate)
+                         .Select(b => new
+                         {
+                             booking = b,
+                             hotel = b.Rooms.Select(r => r.RoomClass.Hotel).FirstOrDefault()!,
+                         })
+                         .AsNoTracking()
+                         .ToListAsync();
+
+        var recentlyVisitedHotels = query
+                          .DistinctBy(x => x.hotel.Id)
+                          .Take(limit)
+                          .Select(x => new RecentlyVisitedHotelsResult
+                          {
+                              Id = x.hotel.Id,
+                              Name = x.hotel.Name,
+                              CityName = x.hotel.City.Name,
+                              Rate = x.hotel.Rate,
+                              ThumbnailUrl = context.Images
+                                                    .Where(img => img.ImageableId == x.hotel.Id && img.ImageType == ImageType.Thumbnail)
+                                                    .Select(img => img.ImageUrl)
+                                                    .FirstOrDefault() ?? "",
+                              BookingDate = x.booking.BookingDate,
+                              CheckInDate = x.booking.CheckInDate,
+                              CheckOutDate = x.booking.CheckOutDate,
+                              BookingId = x.booking.Id,
+                              Price = x.booking.Invoice.TotalPrice
+
+                          })
+                          .ToList();
 
         return recentlyVisitedHotels;
     }
@@ -68,9 +71,10 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
             {
                 Id = x.city.Id,
                 Name = x.city.Name,
-                ThumbnailUrl = context.Images.Where(img => img.ImageableId == x.city.Id && img.ImageType == ImageType.Thumbnail)
-                                           .Select(img => img.ImageUrl)
-                                           .FirstOrDefault() ?? "",
+                ThumbnailUrl = context.Images
+                                      .Where(img => img.ImageableId == x.city.Id && img.ImageType == ImageType.Thumbnail)
+                                      .Select(img => img.ImageUrl)
+                                      .FirstOrDefault() ?? "",
             })
             .AsNoTracking()
             .ToListAsync();
