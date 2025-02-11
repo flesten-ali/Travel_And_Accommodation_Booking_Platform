@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using TABP.Application.Amenities.Create;
+using TABP.Application.Amenities.Commands.Create;
+using TABP.Application.Amenities.Common;
 using TABP.Domain.Entities;
 
 namespace TABP.Application.Profiles;

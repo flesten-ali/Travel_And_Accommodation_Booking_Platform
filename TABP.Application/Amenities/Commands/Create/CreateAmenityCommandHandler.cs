@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Application.Amenities.Common;
 using TABP.Domain.Entities;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
-namespace TABP.Application.Amenities.Create;
+namespace TABP.Application.Amenities.Commands.Create;
 
 public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand, AmenityResponse>
 {

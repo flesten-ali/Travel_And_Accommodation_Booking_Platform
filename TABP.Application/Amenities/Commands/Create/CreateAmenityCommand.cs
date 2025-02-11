@@ -1,5 +1,6 @@
 ﻿using MediatR;
-namespace TABP.Application.Amenities.Create;
+using TABP.Application.Amenities.Common;
+namespace TABP.Application.Amenities.Commands.Create;
 
 public class CreateAmenityCommand : IRequest<AmenityResponse>
 {
