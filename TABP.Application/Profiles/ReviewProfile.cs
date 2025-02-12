@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TABP.Application.Reviews.Queries.GetDetails;
+using TABP.Application.Reviews.GetForHotel;
 using TABP.Domain.Entities;
 using TABP.Domain.Models;
 

@@ -1,4 +1,4 @@
-﻿namespace TABP.Application.Reviews.Queries.GetDetails;
+﻿namespace TABP.Application.Reviews.GetForHotel;
 public class HotelReviewsQueryReponse
 {
     public string Comment { get; set; }

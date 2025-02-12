@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using TABP.Application.RoomClasses.Queries.GetDetails;
+using TABP.Application.RoomClasses.GetForHotel;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.RoomClass;
 namespace TABP.Presentation.Controllers;

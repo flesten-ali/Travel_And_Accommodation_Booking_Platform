@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TABP.Application.RoomClasses.Queries.GetDetails;
+using TABP.Application.RoomClasses.GetForHotel;
 using TABP.Domain.Entities;
 using TABP.Domain.Models;
 namespace TABP.Application.Profiles;
