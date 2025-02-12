@@ -1,6 +1,6 @@
 ﻿namespace TABP.Domain.Entities;
 
-public class Room : EntityBase<Guid>
+public class Room : AuditEntity<Guid>
 {
     public int RoomNumber { get; set; }
     public int Floor { get; set; }

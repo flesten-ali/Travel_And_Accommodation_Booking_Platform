@@ -1,6 +1,6 @@
 ﻿namespace TABP.Domain.Entities;
 
-public class Hotel : EntityBase<Guid>
+public class Hotel : AuditEntity<Guid>
 {
     public string Name { get; set; }
     public string? Description { get; set; }
