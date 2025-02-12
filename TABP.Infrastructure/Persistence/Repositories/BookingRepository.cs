@@ -9,7 +9,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 public class BookingRepository(AppDbContext context) : Repository<Booking>(context), IBookingRepository
 {
     public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotels(Guid guestId, int limit)
-    {//
+    {
         var query = await DbSet
                          .Include(b => b.Invoice)
                          .Include(b => b.Rooms)
@@ -25,8 +25,6 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
                          .ToListAsync();
 
         var recentlyVisitedHotels = query
-                          .DistinctBy(x => x.hotel.Id)
-                          .Take(limit)
                           .Select(x => new RecentlyVisitedHotelsResult
                           {
                               Id = x.hotel.Id,
@@ -42,8 +40,9 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
                               CheckOutDate = x.booking.CheckOutDate,
                               BookingId = x.booking.Id,
                               Price = x.booking.Invoice.TotalPrice
-
                           })
+                          .DistinctBy(x => x.Id)
+                          .Take(limit)
                           .ToList();
 
         return recentlyVisitedHotels;
