@@ -22,7 +22,9 @@ public class GuestController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetRecentlyVisitedHotels(Guid id, [FromQuery] GetRecentlyVisitedHotelsRequest request)
+    public async Task<IActionResult> GetRecentlyVisitedHotels(
+        Guid id,
+        [FromQuery] GetRecentlyVisitedHotelsRequest request)
     {
         var query = _mapper.Map<GetRecentlyVisitedHotelsQuery>(request);
         query.GuestId = id;
