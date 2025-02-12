@@ -19,9 +19,9 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
 
     public async Task AddAsync(T entity)
     {
-        if (typeof(IAuditEntity<T>).IsAssignableFrom(typeof(T)))
+        if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
         {
-            ((IAuditEntity<T>)entity).CreatedDate = DateTime.UtcNow;
+            ((IAuditEntity)entity).CreatedDate = DateTime.UtcNow;
         }
         await DbSet.AddAsync(entity);
     }
