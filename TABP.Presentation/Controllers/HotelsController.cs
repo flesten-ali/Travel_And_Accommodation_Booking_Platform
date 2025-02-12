@@ -59,6 +59,8 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateHotel([FromBody] CreateHotelRequest request)
     {
         var command = _mapper.Map<CreateHotelCommand>(request);
