@@ -21,53 +21,5 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
 
         return new PaginatedList<RoomClass>(await requestedPage.ToListAsync(), paginationMetaData);
-    }
-
-    public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDeals(int NumberOfDeals)
-    {
-        var query = await DbSet
-            .Include(rc => rc.Discounts)
-            .Include(rc => rc.Hotel)
-               .ThenInclude(h => h.City)
-            .GroupBy(x => x.Hotel)
-            .AsNoTracking()
-            .ToListAsync();
-
-        var featuredDeals = query
-            .Select(g => new
-            {
-                Hotel = g.Key,
-                MaxDiscountedPrice = g.Max(rc => CalculateRoomClassPriceAfterDiscount(rc.Price, rc.Discounts))
-            })
-            .OrderByDescending(x => x.MaxDiscountedPrice)
-            .Take(NumberOfDeals)
-            .Select(x => new FeaturedDealResult
-            {
-                Description = x.Hotel.Description,
-                CityName = x.Hotel.City.Name,
-                Id = x.Hotel.Id,
-                Name = x.Hotel.Name,
-                StarRate = x.Hotel.Rate,
-                ThumbnailUrl = context.Images
-                                      .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
-                                      .Select(img => img.ImageUrl)
-                                      .FirstOrDefault() ?? "",
-                DiscountedPrice = x.MaxDiscountedPrice,
-                OriginalPrice = x.Hotel.RoomClasses.Max(rc => rc.Price),
-            })
-           .ToList();
-
-        return featuredDeals;
-    }
-
-    private static double CalculateRoomClassPriceAfterDiscount(double price, ICollection<Discount> discounts)
-    {
-        if (discounts == null || discounts.Count == 0) return price;
-
-        var currentDate = DateTime.UtcNow;
-
-        var maxDiscount = discounts.Where(d => d.StartDate <= currentDate && d.EndDate > currentDate).Max(d => d.Percentage);
-        var priceAfterDiscount = price * (1 - maxDiscount / 100);
-        return priceAfterDiscount;
-    }
+    }   
 }

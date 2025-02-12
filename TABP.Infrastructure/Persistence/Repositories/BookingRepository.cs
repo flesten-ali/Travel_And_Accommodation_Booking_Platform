@@ -9,7 +9,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 public class BookingRepository(AppDbContext context) : Repository<Booking>(context), IBookingRepository
 {
     public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotels(Guid guestId, int limit)
-    {
+    {//
         var query = await DbSet
                          .Include(b => b.Invoice)
                          .Include(b => b.Rooms)

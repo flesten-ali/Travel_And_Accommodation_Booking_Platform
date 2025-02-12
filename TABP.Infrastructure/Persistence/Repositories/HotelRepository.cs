@@ -33,4 +33,41 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
 
         return new PaginatedList<SearchHotelResult>(await resultToReturn.ToListAsync(), paginationMetaData);
     }
+
+    public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDeals(int NumberOfDeals)
+    {
+        var currentDate = DateTime.UtcNow;
+
+        var featuredDeals = await DbSet
+            .Include(h => h.City)
+            .Include(h => h.RoomClasses)
+               .ThenInclude(rc => rc.Discounts)
+            .Where(h => h.RoomClasses.Count != 0)
+            .Select(h => new
+            {
+                Hotel = h,
+                DiscountedPrice = h.RoomClasses.Min(rc =>
+                    rc.Discounts.Count != 0
+                    ? rc.Price * (1 - (rc.Discounts.Where(d => d.StartDate <= currentDate && d.EndDate > currentDate).Max(d => d.Percentage) / 100))
+                    : rc.Price)
+            })
+            .OrderBy(x => x.DiscountedPrice)
+            .Take(NumberOfDeals)
+            .Select(x => new FeaturedDealResult
+            {
+                Description = x.Hotel.Description,
+                CityName = x.Hotel.City.Name,
+                Id = x.Hotel.Id,
+                Name = x.Hotel.Name,
+                StarRate = x.Hotel.Rate,
+                ThumbnailUrl = context.Images
+                                      .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
+                                      .Select(img => img.ImageUrl)
+                                      .FirstOrDefault() ?? "",
+                DiscountedPrice = x.DiscountedPrice,
+                OriginalPrice = x.Hotel.RoomClasses.Max(rc => rc.Price),
+            })
+            .ToListAsync();
+        return featuredDeals;
+    }
 }
