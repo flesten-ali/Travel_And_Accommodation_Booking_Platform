@@ -75,4 +75,9 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
 
         return entity;
     }
+
+    public void DeleteAsync(T entity)
+    {
+        DbSet.Remove(entity);
+    }
 }
