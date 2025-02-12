@@ -24,8 +24,11 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
             Name = h.Name,
             Description = h.Description,
             StarRating = h.Rate,
-            PricePerNight = h.RoomClasses.Min(rc => rc.Price),
-            Thumbnail = context.Images.Where(img => img.ImageableId == h.Id && img.ImageType == ImageType.Thumbnail).FirstOrDefault()
+            PricePerNight = h.RoomClasses.Count != 0 ? h.RoomClasses.Min(rc => rc.Price) : 0,
+            ThumbnailUrl = context.Images
+                                  .Where(img => img.ImageableId == h.Id && img.ImageType == ImageType.Thumbnail)
+                                  .Select(img => img.ImageUrl)
+                                  .FirstOrDefault() ?? ""
         });
 
         var resultToReturn = selectedResult.GetRequestedPage(pageNumber, pageSize);
