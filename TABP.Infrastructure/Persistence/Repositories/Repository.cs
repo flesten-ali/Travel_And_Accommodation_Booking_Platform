@@ -19,6 +19,10 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
 
     public async Task AddAsync(T entity)
     {
+        if (typeof(IAuditEntity<T>).IsAssignableFrom(typeof(T)))
+        {
+            ((IAuditEntity<T>)entity).CreatedDate = DateTime.UtcNow;
+        }
         await DbSet.AddAsync(entity);
     }
 
@@ -50,7 +54,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
 
         if (entity == null) return null;
 
-        if (typeof(T) == typeof(Hotel) && entity is Hotel hotel)
+        if (entity is Hotel hotel)
         {
             var thumbnail = await _context.Images
                 .FirstOrDefaultAsync(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Thumbnail);
@@ -63,7 +67,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
                 hotel.Thumbnail = thumbnail;
             }
 
-            if(gallery != null)
+            if (gallery != null)
             {
                 hotel.Gallery = gallery;
             }
