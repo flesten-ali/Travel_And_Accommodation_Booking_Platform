@@ -5,12 +5,12 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 namespace TABP.Application.Hotels.Queries.GetFeaturedDeals;
 public class GetFeaturedDealsQueryHandler : IRequestHandler<GetFeaturedDealsQuery, IEnumerable<FeaturedDealResponse>>
 {
-    private readonly IRoomClassRepository _roomClassRepository;
+    private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
 
-    public GetFeaturedDealsQueryHandler(IRoomClassRepository roomClassRepository, IMapper mapper)
+    public GetFeaturedDealsQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
     {
-        _roomClassRepository = roomClassRepository;
+        _hotelRepository = hotelRepository;
         _mapper = mapper;
     }
 
@@ -19,7 +19,7 @@ public class GetFeaturedDealsQueryHandler : IRequestHandler<GetFeaturedDealsQuer
         if (request.Limit < 1)
             throw new ArgumentException("The number of deals must be greater than zero");
 
-        var featuredDeals = await _roomClassRepository.GetFeaturedDeals(request.Limit);
+        var featuredDeals = await _hotelRepository.GetFeaturedDeals(request.Limit);
 
         return _mapper.Map<IEnumerable<FeaturedDealResponse>>(featuredDeals);
     }
