@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using TABP.Application.Cities.GetTrending;
 using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.City;
