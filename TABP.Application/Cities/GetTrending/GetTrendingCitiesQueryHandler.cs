@@ -15,8 +15,13 @@ public class GetTrendingCitiesQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<TrendingCitiesResponse>> Handle(GetTrendingCitiesQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TrendingCitiesResponse>> Handle(
+        GetTrendingCitiesQuery request,
+        CancellationToken cancellationToken)
     {
+        if (request.Limit < 1)
+            throw new ArgumentException("The limit must be greater than zero");
+
         var trendingHotels = await _bookingRepository.GetTrendingCities(request.Limit);
 
         return _mapper.Map<IEnumerable<TrendingCitiesResponse>>(trendingHotels);
