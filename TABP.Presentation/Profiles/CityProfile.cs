@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TABP.Application.Cities.GetForAdmin;
+using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Presentation.DTOs.City;
 
 namespace TABP.Presentation.Profiles;

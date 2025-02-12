@@ -1,4 +1,4 @@
-﻿namespace TABP.Application.Cities.GetTrending;
+﻿namespace TABP.Application.Cities.Queries.GetTrending;
 public class TrendingCitiesResponse
 {
     public Guid Id { get; set; }

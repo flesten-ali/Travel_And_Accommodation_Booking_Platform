@@ -1,6 +1,6 @@
 ﻿using TABP.Domain.Entities;
 
-namespace TABP.Application.Cities.GetForAdmin;
+namespace TABP.Application.Cities.Queries.GetForAdmin;
 public class CityForAdminResponse
 {
     public Guid Id { get; set; }

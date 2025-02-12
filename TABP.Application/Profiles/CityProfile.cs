@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using TABP.Application.Cities.GetForAdmin;
-using TABP.Application.Cities.GetTrending;
+using TABP.Application.Cities.Queries.GetForAdmin;
+using TABP.Application.Cities.Queries.GetTrending;
 using TABP.Domain.Models;
 
 namespace TABP.Application.Profiles;

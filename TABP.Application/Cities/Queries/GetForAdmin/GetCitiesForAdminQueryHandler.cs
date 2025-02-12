@@ -3,7 +3,7 @@ using MediatR;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
-namespace TABP.Application.Cities.GetForAdmin;
+namespace TABP.Application.Cities.Queries.GetForAdmin;
 public class GetCitiesForAdminQueryHandler
     : IRequestHandler<GetCitiesForAdminQuery, PaginatedList<CityForAdminResponse>>
 {
