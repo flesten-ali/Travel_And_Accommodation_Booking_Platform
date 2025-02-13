@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using TABP.Presentation.DTOs;
-using TABP.Presentation.Validators.Hotel.Common;
+using TABP.Presentation.Validators.Common;
 
 namespace TABP.Presentation.Validators.Hotel;
 public class UploadHotelThumbnailRequestValidator : AbstractValidator<UploadHotelThumbnailRequest>

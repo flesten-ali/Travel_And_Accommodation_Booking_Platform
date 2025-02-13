@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
-namespace TABP.Presentation.Validators.Hotel.Common;
+namespace TABP.Presentation.Validators.Common;
 public class ImageFileValidator : AbstractValidator<IFormFile>
 {
     private static readonly string[] ValidFormats = ["image/jpeg", "image/png", "image/webp"];

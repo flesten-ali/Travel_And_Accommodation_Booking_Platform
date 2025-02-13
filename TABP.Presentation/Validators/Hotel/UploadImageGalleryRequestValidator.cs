@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
 using TABP.Presentation.DTOs.Hotel;
-using TABP.Presentation.Validators.Hotel.Common;
+using TABP.Presentation.Validators.Common;
 
 namespace TABP.Presentation.Validators.Hotel;
 public class UploadImageGalleryRequestValidator : AbstractValidator<UploadImageGalleryRequest>
