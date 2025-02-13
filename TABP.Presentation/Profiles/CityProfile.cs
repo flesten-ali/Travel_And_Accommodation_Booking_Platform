@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TABP.Application.Cities.Commands.Create;
+using TABP.Application.Cities.Commands.Update;
 using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Presentation.DTOs.City;
 
@@ -10,5 +11,6 @@ public class CityProfile : Profile
     {
         CreateMap<GetCitiesForAdminRequest, GetCitiesForAdminQuery>();
         CreateMap<CreateCityRequest, CreateCityCommand>();
+        CreateMap<UpdateCityRequest, UpdateCityCommand>();
     }
 }

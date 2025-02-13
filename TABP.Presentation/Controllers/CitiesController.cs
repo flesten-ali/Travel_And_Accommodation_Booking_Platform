@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TABP.Application.Cities.Commands.Create;
 using TABP.Application.Cities.Commands.Delete;
+using TABP.Application.Cities.Commands.Update;
 using TABP.Application.Cities.Queries.GetById;
 using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Application.Cities.Queries.GetTrending;
@@ -88,6 +89,22 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     public async Task<IActionResult> DeleteCity(Guid id)
     {
         var command = new DeleteCityCommand { Id = id };
+
+        await _mediator.Send(command);
+
+        return NoContent();
+    }
+
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> UpdateCity(Guid id, UpdateCityRequest request)
+    {
+        var command = _mapper.Map<UpdateCityCommand>(request);
+        command.Id = id;
 
         await _mediator.Send(command);
 
