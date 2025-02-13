@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TABP.Application.Cities.Commands.Create;
 using TABP.Application.Cities.Commands.Delete;
+using TABP.Application.Cities.Commands.Thumbnail;
 using TABP.Application.Cities.Commands.Update;
 using TABP.Application.Cities.Queries.GetById;
 using TABP.Application.Cities.Queries.GetForAdmin;
@@ -105,6 +106,22 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var command = _mapper.Map<UpdateCityCommand>(request);
         command.Id = id;
+
+        await _mediator.Send(command);
+
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}/thumbnail")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> UploadCityThumbnail(Guid id, [FromForm] UploadCityThumbnailRequest request)
+    {
+        var command = _mapper.Map<UploadCityThumbnailCommand>(request);
+        command.CityId = id;
 
         await _mediator.Send(command);
 
