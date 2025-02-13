@@ -1,5 +1,5 @@
-﻿namespace TABP.Domain.Models;
-public class CityForAdminResult
+﻿namespace TABP.Application.Cities.Queries.GetForAdmin;
+public class CityForAdminResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

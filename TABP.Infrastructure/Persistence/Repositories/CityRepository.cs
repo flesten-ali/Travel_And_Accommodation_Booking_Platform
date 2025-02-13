@@ -18,6 +18,7 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
             PostOffice = c.PostOffice,
             CreatedDate = c.CreatedDate,
             UpdatedDate = c.UpdatedDate,
+            NumberOfHotels = c.Hotels.Count(),
         });
 
         var requestedPage = PaginationExtenstions.GetRequestedPage(cities, pageNumber, pageSize);

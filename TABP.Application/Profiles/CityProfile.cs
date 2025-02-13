@@ -2,6 +2,7 @@
 using TABP.Application.Cities.Commands.Create;
 using TABP.Application.Cities.Commands.Thumbnail;
 using TABP.Application.Cities.Common;
+using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Application.Cities.Queries.GetTrending;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
@@ -14,9 +15,9 @@ public class CityProfile : Profile
     {
         CreateMap<TrendingCitiesResult, TrendingCitiesResponse>();
 
-        CreateMap<CityForAdminResult, CityResponse>();
+        CreateMap<CityForAdminResult, CityForAdminResponse>();
 
-        CreateMap<PaginatedList<CityForAdminResult>, PaginatedList<CityResponse>>();
+        CreateMap<PaginatedList<CityForAdminResult>, PaginatedList<CityForAdminResponse>>();
 
         CreateMap<CreateCityCommand, City>();
 

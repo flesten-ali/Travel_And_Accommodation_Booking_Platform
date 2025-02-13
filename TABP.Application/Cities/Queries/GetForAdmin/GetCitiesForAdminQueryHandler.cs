@@ -6,7 +6,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Application.Cities.Queries.GetForAdmin;
 public class GetCitiesForAdminQueryHandler
-    : IRequestHandler<GetCitiesForAdminQuery, PaginatedList<CityResponse>>
+    : IRequestHandler<GetCitiesForAdminQuery, PaginatedList<CityForAdminResponse>>
 {
     private readonly ICityRepository _cityRepository;
     private readonly IMapper _mapper;
@@ -16,12 +16,12 @@ public class GetCitiesForAdminQueryHandler
         _cityRepository = cityRepository;
         _mapper = mapper;
     }
-    public async Task<PaginatedList<CityResponse>> Handle(
+    public async Task<PaginatedList<CityForAdminResponse>> Handle(
         GetCitiesForAdminQuery request,
         CancellationToken cancellationToken)
     {
         var cities = await _cityRepository.GetCitiesForAdmin(request.PageSize, request.PageNumber);
 
-        return _mapper.Map<PaginatedList<CityResponse>>(cities);
+        return _mapper.Map<PaginatedList<CityForAdminResponse>>(cities);
     }
 }
