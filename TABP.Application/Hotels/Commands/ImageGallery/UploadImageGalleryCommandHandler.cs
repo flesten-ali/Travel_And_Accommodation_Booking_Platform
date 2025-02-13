@@ -7,7 +7,7 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Hotels.Commands.ImageGallery;
-internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGalleryCommand, Guid>
+internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGalleryCommand>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
@@ -30,7 +30,7 @@ internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGal
         _mapper = mapper;
     }
 
-    public async Task<Guid> Handle(UploadImageGalleryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UploadImageGalleryCommand request, CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
@@ -47,6 +47,6 @@ internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGal
         await _imageRepository.AddAsync(image);
         await _unitOfWork.SaveChangesAsync();
 
-        return image.Id;
+        return Unit.Value;
     }
 }
