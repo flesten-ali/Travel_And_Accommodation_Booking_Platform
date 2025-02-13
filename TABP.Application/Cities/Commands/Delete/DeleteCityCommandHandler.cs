@@ -19,7 +19,7 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
         var city = await _cityRepository.GetByIdAsync(request.Id)
             ?? throw new NotFoundException("City not found");
 
-        _cityRepository.DeleteAsync(city);
+        _cityRepository.Delete(city);
         await _unitOfWork.SaveChangesAsync();
 
         return Unit.Value;

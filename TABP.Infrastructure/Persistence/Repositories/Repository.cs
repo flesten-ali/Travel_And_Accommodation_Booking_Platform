@@ -76,8 +76,17 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         return entity;
     }
 
-    public void DeleteAsync(T entity)
+    public void Delete(T entity)
     {
         DbSet.Remove(entity);
+    }
+
+    public void Update(T entity)
+    {
+        if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
+        {
+            ((IAuditEntity)entity).UpdatedDate = DateTime.Now;
+        }
+        DbSet.Update(entity);
     }
 }
