@@ -22,7 +22,7 @@ public class HotelProfile : Profile
 
         CreateMap<CreateHotelCommand, Hotel>();
 
-        CreateMap<UploadThumbnailCommand, Image>()
+        CreateMap<UploadHotelThumbnailCommand, Image>()
             .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
             .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Thumbnail));
 

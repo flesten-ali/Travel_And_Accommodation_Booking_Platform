@@ -3,9 +3,9 @@ using TABP.Presentation.DTOs;
 using TABP.Presentation.Validators.Hotel.Common;
 
 namespace TABP.Presentation.Validators.Hotel;
-public class UploadThumbnailRequestValidator : AbstractValidator<UploadThumbnailRequest>
+public class UploadHotelThumbnailRequestValidator : AbstractValidator<UploadHotelThumbnailRequest>
 {
-    public UploadThumbnailRequestValidator()
+    public UploadHotelThumbnailRequestValidator()
     {
         RuleFor(x => x.Thumbnail)
             .NotNull().WithMessage("Thumbnail file is required.")

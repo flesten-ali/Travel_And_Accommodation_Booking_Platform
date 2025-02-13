@@ -89,9 +89,9 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UploadHotelThumbnail(Guid id, [FromForm] UploadThumbnailRequest request)
+    public async Task<IActionResult> UploadHotelThumbnail(Guid id, [FromForm] UploadHotelThumbnailRequest request)
     {
-        var command = _mapper.Map<UploadThumbnailCommand>(request);
+        var command = _mapper.Map<UploadHotelThumbnailCommand>(request);
         command.HotelId = id;
 
         await _mediator.Send(command);

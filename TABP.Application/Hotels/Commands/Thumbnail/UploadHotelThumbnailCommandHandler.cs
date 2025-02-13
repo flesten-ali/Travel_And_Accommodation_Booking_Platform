@@ -8,7 +8,7 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Hotels.Commands.Thumbnail;
-public class UploadThumbnailCommandHandler : IRequestHandler<UploadThumbnailCommand>
+public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThumbnailCommand>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
@@ -16,7 +16,7 @@ public class UploadThumbnailCommandHandler : IRequestHandler<UploadThumbnailComm
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UploadThumbnailCommandHandler(
+    public UploadHotelThumbnailCommandHandler(
         IHotelRepository hotelRepository,
         IImageRepository imageRepository,
         IImageUploadService imageUploadService,
@@ -30,7 +30,7 @@ public class UploadThumbnailCommandHandler : IRequestHandler<UploadThumbnailComm
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<Unit> Handle(UploadThumbnailCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UploadHotelThumbnailCommand request, CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {

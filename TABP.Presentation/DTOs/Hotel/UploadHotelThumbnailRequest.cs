@@ -2,7 +2,7 @@
 
 namespace TABP.Presentation.DTOs;
 
-public class UploadThumbnailRequest
+public class UploadHotelThumbnailRequest
 {
     public IFormFile Thumbnail { get; set; }
 }
