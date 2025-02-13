@@ -10,6 +10,9 @@ public class CreateCityRequestValidator : AbstractValidator<CreateCityRequest>
             .NotEmpty().WithMessage("City name is required.")
             .MaximumLength(100).WithMessage("City name must not exceed 100 characters.");
 
+        RuleFor(x => x.PostalCode)
+            .MaximumLength(10).WithMessage("Postal Code must not exceed 10 characters.");
+
         RuleFor(x => x.Address)
             .MaximumLength(200).WithMessage("Address must not exceed 200 characters.");
 
