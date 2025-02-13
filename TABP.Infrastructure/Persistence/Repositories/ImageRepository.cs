@@ -15,11 +15,11 @@ public class ImageRepository : Repository<Image>, IImageRepository
         _imageUploadService = imageUploadService;
     }
 
-    public async Task DeleteByIdAsync(Guid enittyId, ImageType imageType)
+    public async Task DeleteByIdAsync(Guid entityId, ImageType imageType)
     {
         var images = await DbSet
                 .Where(img =>
-                        img.ImageableId == enittyId &&
+                        img.ImageableId == entityId &&
                         img.ImageType == imageType
                 )
                 .ToListAsync();
