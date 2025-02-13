@@ -11,12 +11,13 @@ using TABP.Application.Cities.Commands.Update;
 using TABP.Application.Cities.Queries.GetById;
 using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Application.Cities.Queries.GetTrending;
+using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.City;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/cities")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)]
+[Authorize(Roles = Roles.Admin)]
 public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
