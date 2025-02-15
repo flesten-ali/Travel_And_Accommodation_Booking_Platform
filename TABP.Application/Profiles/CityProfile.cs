@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TABP.Application.Cities.Commands.Create;
 using TABP.Application.Cities.Commands.Thumbnail;
+using TABP.Application.Cities.Commands.Update;
 using TABP.Application.Cities.Common;
 using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Application.Cities.Queries.GetTrending;
@@ -22,6 +23,8 @@ public class CityProfile : Profile
         CreateMap<CreateCityCommand, City>();
 
         CreateMap<City, CityResponse>();
+        
+        CreateMap<UpdateCityCommand, City>();
 
         CreateMap<UploadCityThumbnailCommand, Image>()
             .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.CityId))

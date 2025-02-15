@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -8,11 +9,13 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
 {
     private readonly ICityRepository _cityRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public UpdateCityCommandHandler(ICityRepository cityRepository , IUnitOfWork unitOfWork)
+    public UpdateCityCommandHandler(ICityRepository cityRepository, IUnitOfWork unitOfWork, IMapper mapper)
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<Unit> Handle(UpdateCityCommand request, CancellationToken cancellationToken)
@@ -20,11 +23,7 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
         var city = await _cityRepository.GetByIdAsync(request.Id)
             ?? throw new NotFoundException("City not found");
 
-        city.Name = request.Name;
-        city.Country = request.Country;
-        city.PostOffice = request.PostOffice;
-        city.Address = request.Address;
-        city.PostalCode = request.PostalCode;
+        _mapper.Map(request, city);
 
         _cityRepository.Update(city);
         await _unitOfWork.SaveChangesAsync();
