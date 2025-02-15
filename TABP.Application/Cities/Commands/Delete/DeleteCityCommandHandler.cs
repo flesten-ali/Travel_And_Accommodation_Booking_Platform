@@ -10,20 +10,28 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
     private readonly ICityRepository _cityRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageRepository _imageRepository;
+    private readonly IHotelRepository _hotelRepository;
 
     public DeleteCityCommandHandler(
         ICityRepository cityRepository,
         IUnitOfWork unitOfWork,
-        IImageRepository imageRepository)
+        IImageRepository imageRepository,
+        IHotelRepository hotelRepository)
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
         _imageRepository = imageRepository;
+        _hotelRepository = hotelRepository;
     }
     public async Task<Unit> Handle(DeleteCityCommand request, CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id)
             ?? throw new NotFoundException("City not found");
+
+        if (await _hotelRepository.ExistsAsync(h => h.CityId == request.Id))
+        {
+            throw new EntityInUseException("City cannot be deleted because it has dependent hotels.");
+        }
 
         await _unitOfWork.BeginTransactionAsync();
         try
