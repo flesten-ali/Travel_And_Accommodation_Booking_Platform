@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using System.Linq.Expressions;
+using TABP.Application.Extenstions;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -52,29 +53,67 @@ public class SearchHotelsQueryHandler :
 
     private static Expression<Func<Hotel, bool>> BuildFilterExpression(SearchHotelsQuery request)
     {
+        var filters = new List<Expression<Func<Hotel, bool>>>
+        {
+               IsPriceInRangeExpression(request),
+               IsRateMatchExpression(request) ,
+               IsRoomTypeMatchExpression(request) ,
+               IsAdultsMatchExpression(request) ,
+               IsCityMatchExpression(request) ,
+               IsRoomTypeMatchExpression(request) ,
+               IsAmenityMatchExpression(request),
+               IsRoomClassAvailabeExpression(request)
+        };
+
+        var combinedFilter = filters.Aggregate((current, next) => current.And(next));
+        return combinedFilter;
+    }
+
+    private static Expression<Func<Hotel, bool>> IsPriceInRangeExpression(SearchHotelsQuery request)
+    {
         return hotel =>
-            (request.MinPrice == null || hotel.RoomClasses.Any(rc => rc.Price >= request.MinPrice)) &&
-            (request.MaxPrice == null || hotel.RoomClasses.Any(rc => rc.Price <= request.MaxPrice)) &&
+             (request.MinPrice == null || hotel.RoomClasses.Any(rc => rc.Price >= request.MinPrice)) &&
+             (request.MaxPrice == null || hotel.RoomClasses.Any(rc => rc.Price <= request.MaxPrice));
+    }
 
-            (request.StarRating == null || hotel.Rate == request.StarRating) &&
+    private static Expression<Func<Hotel, bool>> IsRateMatchExpression(SearchHotelsQuery request)
+    {
+        return hotel =>
+             (request.StarRating == null || hotel.Rate == request.StarRating);
+    }
 
+    private static Expression<Func<Hotel, bool>> IsRoomTypeMatchExpression(SearchHotelsQuery request)
+    {
+        var roomType = request.RoomType?.ToLower();
+        return hotel =>
             (string.IsNullOrEmpty(request.RoomType) ||
-             hotel.RoomClasses.Any(rc => rc.RoomType.ToString().ToLower()
-                                          .Contains(request.RoomType.ToLower()))) &&
+             hotel.RoomClasses.Any(rc => rc.RoomType.ToString().ToLower().Contains(roomType)));
+    }
 
-            (request.AdultsCapacity == 0 || hotel.RoomClasses.Any(rc => rc.AdultsCapacity == request.AdultsCapacity)) &&
-            (request.ChildrenCapacity == 0 || hotel.RoomClasses.Any(rc => rc.ChildrenCapacity == request.ChildrenCapacity)) &&
+    private static Expression<Func<Hotel, bool>> IsAdultsMatchExpression(SearchHotelsQuery request)
+    {
+        return hotel =>
+             (request.AdultsCapacity == 0 || hotel.RoomClasses.Any(rc => rc.AdultsCapacity == request.AdultsCapacity)) &&
+             (request.ChildrenCapacity == 0 || hotel.RoomClasses.Any(rc => rc.ChildrenCapacity == request.ChildrenCapacity));
+    }
 
-            (string.IsNullOrEmpty(request.City) ||
-             hotel.City.Name.ToLower().Equals(request.City.ToLower())) &&
+    private static Expression<Func<Hotel, bool>> IsCityMatchExpression(SearchHotelsQuery request)
+    {
+        return hotel =>
+             (string.IsNullOrEmpty(request.City) || hotel.City.Name.ToLower().Equals(request.City.ToLower()));
+    }
 
-             hotel.RoomClasses.Any(rc =>
-               rc.Rooms.Count(room =>
-                room.Bookings.All(b => b.CheckOutDate <= request.CheckInDate || b.CheckInDate >= request.CheckOutDate)
-                ) == request.NumberOfRooms)
-               &&
+    private static Expression<Func<Hotel, bool>> IsRoomClassAvailabeExpression(SearchHotelsQuery request)
+    {
+        return hotel => hotel.RoomClasses
+        .Any(rc => rc.Rooms.Count(room =>
+                room.Bookings.All(b => b.CheckOutDate <= request.CheckInDate || b.CheckInDate >= request.CheckOutDate))
+        == request.NumberOfRooms);
+    }
 
-        (request.Amenities == null || request.Amenities.Count == 0 ||
+    private static Expression<Func<Hotel, bool>> IsAmenityMatchExpression(SearchHotelsQuery request)
+    {
+        return hotel => (request.Amenities == null || request.Amenities.Count == 0 ||
              request.Amenities.All(reqAmenity =>
                  hotel.RoomClasses.Any(rc => rc.Name.ToLower().Contains(reqAmenity.ToLower()))));
     }
