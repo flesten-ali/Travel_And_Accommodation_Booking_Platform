@@ -54,7 +54,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         {
             throw new NotFoundException(HotelExceptionMessages.NotFound);
         }
-        // where did u assure that the rooms not already booked!
+
         var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new NotFoundException(UserExceptionMessages.NotFound);
 
