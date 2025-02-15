@@ -2,6 +2,7 @@
 using TABP.Application.Hotels.Commands.Create;
 using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
+using TABP.Application.Hotels.Commands.Update;
 using TABP.Application.Hotels.Common;
 using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.GetFeaturedDeals;
@@ -48,5 +49,7 @@ public class HotelProfile : Profile
         CreateMap<HotelForAdminResult, HotelForAdminResponse>();
 
         CreateMap<PaginatedList<HotelForAdminResult>, PaginatedList<HotelForAdminResponse>>();
+
+        CreateMap<UpdateHotelCommand, Hotel>();
     }
 }
