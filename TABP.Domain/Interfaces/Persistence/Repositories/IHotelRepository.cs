@@ -12,4 +12,6 @@ public interface IHotelRepository : IRepository<Hotel>
         int pageCount);
 
     Task<IEnumerable<FeaturedDealResult>> GetFeaturedDeals(int NumberOfDeals);
+
+    Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdmin(int pageSize, int pageNumber);
 }

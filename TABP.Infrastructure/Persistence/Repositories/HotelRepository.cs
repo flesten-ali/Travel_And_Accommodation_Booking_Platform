@@ -73,4 +73,22 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
             .ToListAsync();
         return featuredDeals;
     }
+
+    public async Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdmin(int pageSize, int pageNumber)
+    {
+        var hotels = DbSet.Select(h => new HotelForAdminResult
+        {
+            Id = h.Id,
+            CityName = h.City.Name,
+            Name = h.Name,
+            Rate = h.Rate,
+            CreatedDate = h.CreatedDate,
+            UpdatedDate = h.UpdatedDate,
+            OwnerName = h.Owner.Name,
+        }).AsNoTracking();
+
+        var requestedPage = PaginationExtenstions.GetRequestedPage(hotels, pageNumber, pageSize);
+        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
+        return new PaginatedList<HotelForAdminResult>(await hotels.ToListAsync(), paginationMetaDate);
+    }
 }
