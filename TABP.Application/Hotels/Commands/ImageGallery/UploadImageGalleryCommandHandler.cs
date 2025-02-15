@@ -44,7 +44,7 @@ internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGal
         image.ImageUrl = imageUrl;
         image.PublicId = publicId;
 
-        await _imageRepository.AddAsync(image);
+        await _imageRepository.CreateAsync(image);
         await _unitOfWork.SaveChangesAsync();
 
         return Unit.Value;

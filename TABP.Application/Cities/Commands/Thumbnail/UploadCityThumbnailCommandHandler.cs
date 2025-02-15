@@ -48,7 +48,7 @@ public class UploadCityThumbnailCommandHandler : IRequestHandler<UploadCityThumb
             image.PublicId = publicId;
 
             await _imageRepository.DeleteByIdAsync(request.CityId, ImageType.Thumbnail);
-            await _imageRepository.AddAsync(image);
+            await _imageRepository.CreateAsync(image);
 
             await _unitOfWork.CommitAsync();
 

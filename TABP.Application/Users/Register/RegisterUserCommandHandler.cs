@@ -37,7 +37,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         var user = _mapper.Map<User>(request);
 
         user.PasswordHash = _passwordHasher.Hash(request.Password);
-        await _userRepository.AddAsync(user);
+        await _userRepository.CreateAsync(user);
         await _unitOfWork.SaveChangesAsync();
 
         return Unit.Value;

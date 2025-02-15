@@ -17,7 +17,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/cities")]
 [ApiController]
-[Authorize(Roles = Roles.Admin)]
+//[Authorize(Roles = Roles.Admin)]
 public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;

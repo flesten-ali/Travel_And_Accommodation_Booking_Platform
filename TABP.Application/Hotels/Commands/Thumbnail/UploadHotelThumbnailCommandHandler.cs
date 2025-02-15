@@ -49,7 +49,7 @@ public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThu
 
             await _imageRepository.DeleteByIdAsync(image.ImageableId, ImageType.Thumbnail);
 
-            await _imageRepository.AddAsync(image);
+            await _imageRepository.CreateAsync(image);
             await _unitOfWork.CommitAsync();
 
             return Unit.Value;

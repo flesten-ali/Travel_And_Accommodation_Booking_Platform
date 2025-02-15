@@ -37,7 +37,7 @@ public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand>
 
         var cartItem = _mapper.Map<CartItem>(request);
 
-        await _cartItemRepository.AddAsync(cartItem);
+        await _cartItemRepository.CreateAsync(cartItem);
         await _unitOfWork.SaveChangesAsync();
 
         return Unit.Value;

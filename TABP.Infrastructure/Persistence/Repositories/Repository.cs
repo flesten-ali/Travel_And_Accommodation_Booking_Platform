@@ -17,7 +17,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         _context = context;
     }
 
-    public async Task AddAsync(T entity)
+    public async Task CreateAsync(T entity)
     {
         if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
         {

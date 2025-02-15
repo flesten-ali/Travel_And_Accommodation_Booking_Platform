@@ -94,7 +94,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
                     TotalPrice = CalculateTotalPrice(rooms, request.CheckInDate, request.CheckOutDate),
                 }
             };
-            await _bookingRepository.AddAsync(booking);
+            await _bookingRepository.CreateAsync(booking);
 
             var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
             var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml);

@@ -53,7 +53,7 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
         hotel.City = city;
         hotel.Owner = owner;
 
-        await _hotelRepository.AddAsync(hotel);
+        await _hotelRepository.CreateAsync(hotel);
         await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<HotelResponse>(hotel);

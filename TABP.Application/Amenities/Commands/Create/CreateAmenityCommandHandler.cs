@@ -33,7 +33,7 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
 
         var amenity = _mapper.Map<Amenity>(request);
 
-        await _amenityRepository.AddAsync(amenity);
+        await _amenityRepository.CreateAsync(amenity);
         await _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<AmenityResponse>(amenity);
