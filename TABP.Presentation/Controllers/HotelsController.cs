@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TABP.Application.Hotels.Commands.Create;
+using TABP.Application.Hotels.Commands.Delete;
 using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Application.Hotels.Commands.Update;
@@ -156,6 +157,21 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var command = _mapper.Map<UpdateHotelCommand>(request);
         command.Id = id;
+
+        await _mediator.Send(command);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteHotel(Guid id)
+    {
+        var command = new DeleteHotelCommand { Id = id };
 
         await _mediator.Send(command);
 
