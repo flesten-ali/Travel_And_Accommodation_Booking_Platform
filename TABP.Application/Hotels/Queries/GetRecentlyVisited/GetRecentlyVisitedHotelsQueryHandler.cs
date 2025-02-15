@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -27,7 +28,7 @@ public class GetRecentlyVisitedHotelsQueryHandler
     {
         if (!await _userRepository.ExistsAsync(u => u.Id == request.GuestId))
         {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException(UserExceptionMessages.NotFound);
         }
 
         var recentlyVisitedHotels = await _bookingRepository.GetRecentlyVisitedHotels(request.GuestId, request.Limit);

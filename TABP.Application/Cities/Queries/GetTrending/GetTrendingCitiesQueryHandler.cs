@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Cities.Queries.GetTrending;
@@ -20,7 +21,7 @@ public class GetTrendingCitiesQueryHandler
         CancellationToken cancellationToken)
     {
         if (request.Limit < 1)
-            throw new ArgumentException("The limit must be greater than zero");
+            throw new ArgumentException(ValidationExceptionMessages.LimitGreaterThanZero);
 
         var trendingHotels = await _bookingRepository.GetTrendingCities(request.Limit);
 

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TABP.Domain.Enums;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -26,11 +27,11 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
     public async Task<Unit> Handle(DeleteCityCommand request, CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id)
-            ?? throw new NotFoundException("City not found");
+            ?? throw new NotFoundException(CityExceptionMessages.NotFound);
 
         if (await _hotelRepository.ExistsAsync(h => h.CityId == request.Id))
         {
-            throw new EntityInUseException("City cannot be deleted because it has dependent hotels.");
+            throw new EntityInUseException(CityExceptionMessages.EntityInUse);
         }
 
         await _unitOfWork.BeginTransactionAsync();

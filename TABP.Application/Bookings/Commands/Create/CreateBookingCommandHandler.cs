@@ -4,6 +4,7 @@ using TABP.Application.Bookings.Common;
 using TABP.Domain.Constants;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -51,26 +52,26 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
-            throw new NotFoundException("Hotel not found");
+            throw new NotFoundException(HotelExceptionMessages.NotFound);
         }
-
+        // where did u assure that the rooms not already booked!
         var user = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new NotFoundException("User not found");
+            ?? throw new NotFoundException(UserExceptionMessages.NotFound);
 
         if (user.Role != Roles.Guest)
         {
-            throw new UserUnauthorizedException("Only Guest can make bookings");
+            throw new UserUnauthorizedException(UserExceptionMessages.UnauthorizedBooking);
         }
 
         var rooms = await _roomRepository.GetAllByIdAsync(request.RoomIds);
         if (rooms == null || rooms.Count() != request.RoomIds.Count())
         {
-            throw new NotFoundException("One or more room not found");
+            throw new NotFoundException(RoomExceptionMessages.NotFound);
         }
 
         if (rooms.Any(r => r.RoomClass.HotelId != request.HotelId))
         {
-            throw new RoomNotBelongToHotelException("One or more rooms do not belong to the specified hotel");
+            throw new RoomNotBelongToHotelException(RoomExceptionMessages.NotBelongToHotel);
         }
 
         await _unitOfWork.BeginTransactionAsync();

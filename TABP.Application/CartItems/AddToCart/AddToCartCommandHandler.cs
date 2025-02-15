@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Domain.Entities;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -30,10 +31,10 @@ public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand>
     public async Task<Unit> Handle(AddToCartCommand request, CancellationToken cancellationToken)
     {
         _ = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new NotFoundException("User not found");
+            ?? throw new NotFoundException(UserExceptionMessages.NotFound);
 
         _ = await _roomClassRepository.GetByIdAsync(request.RoomClassId)
-            ?? throw new NotFoundException("Room class not found");
+            ?? throw new NotFoundException(RoomClassExceptionMessages.NotFound);
 
         var cartItem = _mapper.Map<CartItem>(request);
 

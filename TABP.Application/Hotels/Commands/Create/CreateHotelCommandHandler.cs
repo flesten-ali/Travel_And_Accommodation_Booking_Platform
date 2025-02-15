@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.Application.Hotels.Common;
 using TABP.Domain.Entities;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -38,15 +39,15 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
     public async Task<HotelResponse> Handle(CreateHotelCommand request, CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.CityId)
-            ?? throw new NotFoundException("City not found");
+            ?? throw new NotFoundException(CityExceptionMessages.NotFound);
 
         var owner = await _ownerRepository.GetByIdAsync(request.OwnerId)
-            ?? throw new NotFoundException("Owner not found");
+            ?? throw new NotFoundException(OwnerExceptionMessages.NotFound);
 
         if (await _hotelRepository.ExistsAsync(hotel =>
            hotel.LatitudeCoordinates == request.LatitudeCoordinates && hotel.LongitudeCoordinates == request.LongitudeCoordinates))
         {
-            throw new ExistsException("Hotel is exists in the provided location");
+            throw new ExistsException(HotelExceptionMessages.ExistsInLocation);
         }
 
         var hotel = _mapper.Map<Hotel>(request);

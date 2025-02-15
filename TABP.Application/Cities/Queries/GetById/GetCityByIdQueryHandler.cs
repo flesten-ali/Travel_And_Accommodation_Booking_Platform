@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Cities.Common;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -19,7 +20,7 @@ public class GetCityByIdQueryHandler : IRequestHandler<GetCityByIdQuery, CityRes
     public async Task<CityResponse> Handle(GetCityByIdQuery request, CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id)
-            ?? throw new NotFoundException("City not found");
+            ?? throw new NotFoundException(CityExceptionMessages.NotFound);
 
         return _mapper.Map<CityResponse>(city);
     }

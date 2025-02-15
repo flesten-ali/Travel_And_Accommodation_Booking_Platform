@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Hotels.Queries.GetFeaturedDeals;
@@ -17,7 +18,7 @@ public class GetFeaturedDealsQueryHandler : IRequestHandler<GetFeaturedDealsQuer
     public async Task<IEnumerable<FeaturedDealResponse>> Handle(GetFeaturedDealsQuery request, CancellationToken cancellationToken)
     {
         if (request.Limit < 1)
-            throw new ArgumentException("The number of deals must be greater than zero");
+            throw new ArgumentException(ValidationExceptionMessages.LimitGreaterThanZero);
 
         var featuredDeals = await _hotelRepository.GetFeaturedDeals(request.Limit);
 

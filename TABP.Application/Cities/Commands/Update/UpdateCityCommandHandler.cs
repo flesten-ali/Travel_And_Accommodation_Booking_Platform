@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -21,7 +22,7 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
     public async Task<Unit> Handle(UpdateCityCommand request, CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id)
-            ?? throw new NotFoundException("City not found");
+            ?? throw new NotFoundException(CityExceptionMessages.NotFound);
 
         _mapper.Map(request, city);
 

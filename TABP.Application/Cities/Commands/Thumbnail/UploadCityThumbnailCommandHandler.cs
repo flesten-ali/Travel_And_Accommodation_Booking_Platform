@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -34,7 +35,7 @@ public class UploadCityThumbnailCommandHandler : IRequestHandler<UploadCityThumb
     {
         if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId))
         {
-            throw new NotFoundException("City not found");
+            throw new NotFoundException(CityExceptionMessages.NotFound);
         }
 
         await _unitOfWork.BeginTransactionAsync();

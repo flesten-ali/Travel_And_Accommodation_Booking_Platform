@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Domain.Entities;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -34,7 +35,7 @@ internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGal
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
-            throw new NotFoundException("Hotel is not found");
+            throw new NotFoundException(HotelExceptionMessages.NotFound);
         }
 
         var publicId = Guid.NewGuid().ToString();

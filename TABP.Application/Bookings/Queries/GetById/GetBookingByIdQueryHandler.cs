@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Bookings.Common;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -21,7 +22,7 @@ public class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, B
         var booking = await _bookingRepository.GetByIdIncludeProperties(
             request.BookingId,
             b => b.Invoice,
-            b => b.Rooms) ?? throw new NotFoundException("Booking not found");
+            b => b.Rooms) ?? throw new NotFoundException(BookingExceptionMessages.NotFound);
 
         return _mapper.Map<BookingResponse>(booking);
     }

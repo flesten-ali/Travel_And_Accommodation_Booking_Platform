@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -29,23 +30,23 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
     public async Task<Unit> Handle(UpdateHotelCommand request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.Id)
-            ?? throw new NotFoundException("Hotel not found");
+            ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
 
         if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId))
         {
-            throw new NotFoundException("City not found");
+            throw new NotFoundException(CityExceptionMessages.NotFound);
         }
 
         if (!await _ownerRepository.ExistsAsync(o => o.Id == request.OwnerId))
         {
-            throw new NotFoundException("Owner not found");
+            throw new NotFoundException(OwnerExceptionMessages.NotFound);
         }
 
         if (await _hotelRepository.ExistsAsync(hotel =>
           hotel.LatitudeCoordinates == request.LatitudeCoordinates
           && hotel.LongitudeCoordinates == request.LongitudeCoordinates))
         {
-            throw new ExistsException("Hotel is exists in the provided location");
+            throw new ExistsException(HotelExceptionMessages.ExistsInLocation);
         }
 
         _mapper.Map(request, hotel);

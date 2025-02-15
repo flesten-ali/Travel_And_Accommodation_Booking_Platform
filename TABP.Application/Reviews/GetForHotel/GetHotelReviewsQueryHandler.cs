@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
@@ -22,7 +23,7 @@ public class GetHotelReviewsQueryHandler
         CancellationToken cancellationToken)
     {
         var reviews = await _reviewRepository.GetByHotelIdAsync(request.HotelId, request.PageSize, request.PageNumber)
-              ?? throw new NotFoundException($"No reviews found for the hotel ID {request.HotelId}");
+              ?? throw new NotFoundException(ReviewExceptionMessages.NotFound);
 
         return _mapper.Map<PaginatedList<HotelReviewsQueryReponse>>(reviews);
     }

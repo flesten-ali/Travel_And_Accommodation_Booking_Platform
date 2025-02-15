@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TABP.Domain.Enums;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -26,11 +27,11 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
     public async Task<Unit> Handle(DeleteHotelCommand request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.Id)
-            ?? throw new NotFoundException("Hotel not found");
+            ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
 
         if (await _roomClassRepository.ExistsAsync(rc => rc.HotelId == request.Id))
         {
-            throw new EntityInUseException("Hotel cannot be deleted because it has dependant room classes");
+            throw new EntityInUseException(HotelExceptionMessages.EntityInUse);
         }
 
         await _unitOfWork.BeginTransactionAsync();

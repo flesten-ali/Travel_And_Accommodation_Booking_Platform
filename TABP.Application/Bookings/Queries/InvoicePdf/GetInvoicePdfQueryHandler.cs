@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Html;
@@ -27,7 +28,7 @@ public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, Inv
     public async Task<InvoicePdfResponse> Handle(GetInvoicePdfQuery request, CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdIncludeProperties(request.BookingId, b => b.Invoice)
-            ?? throw new NotFoundException("Booking not found");
+            ?? throw new NotFoundException(BookingExceptionMessages.NotFound);
 
         var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
         var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml);

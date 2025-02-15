@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.Application.Amenities.Common;
 using TABP.Domain.Entities;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
@@ -28,7 +29,7 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
     {
         if (await _amenityRepository.ExistsAsync(a => a.Name == request.Name))
         {
-            throw new ExistsException("Amenity already exists");
+            throw new ExistsException(AmenityExceptionMessages.NotFound);
         }
 
         var amenity = _mapper.Map<Amenity>(request);

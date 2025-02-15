@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Amenities.Common;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -19,7 +20,7 @@ internal class GetAmenityByIdQuerHandler : IRequestHandler<GetAmenityByIdQuery, 
     public async Task<AmenityResponse> Handle(GetAmenityByIdQuery request, CancellationToken cancellationToken)
     {
         var amenity = await _amenityRepository.GetByIdAsync(request.AmenityId)
-            ?? throw new NotFoundException("Amenity not found");
+            ?? throw new NotFoundException(AmenityExceptionMessages.NotFound);
 
         return _mapper.Map<AmenityResponse>(amenity);
     }

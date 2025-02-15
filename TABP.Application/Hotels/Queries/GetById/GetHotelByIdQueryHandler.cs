@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Hotels.Common;
+using TABP.Domain.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -19,7 +20,7 @@ public class GetHotelByIdQueryHandler : IRequestHandler<GetHotelByIdQuery, Hotel
     public async Task<HotelResponse> Handle(GetHotelByIdQuery request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdIncludeProperties(request.HotelId, h => h.Owner, h => h.City)
-            ?? throw new NotFoundException("Hotel not found");
+            ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
 
         return _mapper.Map<HotelResponse>(hotel);
     }
