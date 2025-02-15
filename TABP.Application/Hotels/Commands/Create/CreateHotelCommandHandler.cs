@@ -43,7 +43,7 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
         var owner = await _ownerRepository.GetByIdAsync(request.OwnerId)
             ?? throw new NotFoundException("Owner not found");
 
-        if (!await _hotelRepository.ExistsAsync(hotel =>
+        if (await _hotelRepository.ExistsAsync(hotel =>
            hotel.LatitudeCoordinates == request.LatitudeCoordinates && hotel.LongitudeCoordinates == request.LongitudeCoordinates))
         {
             throw new ExistsException("Hotel is exists in the provided location");
