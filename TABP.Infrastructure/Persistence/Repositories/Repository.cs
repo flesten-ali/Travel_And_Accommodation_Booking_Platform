@@ -38,7 +38,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
 
     public async Task<T?> GetByIdAsync(Guid id)
     {
-        return await DbSet.Where(e => e.Id == id).FirstOrDefaultAsync();
+        return await DbSet.FindAsync(id);
     }
 
     public async Task<T?> GetByIdIncludeProperties(Guid entityId, params Expression<Func<T, object>>[] includeProperties)
