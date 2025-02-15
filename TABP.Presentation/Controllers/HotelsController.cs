@@ -7,6 +7,7 @@ using System.Text.Json;
 using TABP.Application.Hotels.Commands.Create;
 using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
+using TABP.Application.Hotels.Commands.Update;
 using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.GetFeaturedDeals;
 using TABP.Application.Hotels.Queries.GetForAdmin;
@@ -24,7 +25,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;
 
-    [HttpGet]
+    [HttpGet("search")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -143,5 +144,21 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
             JsonSerializer.Serialize(hotels.PaginationMetaData));
 
         return Ok(hotels.Items);
+    }
+
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateHotel(Guid id, UpdateHotelRequest request)
+    {
+        var command = _mapper.Map<UpdateHotelCommand>(request);
+        command.Id = id;
+
+        await _mediator.Send(command);
+
+        return NoContent();
     }
 }
