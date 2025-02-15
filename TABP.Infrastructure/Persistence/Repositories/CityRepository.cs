@@ -19,7 +19,7 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
             CreatedDate = c.CreatedDate,
             UpdatedDate = c.UpdatedDate,
             NumberOfHotels = c.Hotels.Count(),
-        });
+        }).AsNoTracking();
 
         var requestedPage = PaginationExtenstions.GetRequestedPage(cities, pageNumber, pageSize);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
