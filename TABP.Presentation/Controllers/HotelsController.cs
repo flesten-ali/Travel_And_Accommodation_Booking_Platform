@@ -9,16 +9,16 @@ using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.GetFeaturedDeals;
+using TABP.Application.Hotels.Queries.GetForAdmin;
 using TABP.Application.Hotels.Queries.GetHotelById;
 using TABP.Application.Hotels.Queries.SearchHotels;
-using TABP.Domain.Constants;
 using TABP.Presentation.DTOs;
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/hotels")]
 [ApiController]
-[Authorize(Roles = Roles.Admin)]
+//[Authorize(Roles = Roles.Admin)]
 public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -126,5 +126,22 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         var featuredDeals = await _mediator.Send(query);
 
         return Ok(featuredDeals);
+    }
+
+    [HttpGet("get-for-admin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetHotelsForAdmin([FromQuery] GetHotelsForAdminRequest request)
+    {
+        var query = _mapper.Map<GetHotelsForAdminQuery>(request);
+
+        var hotels = await _mediator.Send(query);
+
+        Response.Headers.Append("x-pagination",
+            JsonSerializer.Serialize(hotels.PaginationMetaData));
+
+        return Ok(hotels.Items);
     }
 }
