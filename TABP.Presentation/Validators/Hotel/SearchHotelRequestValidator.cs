@@ -11,13 +11,13 @@ public class SearchHotelRequestValidator : AbstractValidator<SearchHotelRequest>
            .MaximumLength(100).WithMessage("City name cannot exceed 100 characters.");
 
         RuleFor(x => x.CheckInDate)
-            .NotNull().WithMessage("Check-in date is required.")
+            .NotEmpty().WithMessage("Check-in date is required. Format: MM-dd-yyyy.")
             .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Check-in date cannot be in the past.")
             .LessThan(x => x.CheckOutDate)
             .WithMessage("Check-in date must be before the check-out date.");
 
         RuleFor(x => x.CheckOutDate)
-            .NotNull().WithMessage("Check-out date is required.")
+            .NotEmpty().WithMessage("Check-out date is required. Format: MM-dd-yyyy.")
             .GreaterThan(x => x.CheckInDate)
             .WithMessage("Check-out date must be after the check-in date.");
 
@@ -31,8 +31,9 @@ public class SearchHotelRequestValidator : AbstractValidator<SearchHotelRequest>
             .GreaterThan(0).WithMessage("Number of rooms must be at least 1.");
 
         RuleFor(x => x.SortBy)
-            .Must(value => string.IsNullOrEmpty(value) || new[] { "price", "starrating", "name" }.Contains(value.ToLower()))
-            .WithMessage("SortBy must be 'price', 'starrating', or 'name'.");
+            .MaximumLength(20).WithMessage("SortBy cannot exceed 20 characters.")
+            .Must(value => string.IsNullOrEmpty(value) || value.All(char.IsLetter))
+            .WithMessage("SortBy must contain only letters.");
 
         RuleFor(x => x.MinPrice)
             .GreaterThanOrEqualTo(0).WithMessage("Min price cannot be negative.")

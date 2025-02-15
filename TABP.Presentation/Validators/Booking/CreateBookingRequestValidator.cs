@@ -18,12 +18,15 @@ public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequ
             .NotEmpty()
             .WithMessage("At least one room must be selected.");
 
-        RuleFor(b => b.CheckInDate)
-            .GreaterThan(DateTime.UtcNow)
-            .WithMessage("Check-in date must be in the future.");
+        RuleFor(x => x.CheckInDate)
+            .NotEmpty().WithMessage("Check-in date is required. Format: MM-dd-yyyy.")
+            .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Check-in date cannot be in the past.")
+            .LessThan(x => x.CheckOutDate)
+            .WithMessage("Check-in date must be before the check-out date.");
 
-        RuleFor(b => b.CheckOutDate)
-            .GreaterThan(b => b.CheckInDate)
+        RuleFor(x => x.CheckOutDate)
+            .NotEmpty().WithMessage("Check-out date is required. Format: MM-dd-yyyy.")
+            .GreaterThan(x => x.CheckInDate)
             .WithMessage("Check-out date must be after the check-in date.");
 
         RuleFor(b => b.PaymentMethod)
