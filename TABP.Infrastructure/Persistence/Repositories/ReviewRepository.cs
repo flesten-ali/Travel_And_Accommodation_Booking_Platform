@@ -10,15 +10,15 @@ public class ReviewRepository(AppDbContext context) : Repository<Review>(context
 {
     public async Task<PaginatedList<Review>?> GetByHotelIdAsync(Guid hotelId, int pageSize, int pageNumber)
     {
-        var reviews = DbSet.Where(r => r.HotelId == hotelId).Include(r=>r.User);
+        var reviews = DbSet.Where(r => r.HotelId == hotelId).Include(r => r.User);
 
         if (reviews == null)
         {
             return null;
         }
 
-        var requstedPage = reviews.GetRequestedPage(pageNumber, pageSize);
-        var paginationMetaData = await requstedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
+        var requstedPage = reviews.GetRequestedPage(pageSize, pageNumber);
+        var paginationMetaData = await requstedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
 
         return new PaginatedList<Review>(await requstedPage.ToListAsync(), paginationMetaData);
     }

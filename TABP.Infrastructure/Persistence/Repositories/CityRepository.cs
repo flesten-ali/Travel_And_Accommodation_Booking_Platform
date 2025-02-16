@@ -21,8 +21,8 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
             NumberOfHotels = c.Hotels.Count(),
         }).AsNoTracking();
 
-        var requestedPage = PaginationExtenstions.GetRequestedPage(cities, pageNumber, pageSize);
-        var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
+        var requestedPage = PaginationExtenstions.GetRequestedPage(cities, pageSize, pageNumber);
+        var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
         return new PaginatedList<CityForAdminResult>(await requestedPage.ToListAsync(), paginationMetaData);
     }
 }

@@ -16,8 +16,8 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
                                    .AsQueryable()
                                    .AsNoTracking();
 
-        var requestedPage = roomClasses.GetRequestedPage(pageNumber, pageSize);
-        var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
+        var requestedPage = roomClasses.GetRequestedPage(pageSize, pageNumber);
+        var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
 
         return new PaginatedList<RoomClass>(await requestedPage.ToListAsync(), paginationMetaData);
     }
@@ -34,8 +34,8 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
             NumberOfRooms = rc.Rooms.Count(),
             RoomType = rc.RoomType,
         });
-        var requestedPage = roomClasses.GetRequestedPage(pageNumber, pageSize);
-        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
+        var requestedPage = roomClasses.GetRequestedPage(pageSize, pageNumber);
+        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
 
         return new PaginatedList<RoomClassForAdminResult>(await requestedPage.ToListAsync(), paginationMetaDate);
     }

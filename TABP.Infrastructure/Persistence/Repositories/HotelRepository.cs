@@ -31,8 +31,8 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
                                   .FirstOrDefault() ?? ""
         });
 
-        var resultToReturn = selectedResult.GetRequestedPage(pageNumber, pageSize);
-        var paginationMetaData = await resultToReturn.GetPaginationMetaDataAsync(pageNumber, pageSize);
+        var resultToReturn = selectedResult.GetRequestedPage(pageSize, pageNumber);
+        var paginationMetaData = await resultToReturn.GetPaginationMetaDataAsync(pageSize, pageNumber);
 
         return new PaginatedList<SearchHotelResult>(await resultToReturn.ToListAsync(), paginationMetaData);
     }
@@ -87,8 +87,9 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
             OwnerName = h.Owner.Name,
         }).AsNoTracking();
 
-        var requestedPage = PaginationExtenstions.GetRequestedPage(hotels, pageNumber, pageSize);
-        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
+        var requestedPage = PaginationExtenstions.GetRequestedPage(hotels, pageSize, pageNumber);
+        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
+
         return new PaginatedList<HotelForAdminResult>(await hotels.ToListAsync(), paginationMetaDate);
     }
 }
