@@ -3,17 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using TABP.Domain.Interfaces.Auth;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Domain.Interfaces.Security.Password;
+using TABP.Domain.Interfaces.Services.Date;
 using TABP.Domain.Interfaces.Services.Email;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Image;
 using TABP.Domain.Interfaces.Services.Pdf;
-using TABP.Infrastructure.Auth;
-using TABP.Infrastructure.Auth.Jwt;
 using TABP.Infrastructure.Persistence.DbContexts;
 using TABP.Infrastructure.Persistence.Repositories;
+using TABP.Infrastructure.Security.Jwt;
+using TABP.Infrastructure.Security.Password;
+using TABP.Infrastructure.Services.Date;
 using TABP.Infrastructure.Services.Email;
 using TABP.Infrastructure.Services.Html;
 using TABP.Infrastructure.Services.Image;
@@ -87,6 +89,7 @@ public static class InfrastructureConfiguration
 
         services.AddSingleton<IImageUploadService, CloudinaryImageUploadService>();
 
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         return services;
     }
 }
