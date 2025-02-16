@@ -1,4 +1,4 @@
-﻿namespace TABP.Presentation.DTOs.RoomClass;
+﻿namespace TABP.Presentation.DTOs.Hotel;
 public class GetHotelRoomClassesRequest
 {
     public int PageSize { get; set; }

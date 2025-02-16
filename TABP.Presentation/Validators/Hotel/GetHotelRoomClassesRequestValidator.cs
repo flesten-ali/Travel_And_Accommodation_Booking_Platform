@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using TABP.Presentation.DTOs.RoomClass;
+using TABP.Presentation.DTOs.Hotel;
 
-namespace TABP.Presentation.Validators.RoomClass;
+namespace TABP.Presentation.Validators.Hotel;
 public class GetHotelRoomClassesRequestValidator : AbstractValidator<GetHotelRoomClassesRequest>
 {
     public GetHotelRoomClassesRequestValidator()

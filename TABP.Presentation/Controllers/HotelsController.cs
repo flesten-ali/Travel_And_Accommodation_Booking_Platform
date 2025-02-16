@@ -14,13 +14,15 @@ using TABP.Application.Hotels.Queries.GetFeaturedDeals;
 using TABP.Application.Hotels.Queries.GetForAdmin;
 using TABP.Application.Hotels.Queries.GetHotelById;
 using TABP.Application.Hotels.Queries.SearchHotels;
+using TABP.Application.RoomClasses.GetForHotel;
+using TABP.Domain.Constants;
 using TABP.Presentation.DTOs;
 using TABP.Presentation.DTOs.Hotel;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/hotels")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)]
+[Authorize(Roles = Roles.Admin)]
 public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -176,5 +178,25 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         await _mediator.Send(command);
 
         return NoContent();
+    }
+
+    [HttpGet("{id:guid}/room-classes")]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> GetHotelRoomClasses(Guid id, [FromQuery] GetHotelRoomClassesRequest request)
+    {
+        var query = _mapper.Map<GetHotelRoomClassesQuery>(request);
+        query.HotelId = id;
+
+        var roomClasses = await _mediator.Send(query);
+
+        Response.Headers.Append("X-Pagination",
+            JsonSerializer.Serialize(roomClasses.PaginationMetaData));
+
+        return Ok(roomClasses.Items);
     }
 }
