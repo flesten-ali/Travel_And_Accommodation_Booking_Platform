@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TABP.Domain.Entities;
-using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 using TABP.Infrastructure.Extenstions;
@@ -21,5 +20,23 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
 
         return new PaginatedList<RoomClass>(await requestedPage.ToListAsync(), paginationMetaData);
-    }   
+    }
+
+    public async Task<PaginatedList<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(int pageSize, int pageNumber)
+    {
+        var roomClasses = DbSet.Select(rc => new RoomClassForAdminResult
+        {
+            Description = rc.Description,
+            Id = rc.Id,
+            AdultsCapacity = rc.AdultsCapacity,
+            ChildrenCapacity = rc.ChildrenCapacity,
+            Name = rc.Name,
+            NumberOfRooms = rc.Rooms.Count(),
+            RoomType = rc.RoomType,
+        });
+        var requestedPage = roomClasses.GetRequestedPage(pageNumber, pageSize);
+        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageNumber, pageSize);
+
+        return new PaginatedList<RoomClassForAdminResult>(await requestedPage.ToListAsync(), paginationMetaDate);
+    }
 }
