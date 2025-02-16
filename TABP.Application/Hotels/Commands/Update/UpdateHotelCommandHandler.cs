@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Domain.ExceptionMessages;
-using TABP.Domain.Exceptions;
+using TABP.Application.Exceptions;
+using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -51,7 +51,7 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
 
         _mapper.Map(request, hotel);
 
-        _hotelRepository.Update(hotel);
+        _hotelRepository.UpdateAsync(hotel);
         await _unitOfWork.SaveChangesAsync();
 
         return Unit.Value;

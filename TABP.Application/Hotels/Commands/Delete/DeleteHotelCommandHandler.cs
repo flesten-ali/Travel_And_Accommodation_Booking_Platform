@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using TABP.Application.Exceptions;
+using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Enums;
-using TABP.Domain.ExceptionMessages;
-using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -40,7 +40,7 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail);
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Gallery);
 
-            _hotelRepository.Delete(hotel);
+            _hotelRepository.DeleteAsync(hotel);
 
             await _unitOfWork.CommitAsync();
 
