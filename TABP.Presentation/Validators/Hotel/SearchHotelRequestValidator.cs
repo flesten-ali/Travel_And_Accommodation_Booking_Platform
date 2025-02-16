@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using TABP.Presentation.DTOs.Hotel;
+using TABP.Presentation.Validators.Common;
 
 namespace TABP.Presentation.Validators.Hotel;
 public class SearchHotelRequestValidator : AbstractValidator<SearchHotelRequest>
@@ -30,11 +31,6 @@ public class SearchHotelRequestValidator : AbstractValidator<SearchHotelRequest>
         RuleFor(x => x.NumberOfRooms)
             .GreaterThan(0).WithMessage("Number of rooms must be at least 1.");
 
-        RuleFor(x => x.SortBy)
-            .MaximumLength(20).WithMessage("SortBy cannot exceed 20 characters.")
-            .Must(value => string.IsNullOrEmpty(value) || value.All(char.IsLetter))
-            .WithMessage("SortBy must contain only letters.");
-
         RuleFor(x => x.MinPrice)
             .GreaterThanOrEqualTo(0).WithMessage("Min price cannot be negative.")
             .LessThanOrEqualTo(x => x.MaxPrice).When(x => x.MaxPrice.HasValue)
@@ -47,10 +43,7 @@ public class SearchHotelRequestValidator : AbstractValidator<SearchHotelRequest>
             .InclusiveBetween(1, 5).When(x => x.StarRating.HasValue)
             .WithMessage("Star rating must be between 1 and 5.");
 
-        RuleFor(x => x.PageSize)
-            .InclusiveBetween(1, 100).WithMessage("Page size must be between 1 and 100.");
-
-        RuleFor(x => x.PageNumber)
-            .GreaterThan(0).WithMessage("Page number must be greater than 0.");
+        RuleFor(r => r.PaginationParameters)
+           .SetValidator(new PaginationParametersValidator());
     }
 }
