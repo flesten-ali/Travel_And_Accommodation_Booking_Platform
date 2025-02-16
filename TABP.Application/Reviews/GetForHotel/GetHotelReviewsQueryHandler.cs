@@ -2,9 +2,7 @@
 using MediatR;
 using TABP.Application.Exceptions;
 using TABP.Application.Exceptions.Messages;
-using TABP.Application.Shared;
-using TABP.Domain.Entities;
-using TABP.Domain.Enums;
+using TABP.Application.Helper;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
@@ -25,7 +23,8 @@ public class GetHotelReviewsQueryHandler
         GetHotelReviewsQuery request,
         CancellationToken cancellationToken)
     {
-        var orderBy = BuildSort(request.PaginationParameters);
+        var orderBy = SortBuilder.BuildReviewSort(request.PaginationParameters);
+
         var reviews = await _reviewRepository.GetByHotelIdAsync(
             orderBy,
             request.HotelId,
@@ -34,18 +33,5 @@ public class GetHotelReviewsQueryHandler
             ?? throw new NotFoundException(ReviewExceptionMessages.NotFound);
 
         return _mapper.Map<PaginatedList<HotelReviewsQueryReponse>>(reviews);
-    }
-
-    private static Func<IQueryable<Review>, IOrderedQueryable<Review>> BuildSort(PaginationParameters paginationParameters)
-    {
-        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
-        return paginationParameters.OrderColumn switch
-        {
-            "date" => isDescending
-                    ? (reviews) => reviews.OrderByDescending(x => x.CreatedAt)
-                    : (reviews) => reviews.OrderBy(x => x.CreatedAt),
-
-            _ => (reviews) => reviews.OrderBy(h => h.Id)
-        };
     }
 }

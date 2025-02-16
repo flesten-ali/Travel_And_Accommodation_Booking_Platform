@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Application.Helper;
 using TABP.Application.Shared;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
@@ -23,7 +24,7 @@ public class GetRoomClassesForAdminQueryHandler
         GetRoomClassesForAdminQuery request,
         CancellationToken cancellationToken)
     {
-        var orderBy = BuildSort(request.PaginationParameters);
+        var orderBy = SortBuilder.BuildRoomClassSort(request.PaginationParameters);
 
         var roomClasses = await _roomClassRepository.GetRoomClassesForAdminAsync(
             orderBy,
@@ -31,26 +32,5 @@ public class GetRoomClassesForAdminQueryHandler
             request.PaginationParameters.PageNumber);
 
         return _mapper.Map<PaginatedList<RoomClassForAdminResponse>>(roomClasses);
-    }
-
-    private static Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> BuildSort(PaginationParameters paginationParameters)
-    {
-        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
-        return paginationParameters.OrderColumn switch
-        {
-            "date" => isDescending
-                    ? (roomClasses) => roomClasses.OrderByDescending(x => x.CreatedDate)
-                    : (roomClasses) => roomClasses.OrderBy(x => x.CreatedDate),
-
-            "adultscapacity" => isDescending
-                    ? (roomClasses) => roomClasses.OrderByDescending(x => x.AdultsCapacity)
-                    : (roomClasses) => roomClasses.OrderBy(x => x.AdultsCapacity),
-
-            "childrencapacity" => isDescending
-          ? (roomClasses) => roomClasses.OrderByDescending(x => x.ChildrenCapacity)
-          : (roomClasses) => roomClasses.OrderBy(x => x.ChildrenCapacity),
-
-            _ => (roomClasses) => roomClasses.OrderBy(h => h.Id)
-        };
     }
 }

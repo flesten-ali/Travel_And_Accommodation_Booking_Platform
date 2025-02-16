@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using System.Linq.Expressions;
-using TABP.Application.Extenstions;
-using TABP.Application.Shared;
+using TABP.Application.Extensions;
+using TABP.Application.Helper;
 using TABP.Domain.Entities;
-using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 namespace TABP.Application.Hotels.Queries.SearchHotels;
@@ -26,7 +25,7 @@ public class SearchHotelsQueryHandler :
         CancellationToken cancellationToken)
     {
         var filter = BuildFilterExpression(request);
-        var orderBy = BuildSort(request.PaginationParameters);
+        var orderBy = SortBuilder.BuildHotelSort(request.PaginationParameters);
 
         var result = await _hotelRepository.SearchHotelsAsync(
             filter,
@@ -35,27 +34,6 @@ public class SearchHotelsQueryHandler :
             request.PaginationParameters.PageNumber);
 
         return _mapper.Map<PaginatedList<SearchHotelResponse>>(result);
-    }
-
-    private static Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> BuildSort(PaginationParameters paginationParameters)
-    {
-        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
-        return paginationParameters.OrderColumn switch
-        {
-            "name" => isDescending
-                    ? (hotels) => hotels.OrderByDescending(x => x.Name)
-                    : (hotels) => hotels.OrderBy(x => x.Name),
-
-            "price" => isDescending
-                    ? (hotels) => hotels.OrderByDescending(h => h.RoomClasses.Max(rc => rc.Price))
-                    : (hotels) => hotels.OrderBy(h => h.RoomClasses.Min(rc => rc.Price)),
-
-            "starrating" => isDescending
-                    ? (hotels) => hotels.OrderByDescending(h => h.Rate)
-                    : (hotels) => hotels.OrderBy(h => h.Rate),
-
-            _ => (hotels) => hotels.OrderBy(h => h.Id)
-        };
     }
 
     private static Expression<Func<Hotel, bool>> BuildFilterExpression(SearchHotelsQuery request)
