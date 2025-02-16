@@ -4,5 +4,9 @@ namespace TABP.Domain.Interfaces.Persistence.Repositories;
 
 public interface IReviewRepository : IRepository<Review>
 {
-    Task<PaginatedList<Review>?> GetByHotelIdAsync(Guid hotelId, int pageSize, int pageNumber);
+    Task<PaginatedList<Review>?> GetByHotelIdAsync(
+        Func<IQueryable<Review>, IOrderedQueryable<Review>> orderBy,
+        Guid hotelId,
+        int pageSize,
+        int pageNumber);
 }

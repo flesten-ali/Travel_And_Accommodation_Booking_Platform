@@ -13,5 +13,8 @@ public interface IHotelRepository : IRepository<Hotel>
 
     Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(int NumberOfDeals);
 
-    Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(int pageSize, int pageNumber);
+    Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(
+        Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
+        int pageSize,
+        int pageNumber);
 }

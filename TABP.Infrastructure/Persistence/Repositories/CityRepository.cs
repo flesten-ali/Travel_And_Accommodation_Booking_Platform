@@ -2,15 +2,20 @@
 using TABP.Domain.Entities;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
-using TABP.Infrastructure.Extenstions;
+using TABP.Infrastructure.Extensions;
 using TABP.Infrastructure.Persistence.DbContexts;
 
 namespace TABP.Infrastructure.Persistence.Repositories;
 public class CityRepository(AppDbContext context) : Repository<City>(context), ICityRepository
 {
-    public async Task<PaginatedList<CityForAdminResult>> GetCitiesForAdminAsync(int pageSize, int pageNumber)
+    public async Task<PaginatedList<CityForAdminResult>> GetCitiesForAdminAsync(
+        int pageSize,
+        int pageNumber,
+        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy)
     {
-        var cities = DbSet.Select(c => new CityForAdminResult
+        var allCities = DbSet.AsNoTracking();
+
+        var cities = orderBy(allCities).Select(c => new CityForAdminResult
         {
             Id = c.Id,
             Name = c.Name,
@@ -19,10 +24,11 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
             CreatedDate = c.CreatedDate,
             UpdatedDate = c.UpdatedDate,
             NumberOfHotels = c.Hotels.Count(),
-        }).AsNoTracking();
+        });
 
         var requestedPage = PaginationExtenstions.GetRequestedPage(cities, pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
+
         return new PaginatedList<CityForAdminResult>(await requestedPage.ToListAsync(), paginationMetaData);
     }
 }

@@ -4,7 +4,7 @@ using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
-using TABP.Infrastructure.Extenstions;
+using TABP.Infrastructure.Extensions;
 using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 
@@ -74,9 +74,15 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         return featuredDeals;
     }
 
-    public async Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(int pageSize, int pageNumber)
+    public async Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(
+        Func<IQueryable<Hotel>, 
+        IOrderedQueryable<Hotel>> orderBy,
+        int pageSize,
+        int pageNumber)
     {
-        var hotels = DbSet.Select(h => new HotelForAdminResult
+        var allHotels = DbSet.AsNoTracking();
+
+        var hotels = orderBy(allHotels).Select(h => new HotelForAdminResult
         {
             Id = h.Id,
             CityName = h.City.Name,
@@ -85,7 +91,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
             CreatedDate = h.CreatedDate,
             UpdatedDate = h.UpdatedDate,
             OwnerName = h.Owner.Name,
-        }).AsNoTracking();
+        });
 
         var requestedPage = PaginationExtenstions.GetRequestedPage(hotels, pageSize, pageNumber);
         var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);

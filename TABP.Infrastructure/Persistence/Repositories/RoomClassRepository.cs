@@ -2,19 +2,21 @@
 using TABP.Domain.Entities;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
-using TABP.Infrastructure.Extenstions;
+using TABP.Infrastructure.Extensions;
 using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(context), IRoomClassRepository
 {
-    public async Task<PaginatedList<RoomClass>> GetByHotelIdAsync(Guid hotelId, int pageSize, int pageNumber)
+    public async Task<PaginatedList<RoomClass>> GetByHotelIdAsync(Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy, Guid hotelId, int pageSize, int pageNumber)
     {
-        var roomClasses = DbSet.Where(rc => rc.HotelId == hotelId)
-                                   .Include(rc => rc.Discounts)
-                                   .Include(rc => rc.Amenities)
-                                   .AsQueryable()
-                                   .AsNoTracking();
+        var filteredRoomClasses = DbSet.Where(rc => rc.HotelId == hotelId).AsNoTracking();
+
+        var roomClasses = orderBy(filteredRoomClasses)
+                          .Include(rc => rc.Discounts)
+                          .Include(rc => rc.Amenities)
+                          .AsQueryable()
+                          .AsNoTracking();
 
         var requestedPage = roomClasses.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
@@ -22,9 +24,14 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
         return new PaginatedList<RoomClass>(await requestedPage.ToListAsync(), paginationMetaData);
     }
 
-    public async Task<PaginatedList<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(int pageSize, int pageNumber)
+    public async Task<PaginatedList<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(
+        Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy,
+        int pageSize,
+        int pageNumber)
     {
-        var roomClasses = DbSet.Select(rc => new RoomClassForAdminResult
+        var allRoomClasses = DbSet.AsNoTracking();
+
+        var roomClasses = orderBy(allRoomClasses).Select(rc => new RoomClassForAdminResult
         {
             Description = rc.Description,
             Id = rc.Id,
@@ -34,6 +41,7 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
             NumberOfRooms = rc.Rooms.Count(),
             RoomType = rc.RoomType,
         });
+
         var requestedPage = roomClasses.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
 
