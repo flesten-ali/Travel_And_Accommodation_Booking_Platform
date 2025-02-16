@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Domain.ExceptionMessages;
-using TABP.Domain.Exceptions;
+using TABP.Application.Exceptions;
+using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -26,7 +26,7 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
 
         _mapper.Map(request, city);
 
-        _cityRepository.Update(city);
+        _cityRepository.UpdateAsync(city);
         await _unitOfWork.SaveChangesAsync();
 
         return Unit.Value;

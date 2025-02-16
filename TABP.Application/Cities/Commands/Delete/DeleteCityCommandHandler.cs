@@ -1,7 +1,7 @@
 ﻿using MediatR;
+using TABP.Application.Exceptions;
+using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Enums;
-using TABP.Domain.ExceptionMessages;
-using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
@@ -38,7 +38,7 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
         try
         {
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail);
-            _cityRepository.Delete(city);
+            _cityRepository.DeleteAsync(city);
 
             await _unitOfWork.CommitAsync();
 
