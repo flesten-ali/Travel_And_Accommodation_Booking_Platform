@@ -1,6 +1,7 @@
-﻿namespace TABP.Presentation.DTOs.RoomClass;
+﻿using TABP.Application;
+
+namespace TABP.Presentation.DTOs.RoomClass;
 public class GetRoomClassesForAdminRequest
 {
-    public int PageSize { get; set; }
-    public int PageNumber { get; set; }
+    public PaginationParameters PaginationParameters { get; set; }
 }

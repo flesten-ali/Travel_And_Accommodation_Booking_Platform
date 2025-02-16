@@ -1,6 +1,7 @@
-﻿namespace TABP.Presentation.DTOs.Review;
+﻿using TABP.Application;
+
+namespace TABP.Presentation.DTOs.Review;
 public class GetHotelReviewsRequest
 {
-    public int PageSize { get; set; }
-    public int PageNumber { get; set; }
+    public PaginationParameters PaginationParameters { get; set; }
 }

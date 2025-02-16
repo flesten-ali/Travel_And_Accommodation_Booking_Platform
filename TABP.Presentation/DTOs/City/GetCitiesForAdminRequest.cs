@@ -1,6 +1,8 @@
-﻿namespace TABP.Presentation.DTOs.City;
+﻿using TABP.Application;
+using TABP.Domain.Enums;
+
+namespace TABP.Presentation.DTOs.City;
 public class GetCitiesForAdminRequest
 {
-    public int PageSize { get; set; }
-    public int PageNumber { get; set; }
+    public PaginationParameters PaginationParameters { get; set; }
 }
