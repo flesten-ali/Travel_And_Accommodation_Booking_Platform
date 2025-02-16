@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Cities.Common;
+using TABP.Domain.Entities;
+using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
@@ -20,8 +21,31 @@ public class GetCitiesForAdminQueryHandler
         GetCitiesForAdminQuery request,
         CancellationToken cancellationToken)
     {
-        var cities = await _cityRepository.GetCitiesForAdminAsync(request.PageSize, request.PageNumber);
+        var orderBy = BuildSort(request.PaginationParameters);
+
+        var cities = await _cityRepository
+            .GetCitiesForAdminAsync(
+            request.PaginationParameters.PageSize,
+            request.PaginationParameters.PageNumber,
+            orderBy);
 
         return _mapper.Map<PaginatedList<CityForAdminResponse>>(cities);
+    }
+
+    private static Func<IQueryable<City>, IOrderedQueryable<City>> BuildSort(PaginationParameters paginationParameters)
+    {
+        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
+        return paginationParameters.OrderColumn?.ToLower().Trim() switch
+        {
+            "name" => isDescending
+            ? cities => cities.OrderByDescending(x => x.Name)
+            : cities => cities.OrderBy(x => x.Name),
+
+            "country" => isDescending
+            ? cities => cities.OrderByDescending(x => x.Country)
+            : cities => cities.OrderBy(x => x.Country),
+
+            _ => cities => cities.OrderBy(x => x.Id),
+        };
     }
 }
