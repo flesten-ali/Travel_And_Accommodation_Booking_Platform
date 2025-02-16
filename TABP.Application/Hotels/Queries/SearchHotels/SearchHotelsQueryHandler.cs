@@ -2,6 +2,7 @@
 using MediatR;
 using System.Linq.Expressions;
 using TABP.Application.Extenstions;
+using TABP.Application.Shared;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;

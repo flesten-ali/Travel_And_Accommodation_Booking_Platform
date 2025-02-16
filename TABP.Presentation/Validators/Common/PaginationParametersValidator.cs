@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TABP.Application;
+using TABP.Application.Shared;
 
 namespace TABP.Presentation.Validators.Common;
 public class PaginationParametersValidator : AbstractValidator<PaginationParameters>

@@ -1,4 +1,4 @@
-﻿using TABP.Application;
+﻿using TABP.Application.Shared;
 
 namespace TABP.Presentation.DTOs.RoomClass;
 public class GetRoomClassesForAdminRequest

@@ -1,6 +1,6 @@
 ﻿using TABP.Domain.Enums;
 
-namespace TABP.Application;
+namespace TABP.Application.Shared;
 public class PaginationParameters
 {
     public int PageSize { get; set; }
