@@ -31,7 +31,7 @@ public class GetRecentlyVisitedHotelsQueryHandler
             throw new NotFoundException(UserExceptionMessages.NotFound);
         }
 
-        var recentlyVisitedHotels = await _bookingRepository.GetRecentlyVisitedHotels(request.GuestId, request.Limit);
+        var recentlyVisitedHotels = await _bookingRepository.GetRecentlyVisitedHotelsAsync(request.GuestId, request.Limit);
 
         return _mapper.Map<IEnumerable<RecentlyVisitedHotelsResponse>>(recentlyVisitedHotels);
     }

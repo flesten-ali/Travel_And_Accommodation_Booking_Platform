@@ -14,7 +14,7 @@ public class UserRepository : Repository<User>, IUserRepository
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<User?> AuthenticateUser(string email, string password)
+    public async Task<User?> AuthenticateUserAsync(string email, string password)
     {
         var user = await GetUserByEmailAsync(email);
 

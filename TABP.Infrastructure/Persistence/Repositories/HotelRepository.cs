@@ -10,7 +10,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class HotelRepository(AppDbContext context) : Repository<Hotel>(context), IHotelRepository
 {
-    public async Task<PaginatedList<SearchHotelResult>> SearchHotels(
+    public async Task<PaginatedList<SearchHotelResult>> SearchHotelsAsync(
         Expression<Func<Hotel, bool>> filter,
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
@@ -37,7 +37,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         return new PaginatedList<SearchHotelResult>(await resultToReturn.ToListAsync(), paginationMetaData);
     }
 
-    public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDeals(int NumberOfDeals)
+    public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(int NumberOfDeals)
     {
         var currentDate = DateTime.UtcNow;
 
@@ -74,7 +74,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         return featuredDeals;
     }
 
-    public async Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdmin(int pageSize, int pageNumber)
+    public async Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(int pageSize, int pageNumber)
     {
         var hotels = DbSet.Select(h => new HotelForAdminResult
         {

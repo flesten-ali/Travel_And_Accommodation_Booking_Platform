@@ -20,7 +20,7 @@ public class GetFeaturedDealsQueryHandler : IRequestHandler<GetFeaturedDealsQuer
         if (request.Limit < 1)
             throw new ArgumentException(ValidationExceptionMessages.LimitGreaterThanZero);
 
-        var featuredDeals = await _hotelRepository.GetFeaturedDeals(request.Limit);
+        var featuredDeals = await _hotelRepository.GetFeaturedDealsAsync(request.Limit);
 
         return _mapper.Map<IEnumerable<FeaturedDealResponse>>(featuredDeals);
     }

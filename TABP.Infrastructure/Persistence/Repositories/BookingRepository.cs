@@ -8,7 +8,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class BookingRepository(AppDbContext context) : Repository<Booking>(context), IBookingRepository
 {
-    public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotels(Guid guestId, int limit)
+    public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotelsAsync(Guid guestId, int limit)
     {
         var query = await DbSet
                          .Include(b => b.Invoice)
@@ -48,7 +48,7 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
         return recentlyVisitedHotels;
     }
 
-    public async Task<IEnumerable<TrendingCitiesResult>> GetTrendingCities(int limit)
+    public async Task<IEnumerable<TrendingCitiesResult>> GetTrendingCitiesAsync(int limit)
     {
         var trendingHotels = await DbSet
             .Include(b => b.Rooms)

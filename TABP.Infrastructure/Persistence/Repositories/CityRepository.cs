@@ -8,7 +8,7 @@ using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 public class CityRepository(AppDbContext context) : Repository<City>(context), ICityRepository
 {
-    public async Task<PaginatedList<CityForAdminResult>> GetCitiesForAdmin(int pageSize, int pageNumber)
+    public async Task<PaginatedList<CityForAdminResult>> GetCitiesForAdminAsync(int pageSize, int pageNumber)
     {
         var cities = DbSet.Select(c => new CityForAdminResult
         {

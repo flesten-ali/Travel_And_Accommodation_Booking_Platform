@@ -20,7 +20,7 @@ public class GetCitiesForAdminQueryHandler
         GetCitiesForAdminQuery request,
         CancellationToken cancellationToken)
     {
-        var cities = await _cityRepository.GetCitiesForAdmin(request.PageSize, request.PageNumber);
+        var cities = await _cityRepository.GetCitiesForAdminAsync(request.PageSize, request.PageNumber);
 
         return _mapper.Map<PaginatedList<CityForAdminResponse>>(cities);
     }

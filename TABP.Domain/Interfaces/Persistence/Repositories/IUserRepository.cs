@@ -5,5 +5,5 @@ public interface IUserRepository : IRepository<User>
 {
     Task<bool> EmailExistsAsync(string email);
     Task<User?> GetUserByEmailAsync(string email);
-    Task<User?> AuthenticateUser(string email, string password);
+    Task<User?> AuthenticateUserAsync(string email, string password);
 }

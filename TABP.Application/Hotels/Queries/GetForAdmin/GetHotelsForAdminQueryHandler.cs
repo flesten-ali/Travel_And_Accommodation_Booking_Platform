@@ -17,7 +17,7 @@ public class GetHotelsForAdminQueryHandler
     }
     public async Task<PaginatedList<HotelForAdminResponse>> Handle(GetHotelsForAdminQuery request, CancellationToken cancellationToken)
     {
-        var hotels = await _hotelRepository.GetHotelsForAdmin(request.PageSize, request.PageNumber);
+        var hotels = await _hotelRepository.GetHotelsForAdminAsync(request.PageSize, request.PageNumber);
 
         return _mapper.Map<PaginatedList<HotelForAdminResponse>>(hotels);
     }

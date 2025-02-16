@@ -27,7 +27,7 @@ public class SearchHotelsQueryHandler :
         var filter = BuildFilterExpression(request);
         var orderBy = BuildSort(request);
 
-        var result = await _hotelRepository.SearchHotels(filter, orderBy, request.PageSize, request.PageNumber);
+        var result = await _hotelRepository.SearchHotelsAsync(filter, orderBy, request.PageSize, request.PageNumber);
         return _mapper.Map<PaginatedList<SearchHotelResponse>>(result);
     }
 

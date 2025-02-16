@@ -23,7 +23,7 @@ public class GetTrendingCitiesQueryHandler
         if (request.Limit < 1)
             throw new ArgumentException(ValidationExceptionMessages.LimitGreaterThanZero);
 
-        var trendingHotels = await _bookingRepository.GetTrendingCities(request.Limit);
+        var trendingHotels = await _bookingRepository.GetTrendingCitiesAsync(request.Limit);
 
         return _mapper.Map<IEnumerable<TrendingCitiesResponse>>(trendingHotels);
     }
