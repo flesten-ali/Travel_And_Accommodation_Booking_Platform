@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Application.Exceptions;
 using TABP.Domain.Entities;
-using TABP.Domain.Exceptions;
-using TABP.Domain.Interfaces.Auth;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Domain.Interfaces.Security.Password;
 namespace TABP.Application.Users.Register;
 
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>

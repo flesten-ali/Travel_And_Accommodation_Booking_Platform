@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Domain.Exceptions;
-using TABP.Domain.Interfaces.Auth;
+using TABP.Application.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Domain.Interfaces.Security.Jwt;
+using TABP.Domain.Interfaces.Security.Password;
 namespace TABP.Application.Users.Login;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserResponse>

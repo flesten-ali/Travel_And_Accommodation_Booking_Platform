@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Amenities.Common;
-using TABP.Domain.ExceptionMessages;
-using TABP.Domain.Exceptions;
+using TABP.Application.Exceptions;
+using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Amenities.Queries.GetById;
