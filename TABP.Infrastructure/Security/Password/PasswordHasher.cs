@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TABP.Domain.Interfaces.Auth;
-namespace TABP.Infrastructure.Auth;
+using TABP.Domain.Interfaces.Security.Password;
+namespace TABP.Infrastructure.Security.Password;
 
 public class PasswordHasher : IPasswordHasher
 {

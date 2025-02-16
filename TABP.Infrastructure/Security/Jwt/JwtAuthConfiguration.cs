@@ -5,12 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TABP.Domain.Interfaces.Auth;
-namespace TABP.Infrastructure.Auth.Jwt;
+using TABP.Domain.Interfaces.Security.Jwt;
+
+namespace TABP.Infrastructure.Security.Jwt;
 
 public static class JwtAuthConfiguration
 {
-     
+
 
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {

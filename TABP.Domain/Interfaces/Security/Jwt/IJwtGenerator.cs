@@ -1,6 +1,6 @@
 ﻿using TABP.Domain.Entities;
 using TABP.Domain.Models;
-namespace TABP.Domain.Interfaces.Auth;
+namespace TABP.Domain.Interfaces.Security.Jwt;
 
 public interface IJwtGenerator
 {

@@ -1,4 +1,4 @@
-﻿namespace TABP.Domain.Interfaces.Auth;
+﻿namespace TABP.Domain.Interfaces.Security.Password;
 
 public interface IPasswordHasher
 {

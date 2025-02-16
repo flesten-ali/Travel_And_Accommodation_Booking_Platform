@@ -4,9 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TABP.Domain.Entities;
-using TABP.Domain.Interfaces.Auth;
+using TABP.Domain.Interfaces.Security.Jwt;
 using TABP.Domain.Models;
-namespace TABP.Infrastructure.Auth.Jwt;
+namespace TABP.Infrastructure.Security.Jwt;
 
 public class JwtGenerator : IJwtGenerator
 {

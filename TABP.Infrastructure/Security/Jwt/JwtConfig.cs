@@ -1,4 +1,4 @@
-﻿namespace TABP.Infrastructure.Auth.Jwt;
+﻿namespace TABP.Infrastructure.Security.Jwt;
 
 public class JwtConfig
 {
