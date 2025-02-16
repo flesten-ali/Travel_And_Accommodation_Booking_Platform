@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Bookings.Common;
+using TABP.Application.Exceptions;
+using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Constants;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
-using TABP.Domain.ExceptionMessages;
-using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Domain.Interfaces.Services.Date;
 using TABP.Domain.Interfaces.Services.Email;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Pdf;
@@ -24,6 +25,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
     private readonly IInvoiceHtmlGenerationService _invoiceHtmlGenerationService;
     private readonly IEmailSenderService _emailSenderService;
     private readonly IMapper _mapper;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
     public CreateBookingCommandHandler(
         IUserRepository userRepository,
@@ -34,7 +36,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         IPdfService pdfService,
         IInvoiceHtmlGenerationService invoiceHtmlGenerationService,
         IEmailSenderService emailSenderService,
-        IMapper mapper
+        IMapper mapper,
+        IDateTimeProvider dateTimeProvider
     )
     {
         _userRepository = userRepository;
@@ -46,6 +49,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         _invoiceHtmlGenerationService = invoiceHtmlGenerationService;
         _emailSenderService = emailSenderService;
         _mapper = mapper;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public async Task<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
@@ -80,7 +84,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         {
             var booking = new Booking
             {
-                BookingDate = DateTime.UtcNow,
+                BookingDate = _dateTimeProvider.UtcNow,
                 CheckInDate = request.CheckInDate,
                 CheckOutDate = request.CheckOutDate,
                 PaymentMethod = request.PaymentMethod,
@@ -90,7 +94,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
                 User = user,
                 Invoice = new Invoice
                 {
-                    IssueDate = DateTime.UtcNow,
+                    IssueDate = _dateTimeProvider.UtcNow,
                     PaymentStatus = PaymentStatus.Completed,
                     TotalPrice = CalculateTotalPrice(rooms, request.CheckInDate, request.CheckOutDate),
                 }
@@ -118,9 +122,9 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         }
     }
 
-    private static double CalculateTotalPrice(IEnumerable<Room> rooms, DateTime checkInDate, DateTime checkOutDate)
+    private double CalculateTotalPrice(IEnumerable<Room> rooms, DateTime checkInDate, DateTime checkOutDate)
     {
-        var currentDate = DateTime.UtcNow;
+        var currentDate = _dateTimeProvider.UtcNow;
 
         var total = rooms.Sum(room =>
         {
