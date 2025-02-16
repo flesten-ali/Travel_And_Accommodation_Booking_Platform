@@ -25,5 +25,3 @@ public class GetRoomClassesForAdminQueryHandler
         return _mapper.Map<PaginatedList<RoomClassForAdminResponse>>(roomClasses);
     }
 }
-//order parameter
-//centrilize validations
