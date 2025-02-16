@@ -25,25 +25,31 @@ public class SearchHotelsQueryHandler :
         CancellationToken cancellationToken)
     {
         var filter = BuildFilterExpression(request);
-        var orderBy = BuildSort(request);
+        var orderBy = BuildSort(request.PaginationParameters);
 
-        var result = await _hotelRepository.SearchHotelsAsync(filter, orderBy, request.PageSize, request.PageNumber);
+        var result = await _hotelRepository.SearchHotelsAsync(
+            filter,
+            orderBy,
+            request.PaginationParameters.PageSize,
+            request.PaginationParameters.PageNumber);
+
         return _mapper.Map<PaginatedList<SearchHotelResponse>>(result);
     }
 
-    private static Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> BuildSort(SearchHotelsQuery request)
+    private static Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> BuildSort(PaginationParameters paginationParameters)
     {
-        return request.SortBy?.ToLower() switch
+        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
+        return paginationParameters.OrderColumn switch
         {
-            "name" => request.SortOrder == SortOrder.Descending
+            "name" => isDescending
                     ? (hotels) => hotels.OrderByDescending(x => x.Name)
                     : (hotels) => hotels.OrderBy(x => x.Name),
 
-            "price" => request.SortOrder == SortOrder.Descending
+            "price" => isDescending
                     ? (hotels) => hotels.OrderByDescending(h => h.RoomClasses.Max(rc => rc.Price))
                     : (hotels) => hotels.OrderBy(h => h.RoomClasses.Min(rc => rc.Price)),
 
-            "starrating" => request.SortOrder == SortOrder.Descending
+            "starrating" => isDescending
                     ? (hotels) => hotels.OrderByDescending(h => h.Rate)
                     : (hotels) => hotels.OrderBy(h => h.Rate),
 

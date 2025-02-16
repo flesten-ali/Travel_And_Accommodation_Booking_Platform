@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using TABP.Domain.Enums;
 using TABP.Domain.Models;
 namespace TABP.Application.Hotels.Queries.SearchHotels;
 
@@ -11,13 +10,10 @@ public class SearchHotelsQuery : IRequest<PaginatedList<SearchHotelResponse>>
     public int ChildrenCapacity { get; set; }
     public int AdultsCapacity { get; set; }
     public int NumberOfRooms { get; set; }
-    public string? SortBy { get; set; }
-    public SortOrder SortOrder { get; set; } = SortOrder.Ascending;
     public string? RoomType { get; set; }
     public int? MinPrice { get; set; }
     public int? MaxPrice { get; set; }
     public int? StarRating { get; set; }
-    public int PageSize { get; set; }
-    public int PageNumber { get; set; }
+    public PaginationParameters PaginationParameters { get; set; }
     public ICollection<string>? Amenities { get; set; } = [];
 }
