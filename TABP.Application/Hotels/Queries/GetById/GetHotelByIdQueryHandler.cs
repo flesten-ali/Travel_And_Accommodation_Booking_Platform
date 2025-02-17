@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Hotels.Common;
-using TABP.Domain.Constants.ExceptionsMessages;
+using TABP.Domain.Constants.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 namespace TABP.Application.Hotels.Queries.GetById;

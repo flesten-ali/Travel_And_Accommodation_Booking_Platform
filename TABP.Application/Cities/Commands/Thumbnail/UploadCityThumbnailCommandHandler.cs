@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Domain.Constants.ExceptionsMessages;
+using TABP.Domain.Constants.ExceptionMessages;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
