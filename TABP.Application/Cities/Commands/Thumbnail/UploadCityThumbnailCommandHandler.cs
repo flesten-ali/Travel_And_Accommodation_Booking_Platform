@@ -6,6 +6,7 @@ using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Domain.Interfaces.Services.Guids;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Cities.Commands.Thumbnail;
@@ -16,19 +17,22 @@ public class UploadCityThumbnailCommandHandler : IRequestHandler<UploadCityThumb
     private readonly IImageUploadService _imageUploadService;
     private readonly IMapper _mapper;
     private readonly IImageRepository _imageRepository;
+    private readonly IGuidProvider _guidProvider;
 
     public UploadCityThumbnailCommandHandler(
         ICityRepository cityRepository,
         IUnitOfWork unitOfWork,
         IImageUploadService imageUploadService,
         IMapper mapper,
-        IImageRepository imageRepository)
+        IImageRepository imageRepository,
+        IGuidProvider guidProvider)
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
         _imageUploadService = imageUploadService;
         _mapper = mapper;
         _imageRepository = imageRepository;
+        _guidProvider = guidProvider;
     }
 
     public async Task<Unit> Handle(UploadCityThumbnailCommand request, CancellationToken cancellationToken = default)
@@ -41,7 +45,7 @@ public class UploadCityThumbnailCommandHandler : IRequestHandler<UploadCityThumb
         await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            var publicId = Guid.NewGuid().ToString();
+            var publicId = _guidProvider.NewGuid().ToString();
             var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId, cancellationToken);
 
             var image = _mapper.Map<Image>(request);

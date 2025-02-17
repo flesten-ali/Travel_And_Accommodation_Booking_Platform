@@ -6,6 +6,7 @@ using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Domain.Interfaces.Services.Guids;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Hotels.Commands.Thumbnail;
@@ -16,13 +17,15 @@ public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThu
     private readonly IImageUploadService _imageUploadService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IGuidProvider _guidProvider;
 
     public UploadHotelThumbnailCommandHandler(
         IHotelRepository hotelRepository,
         IImageRepository imageRepository,
         IImageUploadService imageUploadService,
         IUnitOfWork unitOfWork,
-        IMapper mapper
+        IMapper mapper,
+        IGuidProvider guidProvider
     )
     {
         _hotelRepository = hotelRepository;
@@ -30,6 +33,7 @@ public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThu
         _imageUploadService = imageUploadService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _guidProvider = guidProvider;
     }
     public async Task<Unit> Handle(UploadHotelThumbnailCommand request, CancellationToken cancellationToken = default)
     {
@@ -41,7 +45,7 @@ public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThu
         await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            var publicId = Guid.NewGuid().ToString();
+            var publicId = _guidProvider.NewGuid().ToString();
             var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId, cancellationToken);
 
             var image = _mapper.Map<Image>(request);
