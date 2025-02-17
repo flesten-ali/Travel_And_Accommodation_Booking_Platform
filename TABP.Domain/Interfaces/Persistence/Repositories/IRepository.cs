@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 namespace TABP.Domain.Interfaces.Persistence.Repositories;
 
-public interface IRepository<T> where T : class
+public interface IRepository<T> where T : class , new()
 {
     Task CreateAsync(T entity, CancellationToken cancellationToken = default);
 
