@@ -41,7 +41,7 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
         try
         {
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail, cancellationToken);
-            await _cityRepository.DeleteAsync(request.Id, cancellationToken);
+            _cityRepository.Delete(request.Id);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 

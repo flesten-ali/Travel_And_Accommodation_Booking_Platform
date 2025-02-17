@@ -26,7 +26,7 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
 
         _mapper.Map(request, city);
 
-        await _cityRepository.UpdateAsync(city, cancellationToken);
+        _cityRepository.Update(city);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

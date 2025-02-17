@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TABP.Domain.Constants.ExceptionsMessages;
 using TABP.Domain.Entities;
+using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 using TABP.Infrastructure.Extensions;

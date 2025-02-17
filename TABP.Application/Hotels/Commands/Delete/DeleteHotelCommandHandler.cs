@@ -43,7 +43,7 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail, cancellationToken);
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Gallery, cancellationToken);
 
-            await _hotelRepository.DeleteAsync(request.Id, cancellationToken);
+            _hotelRepository.Delete(request.Id);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 

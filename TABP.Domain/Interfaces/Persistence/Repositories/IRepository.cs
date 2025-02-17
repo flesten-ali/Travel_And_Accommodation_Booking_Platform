@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 namespace TABP.Domain.Interfaces.Persistence.Repositories;
 
-public interface IRepository<T> where T : class , new()
+public interface IRepository<T> where T : class, new()
 {
     Task CreateAsync(T entity, CancellationToken cancellationToken = default);
 
@@ -16,7 +16,7 @@ public interface IRepository<T> where T : class , new()
         CancellationToken cancellationToken = default,
         params Expression<Func<T, object>>[] includeProperties);
 
-    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    void Delete(Guid id);
 
-    Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    void Update(T entity);
 }

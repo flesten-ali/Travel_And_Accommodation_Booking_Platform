@@ -52,7 +52,7 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
 
         _mapper.Map(request, hotel);
 
-        await _hotelRepository.UpdateAsync(hotel, cancellationToken);
+        _hotelRepository.Update(hotel);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
