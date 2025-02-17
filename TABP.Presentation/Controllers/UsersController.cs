@@ -26,11 +26,11 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginUserRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<LoginUserCommand>(request);
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
         return Ok(result);
     }
@@ -39,12 +39,12 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserRequest request)
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<RegisterUserCommand>(request);
         command.Role = Roles.Guest;
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return Created();
     }
@@ -56,12 +56,12 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminRequest request)
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<RegisterUserCommand>(request);
         command.Role = Roles.Admin;
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return Created();
     }

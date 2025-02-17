@@ -21,11 +21,11 @@ public class CartItemsController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
+    public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<AddToCartCommand>(request);
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }

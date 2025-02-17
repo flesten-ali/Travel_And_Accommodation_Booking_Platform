@@ -4,6 +4,12 @@ using TABP.Domain.Models;
 namespace TABP.Domain.Interfaces.Persistence.Repositories;
 public interface IBookingRepository : IRepository<Booking>
 {
-    Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotelsAsync(Guid guestId, int limit);
-    Task<IEnumerable<TrendingCitiesResult>> GetTrendingCitiesAsync(int limit);
+    Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotelsAsync(
+        Guid guestId,
+        int limit,
+        CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<TrendingCitiesResult>> GetTrendingCitiesAsync(
+        int limit,
+        CancellationToken cancellationToken = default);
 }

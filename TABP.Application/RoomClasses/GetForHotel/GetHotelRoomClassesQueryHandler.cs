@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Helper;
-using TABP.Application.Shared;
-using TABP.Domain.Entities;
-using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
@@ -22,16 +19,17 @@ public class GetHotelRoomClassesQueryHandler
     }
     public async Task<PaginatedList<HotelRoomClassesQueryResponse>> Handle(
         GetHotelRoomClassesQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var orderBy = SortBuilder.BuildRoomClassSort(request.PaginationParameters);
 
         var roomClasses = await _roomClassRepository
             .GetByHotelIdAsync(
             orderBy,
-            request.HotelId, 
-            request.PaginationParameters.PageSize, 
-            request.PaginationParameters.PageNumber);
+            request.HotelId,
+            request.PaginationParameters.PageSize,
+            request.PaginationParameters.PageNumber,
+            cancellationToken);
 
         return _mapper.Map<PaginatedList<HotelRoomClassesQueryResponse>>(roomClasses);
     }

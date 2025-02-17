@@ -11,7 +11,8 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
     public async Task<PaginatedList<CityForAdminResult>> GetCitiesForAdminAsync(
         int pageSize,
         int pageNumber,
-        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy)
+        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
+        CancellationToken cancellationToken = default)
     {
         var allCities = DbSet.AsNoTracking();
 
@@ -27,8 +28,8 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
         });
 
         var requestedPage = PaginationExtenstions.GetRequestedPage(cities, pageSize, pageNumber);
-        var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
+        var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<CityForAdminResult>(await requestedPage.ToListAsync(), paginationMetaData);
+        return new PaginatedList<CityForAdminResult>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
     }
 }

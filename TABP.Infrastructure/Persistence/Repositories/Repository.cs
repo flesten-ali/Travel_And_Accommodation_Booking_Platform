@@ -17,31 +17,40 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         _context = context;
     }
 
-    public async Task CreateAsync(T entity)
+    public async Task CreateAsync(
+        T entity,
+        CancellationToken cancellationToken = default)
     {
         if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
         {
             ((IAuditEntity)entity).CreatedDate = DateTime.UtcNow;
         }
-        await DbSet.AddAsync(entity);
+        await DbSet.AddAsync(entity, cancellationToken);
     }
 
-    public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+    public async Task<bool> ExistsAsync(
+        Expression<Func<T, bool>> predicate,
+        CancellationToken cancellationToken = default)
     {
-        return await DbSet.AnyAsync(predicate);
+        return await DbSet.AnyAsync(predicate, cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> GetAllByIdAsync(IEnumerable<Guid> Ids)
+    public async Task<IEnumerable<T>> GetAllByIdAsync(
+        IEnumerable<Guid> Ids,
+        CancellationToken cancellationToken = default)
     {
-        return await DbSet.Where(entity => Ids.Contains(entity.Id)).ToListAsync();
+        return await DbSet.Where(entity => Ids.Contains(entity.Id)).ToListAsync(cancellationToken);
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await DbSet.FindAsync(id);
+        return await DbSet.FindAsync(id, cancellationToken);
     }
 
-    public async Task<T?> GetByIdIncludeProperties(Guid entityId, params Expression<Func<T, object>>[] includeProperties)
+    public async Task<T?> GetByIdIncludePropertiesAsync(
+        Guid entityId,
+        CancellationToken cancellationToken = default,
+        params Expression<Func<T, object>>[] includeProperties)
     {
         var query = DbSet.AsQueryable();
 
@@ -50,17 +59,17 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
             query = query.Include(includeProperty);
         }
 
-        var entity = await query.FirstOrDefaultAsync(entity => entity.Id == entityId);
+        var entity = await query.FirstOrDefaultAsync(entity => entity.Id == entityId, cancellationToken);
 
         if (entity == null) return null;
 
         if (entity is Hotel hotel)
         {
             var thumbnail = await _context.Images
-                .FirstOrDefaultAsync(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Thumbnail);
+                .FirstOrDefaultAsync(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Thumbnail, cancellationToken);
 
             var gallery = await _context.Images
-                .Where(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Gallery).ToListAsync();
+                .Where(img => img.ImageableId == hotel.Id && img.ImageType == ImageType.Gallery).ToListAsync(cancellationToken);
 
             if (thumbnail != null)
             {
@@ -76,12 +85,12 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         return entity;
     }
 
-    public Task DeleteAsync(T entity)
+    public Task DeleteAsync(T entity , CancellationToken cancellationToken = default)
     {
         return Task.FromResult(DbSet.Remove(entity));
     }
 
-    public Task UpdateAsync(T entity)
+    public Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
         if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
         {

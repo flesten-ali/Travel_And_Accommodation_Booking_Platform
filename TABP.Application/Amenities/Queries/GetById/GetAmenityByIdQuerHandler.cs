@@ -6,7 +6,7 @@ using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Amenities.Queries.GetById;
-internal class GetAmenityByIdQuerHandler : IRequestHandler<GetAmenityByIdQuery, AmenityResponse>
+public class GetAmenityByIdQuerHandler : IRequestHandler<GetAmenityByIdQuery, AmenityResponse>
 {
     private readonly IAmenityRepository _amenityRepository;
     private readonly IMapper _mapper;
@@ -17,9 +17,9 @@ internal class GetAmenityByIdQuerHandler : IRequestHandler<GetAmenityByIdQuery, 
         _mapper = mapper;
     }
 
-    public async Task<AmenityResponse> Handle(GetAmenityByIdQuery request, CancellationToken cancellationToken)
+    public async Task<AmenityResponse> Handle(GetAmenityByIdQuery request, CancellationToken cancellationToken = default)
     {
-        var amenity = await _amenityRepository.GetByIdAsync(request.AmenityId)
+        var amenity = await _amenityRepository.GetByIdAsync(request.AmenityId, cancellationToken)
             ?? throw new NotFoundException(AmenityExceptionMessages.NotFound);
 
         return _mapper.Map<AmenityResponse>(amenity);

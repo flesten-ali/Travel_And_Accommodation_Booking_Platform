@@ -22,7 +22,7 @@ public class SearchHotelsQueryHandler :
 
     public async Task<PaginatedList<SearchHotelResponse>> Handle(
         SearchHotelsQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var filter = BuildFilterExpression(request);
         var orderBy = SortBuilder.BuildHotelSort(request.PaginationParameters);
@@ -31,7 +31,8 @@ public class SearchHotelsQueryHandler :
             filter,
             orderBy,
             request.PaginationParameters.PageSize,
-            request.PaginationParameters.PageNumber);
+            request.PaginationParameters.PageNumber,
+            cancellationToken);
 
         return _mapper.Map<PaginatedList<SearchHotelResponse>>(result);
     }

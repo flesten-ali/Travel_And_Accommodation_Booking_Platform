@@ -13,7 +13,12 @@ public class EmailSenderService : IEmailSenderService
         _smtpConfig = smtpConfig;
     }
 
-    public async Task SendEmailAsync(string recipient, string subject, string body, List<EmailAttachment> emailAttachments)
+    public async Task SendEmailAsync(
+        string recipient,
+        string subject,
+        string body,
+        List<EmailAttachment> emailAttachments,
+        CancellationToken cancellationToken = default)
     {
         var emailToSend = new MimeMessage();
         emailToSend.From.Add(MailboxAddress.Parse(_smtpConfig.From));
@@ -35,9 +40,9 @@ public class EmailSenderService : IEmailSenderService
 
         var smtp = new SmtpClient();
 
-        await smtp.ConnectAsync(_smtpConfig.Host, _smtpConfig.Port, SecureSocketOptions.StartTls);
-        await smtp.AuthenticateAsync(_smtpConfig.From, _smtpConfig.Password);
-        await smtp.SendAsync(emailToSend);
-        await smtp.DisconnectAsync(true);
+        await smtp.ConnectAsync(_smtpConfig.Host, _smtpConfig.Port, SecureSocketOptions.StartTls, cancellationToken);
+        await smtp.AuthenticateAsync(_smtpConfig.From, _smtpConfig.Password, cancellationToken);
+        await smtp.SendAsync(emailToSend, cancellationToken);
+        await smtp.DisconnectAsync(true, cancellationToken);
     }
 }

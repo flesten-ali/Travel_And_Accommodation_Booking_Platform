@@ -14,7 +14,8 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         Expression<Func<Hotel, bool>> filter,
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
-        int pageNumber)
+        int pageNumber,
+        CancellationToken cancellationToken = default)
     {
         var hotels = DbSet.Where(filter);
         hotels = orderBy(hotels);
@@ -26,18 +27,21 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
             StarRating = h.Rate,
             PricePerNight = h.RoomClasses.Count != 0 ? h.RoomClasses.Min(rc => rc.Price) : 0,
             ThumbnailUrl = context.Images
-                                  .Where(img => img.ImageableId == h.Id && img.ImageType == ImageType.Thumbnail)
-                                  .Select(img => img.ImageUrl)
-                                  .FirstOrDefault() ?? ""
+                   .Where(img => img.ImageableId == h.Id && img.ImageType == ImageType.Thumbnail)
+                   .Select(img => img.ImageUrl)
+                   .FirstOrDefault() ?? ""
+
         });
 
         var resultToReturn = selectedResult.GetRequestedPage(pageSize, pageNumber);
-        var paginationMetaData = await resultToReturn.GetPaginationMetaDataAsync(pageSize, pageNumber);
+        var paginationMetaData = await resultToReturn.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<SearchHotelResult>(await resultToReturn.ToListAsync(), paginationMetaData);
+        return new PaginatedList<SearchHotelResult>(await resultToReturn.ToListAsync(cancellationToken), paginationMetaData);
     }
 
-    public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(int NumberOfDeals)
+    public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(
+        int limit,
+        CancellationToken cancellationToken = default)
     {
         var currentDate = DateTime.UtcNow;
 
@@ -51,11 +55,13 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
                 Hotel = h,
                 DiscountedPrice = h.RoomClasses.Min(rc =>
                     rc.Discounts.Count != 0
-                    ? rc.Price * (1 - (rc.Discounts.Where(d => d.StartDate <= currentDate && d.EndDate > currentDate).Max(d => d.Percentage) / 100))
+                    ? rc.Price * (1 - (rc.Discounts
+                    .Where(d => d.StartDate <= currentDate && d.EndDate > currentDate)
+                    .Max(d => d.Percentage) / 100))
                     : rc.Price)
             })
             .OrderBy(x => x.DiscountedPrice)
-            .Take(NumberOfDeals)
+            .Take(limit)
             .Select(x => new FeaturedDealResult
             {
                 Description = x.Hotel.Description,
@@ -64,21 +70,24 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
                 Name = x.Hotel.Name,
                 StarRate = x.Hotel.Rate,
                 ThumbnailUrl = context.Images
-                                      .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
-                                      .Select(img => img.ImageUrl)
-                                      .FirstOrDefault() ?? "",
+                       .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
+                       .Select(img => img.ImageUrl)
+                       .FirstOrDefault() ?? "",
+
                 DiscountedPrice = x.DiscountedPrice,
                 OriginalPrice = x.Hotel.RoomClasses.Max(rc => rc.Price),
             })
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
+
         return featuredDeals;
     }
 
     public async Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(
-        Func<IQueryable<Hotel>, 
+        Func<IQueryable<Hotel>,
         IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
-        int pageNumber)
+        int pageNumber,
+        CancellationToken cancellationToken = default)
     {
         var allHotels = DbSet.AsNoTracking();
 
@@ -94,8 +103,8 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         });
 
         var requestedPage = PaginationExtenstions.GetRequestedPage(hotels, pageSize, pageNumber);
-        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
+        var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<HotelForAdminResult>(await hotels.ToListAsync(), paginationMetaDate);
+        return new PaginatedList<HotelForAdminResult>(await hotels.ToListAsync(cancellationToken), paginationMetaDate);
     }
 }

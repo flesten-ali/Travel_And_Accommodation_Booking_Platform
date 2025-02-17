@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Helper;
-using TABP.Application.Shared;
-using TABP.Domain.Entities;
-using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
@@ -22,14 +19,15 @@ public class GetRoomClassesForAdminQueryHandler
 
     public async Task<PaginatedList<RoomClassForAdminResponse>> Handle(
         GetRoomClassesForAdminQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var orderBy = SortBuilder.BuildRoomClassSort(request.PaginationParameters);
 
         var roomClasses = await _roomClassRepository.GetRoomClassesForAdminAsync(
             orderBy,
             request.PaginationParameters.PageSize,
-            request.PaginationParameters.PageNumber);
+            request.PaginationParameters.PageNumber,
+            cancellationToken);
 
         return _mapper.Map<PaginatedList<RoomClassForAdminResponse>>(roomClasses);
     }

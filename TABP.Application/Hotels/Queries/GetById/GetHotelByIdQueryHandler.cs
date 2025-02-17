@@ -4,8 +4,8 @@ using TABP.Application.Exceptions;
 using TABP.Application.Exceptions.Messages;
 using TABP.Application.Hotels.Common;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+namespace TABP.Application.Hotels.Queries.GetById;
 
-namespace TABP.Application.Hotels.Queries.GetHotelById;
 public class GetHotelByIdQueryHandler : IRequestHandler<GetHotelByIdQuery, HotelResponse>
 {
     private readonly IHotelRepository _hotelRepository;
@@ -17,9 +17,12 @@ public class GetHotelByIdQueryHandler : IRequestHandler<GetHotelByIdQuery, Hotel
         _mapper = mapper;
     }
 
-    public async Task<HotelResponse> Handle(GetHotelByIdQuery request, CancellationToken cancellationToken)
+    public async Task<HotelResponse> Handle(GetHotelByIdQuery request, CancellationToken cancellationToken = default)
     {
-        var hotel = await _hotelRepository.GetByIdIncludeProperties(request.HotelId, h => h.Owner, h => h.City)
+        var hotel = await _hotelRepository.GetByIdIncludePropertiesAsync(
+            request.HotelId,
+            cancellationToken,
+            h => h.Owner, h => h.City)
             ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
 
         return _mapper.Map<HotelResponse>(hotel);

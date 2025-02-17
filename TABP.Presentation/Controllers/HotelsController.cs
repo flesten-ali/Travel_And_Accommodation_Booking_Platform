@@ -9,10 +9,10 @@ using TABP.Application.Hotels.Commands.Delete;
 using TABP.Application.Hotels.Commands.ImageGallery;
 using TABP.Application.Hotels.Commands.Thumbnail;
 using TABP.Application.Hotels.Commands.Update;
+using TABP.Application.Hotels.Queries.GetById;
 using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.GetFeaturedDeals;
 using TABP.Application.Hotels.Queries.GetForAdmin;
-using TABP.Application.Hotels.Queries.GetHotelById;
 using TABP.Application.Hotels.Queries.SearchHotels;
 using TABP.Application.RoomClasses.GetForHotel;
 using TABP.Domain.Constants;
@@ -32,11 +32,13 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> SearchHotels([FromQuery] SearchHotelRequest request)
+    public async Task<IActionResult> SearchHotels(
+        [FromQuery] SearchHotelRequest request,
+        CancellationToken cancellationToken)
     {
         var command = _mapper.Map<SearchHotelsQuery>(request);
 
-        var hotels = await _mediator.Send(command);
+        var hotels = await _mediator.Send(command, cancellationToken);
 
         Response.Headers.Append("X-Pagination",
             JsonSerializer.Serialize(hotels.PaginationMetaData));
@@ -48,14 +50,14 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetHotelDetails(Guid id)
+    public async Task<IActionResult> GetHotelDetails(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetHotelQuery()
         {
             HotelId = id
         };
 
-        var response = await _mediator.Send(query);
+        var response = await _mediator.Send(query, cancellationToken);
 
         return Ok(response);
     }
@@ -65,11 +67,13 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> CreateHotel([FromBody] CreateHotelRequest request)
+    public async Task<IActionResult> CreateHotel(
+        [FromBody] CreateHotelRequest request,
+        CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateHotelCommand>(request);
 
-        var createdHotel = await _mediator.Send(command);
+        var createdHotel = await _mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetHotel), new { id = createdHotel.Id }, createdHotel);
     }
@@ -78,11 +82,11 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetHotel(Guid id)
+    public async Task<IActionResult> GetHotel(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetHotelByIdQuery { HotelId = id };
 
-        var hotel = await _mediator.Send(query);
+        var hotel = await _mediator.Send(query, cancellationToken);
 
         return Ok(hotel);
     }
@@ -93,12 +97,15 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UploadHotelThumbnail(Guid id, [FromForm] UploadHotelThumbnailRequest request)
+    public async Task<IActionResult> UploadHotelThumbnail(
+        Guid id,
+        [FromForm] UploadHotelThumbnailRequest request,
+        CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UploadHotelThumbnailCommand>(request);
         command.HotelId = id;
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -109,12 +116,15 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UploadHotelGalleryImages(Guid id, [FromForm] UploadImageGalleryRequest request)
+    public async Task<IActionResult> UploadHotelGalleryImages(
+        Guid id,
+        [FromForm] UploadImageGalleryRequest request,
+        CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UploadImageGalleryCommand>(request);
         command.HotelId = id;
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -123,11 +133,11 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetFeaturedDeals(int limit)
+    public async Task<IActionResult> GetFeaturedDeals(int limit, CancellationToken cancellationToken)
     {
         var query = new GetFeaturedDealsQuery { Limit = limit };
 
-        var featuredDeals = await _mediator.Send(query);
+        var featuredDeals = await _mediator.Send(query, cancellationToken);
 
         return Ok(featuredDeals);
     }
@@ -137,11 +147,13 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetHotelsForAdmin([FromQuery] GetHotelsForAdminRequest request)
+    public async Task<IActionResult> GetHotelsForAdmin(
+        [FromQuery] GetHotelsForAdminRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _mapper.Map<GetHotelsForAdminQuery>(request);
 
-        var hotels = await _mediator.Send(query);
+        var hotels = await _mediator.Send(query, cancellationToken);
 
         Response.Headers.Append("x-pagination",
             JsonSerializer.Serialize(hotels.PaginationMetaData));
@@ -155,12 +167,12 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateHotel(Guid id, UpdateHotelRequest request)
+    public async Task<IActionResult> UpdateHotel(Guid id, UpdateHotelRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UpdateHotelCommand>(request);
         command.Id = id;
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -171,11 +183,11 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteHotel(Guid id)
+    public async Task<IActionResult> DeleteHotel(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteHotelCommand { Id = id };
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -187,12 +199,15 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> GetHotelRoomClasses(Guid id, [FromQuery] GetHotelRoomClassesRequest request)
+    public async Task<IActionResult> GetHotelRoomClasses(
+        Guid id,
+        [FromQuery] GetHotelRoomClassesRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _mapper.Map<GetHotelRoomClassesQuery>(request);
         query.HotelId = id;
 
-        var roomClasses = await _mediator.Send(query);
+        var roomClasses = await _mediator.Send(query, cancellationToken);
 
         Response.Headers.Append("X-Pagination",
             JsonSerializer.Serialize(roomClasses.PaginationMetaData));

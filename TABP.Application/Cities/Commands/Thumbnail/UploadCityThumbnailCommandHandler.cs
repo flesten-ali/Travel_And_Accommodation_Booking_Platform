@@ -31,33 +31,33 @@ public class UploadCityThumbnailCommandHandler : IRequestHandler<UploadCityThumb
         _imageRepository = imageRepository;
     }
 
-    public async Task<Unit> Handle(UploadCityThumbnailCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UploadCityThumbnailCommand request, CancellationToken cancellationToken = default)
     {
-        if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId))
+        if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId, cancellationToken))
         {
             throw new NotFoundException(CityExceptionMessages.NotFound);
         }
 
-        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
             var publicId = Guid.NewGuid().ToString();
-            var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId);
+            var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId, cancellationToken);
 
             var image = _mapper.Map<Image>(request);
             image.ImageUrl = imageUrl;
             image.PublicId = publicId;
 
-            await _imageRepository.DeleteByIdAsync(request.CityId, ImageType.Thumbnail);
-            await _imageRepository.CreateAsync(image);
+            await _imageRepository.DeleteByIdAsync(request.CityId, ImageType.Thumbnail, cancellationToken);
+            await _imageRepository.CreateAsync(image, cancellationToken);
 
-            await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }
         catch
         {
-            await _unitOfWork.RollbackAsync();
+            await _unitOfWork.RollbackAsync(cancellationToken);
             throw;
         }
     }

@@ -9,12 +9,16 @@ public interface IHotelRepository : IRepository<Hotel>
         Expression<Func<Hotel, bool>> filter,
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
-        int pageCount);
+        int pageCount,
+        CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(int NumberOfDeals);
+    Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(
+        int limit,
+        CancellationToken cancellationToken = default);
 
     Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
-        int pageNumber);
+        int pageNumber,
+        CancellationToken cancellationToken = default);
 }

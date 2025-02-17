@@ -52,14 +52,14 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
+    public async Task<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken = default)
     {
-        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId, cancellationToken))
         {
             throw new NotFoundException(HotelExceptionMessages.NotFound);
         }
 
-        var user = await _userRepository.GetByIdAsync(request.UserId)
+        var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken)
             ?? throw new NotFoundException(UserExceptionMessages.NotFound);
 
         if (user.Role != Roles.Guest)
@@ -67,7 +67,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
             throw new UserUnauthorizedException(UserExceptionMessages.UnauthorizedBooking);
         }
 
-        var rooms = await _roomRepository.GetAllByIdAsync(request.RoomIds);
+        var rooms = await _roomRepository.GetAllByIdAsync(request.RoomIds, cancellationToken);
         if (rooms == null || rooms.Count() != request.RoomIds.Count())
         {
             throw new NotFoundException(RoomExceptionMessages.NotFound);
@@ -78,7 +78,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
             throw new RoomNotBelongToHotelException(RoomExceptionMessages.NotBelongToHotel);
         }
 
-        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
         try
         {
@@ -99,10 +99,10 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
                     TotalPrice = CalculateTotalPrice(rooms, request.CheckInDate, request.CheckOutDate),
                 }
             };
-            await _bookingRepository.CreateAsync(booking);
+            await _bookingRepository.CreateAsync(booking, cancellationToken);
 
             var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
-            var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml);
+            var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml, cancellationToken);
 
             var emailAttachment = new EmailAttachment
             {
@@ -111,13 +111,19 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
                 ContentType = "application/pdf"
             };
 
-            await _emailSenderService.SendEmailAsync(user.Email, "Your Booking Invoice", invoiceHtml, [emailAttachment]);
-            await _unitOfWork.CommitAsync();
+            await _emailSenderService.SendEmailAsync(
+                user.Email,
+                "Your Booking Invoice",
+                invoiceHtml,
+                [emailAttachment], 
+                cancellationToken);
+
+            await _unitOfWork.CommitAsync(cancellationToken);
             return _mapper.Map<BookingResponse>(booking);
         }
         catch
         {
-            await _unitOfWork.RollbackAsync();
+            await _unitOfWork.RollbackAsync(cancellationToken);
             throw;
         }
     }

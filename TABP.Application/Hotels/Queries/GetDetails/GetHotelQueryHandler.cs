@@ -15,9 +15,10 @@ public class GetHotelQueryHandler : IRequestHandler<GetHotelQuery, HotelDetailsR
         _hotelRepository = hotelRepository;
         _mapper = mapper;
     }
-    public async Task<HotelDetailsResponse> Handle(GetHotelQuery request, CancellationToken cancellationToken)
+
+    public async Task<HotelDetailsResponse> Handle(GetHotelQuery request, CancellationToken cancellationToken = default)
     {
-        var hotel = await _hotelRepository.GetByIdIncludeProperties(request.HotelId)
+        var hotel = await _hotelRepository.GetByIdIncludePropertiesAsync(request.HotelId, cancellationToken)
             ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
 
         return _mapper.Map<HotelDetailsResponse>(hotel);

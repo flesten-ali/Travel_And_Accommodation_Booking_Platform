@@ -17,7 +17,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/cities")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)]
+[Authorize(Roles = Roles.Admin)]
 public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -27,11 +27,11 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetTrendingCities(int limit)
+    public async Task<IActionResult> GetTrendingCities(int limit, CancellationToken cancellationToken)
     {
         var query = new GetTrendingCitiesQuery { Limit = limit };
 
-        var cities = await _mediator.Send(query);
+        var cities = await _mediator.Send(query, cancellationToken);
 
         return Ok(cities);
     }
@@ -41,11 +41,13 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetCitiesForAdmin([FromQuery] GetCitiesForAdminRequest request)
+    public async Task<IActionResult> GetCitiesForAdmin(
+        [FromQuery] GetCitiesForAdminRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _mapper.Map<GetCitiesForAdminQuery>(request);
 
-        var cities = await _mediator.Send(query);
+        var cities = await _mediator.Send(query, cancellationToken);
 
         Response.Headers.Append("x-pagination",
             JsonSerializer.Serialize(cities.PaginationMetaData));
@@ -58,11 +60,11 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateCity([FromBody] CreateCityRequest request)
+    public async Task<IActionResult> CreateCity([FromBody] CreateCityRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateCityCommand>(request);
 
-        var city = await _mediator.Send(command);
+        var city = await _mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetCity), new { id = city.Id }, city);
     }
@@ -73,11 +75,11 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetCity(Guid id)
+    public async Task<IActionResult> GetCity(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetCityByIdQuery { Id = id };
 
-        var city = await _mediator.Send(query);
+        var city = await _mediator.Send(query, cancellationToken);
 
         return Ok(city);
     }
@@ -88,11 +90,11 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteCity(Guid id)
+    public async Task<IActionResult> DeleteCity(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteCityCommand { Id = id };
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -103,12 +105,12 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> UpdateCity(Guid id, UpdateCityRequest request)
+    public async Task<IActionResult> UpdateCity(Guid id, UpdateCityRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UpdateCityCommand>(request);
         command.Id = id;
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -119,12 +121,15 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UploadCityThumbnail(Guid id, [FromForm] UploadCityThumbnailRequest request)
+    public async Task<IActionResult> UploadCityThumbnail(
+        Guid id,
+        [FromForm] UploadCityThumbnailRequest request,
+        CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UploadCityThumbnailCommand>(request);
         command.CityId = id;
 
-        await _mediator.Send(command);
+        await _mediator.Send(command, cancellationToken);
 
         return NoContent();
     }

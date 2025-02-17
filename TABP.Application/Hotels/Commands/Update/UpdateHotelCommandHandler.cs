@@ -27,32 +27,33 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
-    public async Task<Unit> Handle(UpdateHotelCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateHotelCommand request, CancellationToken cancellationToken = default)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.Id)
+        var hotel = await _hotelRepository.GetByIdAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
 
-        if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId))
+        if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId, cancellationToken))
         {
             throw new NotFoundException(CityExceptionMessages.NotFound);
         }
 
-        if (!await _ownerRepository.ExistsAsync(o => o.Id == request.OwnerId))
+        if (!await _ownerRepository.ExistsAsync(o => o.Id == request.OwnerId, cancellationToken))
         {
             throw new NotFoundException(OwnerExceptionMessages.NotFound);
         }
 
         if (await _hotelRepository.ExistsAsync(hotel =>
           hotel.LatitudeCoordinates == request.LatitudeCoordinates
-          && hotel.LongitudeCoordinates == request.LongitudeCoordinates))
+          && hotel.LongitudeCoordinates == request.LongitudeCoordinates,
+          cancellationToken))
         {
             throw new ExistsException(HotelExceptionMessages.ExistsInLocation);
         }
 
         _mapper.Map(request, hotel);
 
-        _hotelRepository.UpdateAsync(hotel);
-        await _unitOfWork.SaveChangesAsync();
+        await _hotelRepository.UpdateAsync(hotel, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }

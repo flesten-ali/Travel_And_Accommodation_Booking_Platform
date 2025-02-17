@@ -17,25 +17,26 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
     public CreateAmenityCommandHandler(
         IAmenityRepository amenityRepository,
         IMapper mapper,
-        IUnitOfWork unitOfWork,
-        IRoomClassRepository roomClassRepository)
+        IUnitOfWork unitOfWork)
     {
         _amenityRepository = amenityRepository;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<AmenityResponse> Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
+    public async Task<AmenityResponse> Handle(
+        CreateAmenityCommand request,
+        CancellationToken cancellationToken = default)
     {
-        if (await _amenityRepository.ExistsAsync(a => a.Name == request.Name))
+        if (await _amenityRepository.ExistsAsync(a => a.Name == request.Name, cancellationToken))
         {
-            throw new ExistsException(AmenityExceptionMessages.NotFound);
+            throw new ExistsException(AmenityExceptionMessages.Exist);
         }
 
         var amenity = _mapper.Map<Amenity>(request);
 
-        await _amenityRepository.CreateAsync(amenity);
-        await _unitOfWork.SaveChangesAsync();
+        await _amenityRepository.CreateAsync(amenity, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<AmenityResponse>(amenity);
     }

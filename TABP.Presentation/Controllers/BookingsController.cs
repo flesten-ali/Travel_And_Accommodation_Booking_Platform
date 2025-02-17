@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Bookings.Commands.Create;
 using TABP.Application.Bookings.Queries.GetBookingById;
-using TABP.Application.Bookings.Queries.PdfConfirmation;
+using TABP.Application.Bookings.Queries.InvoicePdf;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Booking;
 namespace TABP.Presentation.Controllers;
@@ -23,11 +23,11 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> GetBooking(Guid id)
+    public async Task<IActionResult> GetBooking(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetBookingByIdQuery { BookingId = id };
 
-        var booking = await _mediator.Send(query);
+        var booking = await _mediator.Send(query, cancellationToken);
 
         return Ok(booking);
     }
@@ -38,11 +38,11 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest request)
+    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateBookingCommand>(request);
 
-        var booking = await _mediator.Send(command);
+        var booking = await _mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
     }
@@ -52,11 +52,11 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> GetInvoicePdf(Guid id)
+    public async Task<IActionResult> GetInvoicePdf(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetInvoicePdfQuery { BookingId = id };
 
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
 
         return File(result.PdfContent, "application/pdf", "invoice.pdf");
     }

@@ -27,9 +27,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        if (await _userRepository.EmailExistsAsync(request.Email))
+        if (await _userRepository.EmailExistsAsync(request.Email, cancellationToken))
         {
             throw new ExistsException($"User with email {request.Email} is exits");
         }
@@ -37,8 +37,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
         var user = _mapper.Map<User>(request);
 
         user.PasswordHash = _passwordHasher.Hash(request.Password);
-        await _userRepository.CreateAsync(user);
-        await _unitOfWork.SaveChangesAsync();
+        await _userRepository.CreateAsync(user, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }

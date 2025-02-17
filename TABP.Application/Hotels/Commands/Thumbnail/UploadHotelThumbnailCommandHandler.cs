@@ -31,33 +31,33 @@ public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThu
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
-    public async Task<Unit> Handle(UploadHotelThumbnailCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UploadHotelThumbnailCommand request, CancellationToken cancellationToken = default)
     {
-        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId, cancellationToken))
         {
             throw new NotFoundException(HotelExceptionMessages.NotFound);
         }
 
-        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
             var publicId = Guid.NewGuid().ToString();
-            var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId);
+            var imageUrl = await _imageUploadService.UploadAsync(request.Thumbnail, publicId, cancellationToken);
 
             var image = _mapper.Map<Image>(request);
             image.ImageUrl = imageUrl;
             image.PublicId = publicId;
 
-            await _imageRepository.DeleteByIdAsync(image.ImageableId, ImageType.Thumbnail);
+            await _imageRepository.DeleteByIdAsync(image.ImageableId, ImageType.Thumbnail, cancellationToken);
 
-            await _imageRepository.CreateAsync(image);
-            await _unitOfWork.CommitAsync();
+            await _imageRepository.CreateAsync(image, cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }
         catch
         {
-            await _unitOfWork.RollbackAsync();
+            await _unitOfWork.RollbackAsync(cancellationToken);
             throw;
         }
     }

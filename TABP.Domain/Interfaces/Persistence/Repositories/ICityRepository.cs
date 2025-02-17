@@ -7,5 +7,6 @@ public interface ICityRepository : IRepository<City>
     Task<PaginatedList<CityForAdminResult>> GetCitiesForAdminAsync(
         int pageSize,
         int pageNumber,
-        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy);
+        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
+        CancellationToken cancellationToken = default);
 }

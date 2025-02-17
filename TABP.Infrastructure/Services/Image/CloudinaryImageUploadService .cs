@@ -19,10 +19,10 @@ public class CloudinaryImageUploadService : IImageUploadService
         _cloudinary.Api.Secure = true;
     }
 
-    public async Task<string> UploadAsync(IFormFile file, string publicId)
+    public async Task<string> UploadAsync(IFormFile file, string publicId, CancellationToken cancellationToken = default)
     {
         using var memoryStream = new MemoryStream();
-        await file.CopyToAsync(memoryStream);
+        await file.CopyToAsync(memoryStream, cancellationToken);
         memoryStream.Position = 0;
        
         var uploadparams = new ImageUploadParams
@@ -31,7 +31,7 @@ public class CloudinaryImageUploadService : IImageUploadService
             PublicId = publicId,
         };
 
-        var result = await _cloudinary.UploadAsync(uploadparams);
+        var result = await _cloudinary.UploadAsync(uploadparams, cancellationToken);
 
         if (result.Error != null)
         {

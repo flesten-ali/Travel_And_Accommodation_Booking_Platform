@@ -24,14 +24,15 @@ public class GetRecentlyVisitedHotelsQueryHandler
 
     public async Task<IEnumerable<RecentlyVisitedHotelsResponse>> Handle(
         GetRecentlyVisitedHotelsQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
-        if (!await _userRepository.ExistsAsync(u => u.Id == request.GuestId))
+        if (!await _userRepository.ExistsAsync(u => u.Id == request.GuestId, cancellationToken))
         {
             throw new NotFoundException(UserExceptionMessages.NotFound);
         }
 
-        var recentlyVisitedHotels = await _bookingRepository.GetRecentlyVisitedHotelsAsync(request.GuestId, request.Limit);
+        var recentlyVisitedHotels = await _bookingRepository
+            .GetRecentlyVisitedHotelsAsync(request.GuestId, request.Limit, cancellationToken);
 
         return _mapper.Map<IEnumerable<RecentlyVisitedHotelsResponse>>(recentlyVisitedHotels);
     }

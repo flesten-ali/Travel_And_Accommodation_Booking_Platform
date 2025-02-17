@@ -17,10 +17,11 @@ public class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, B
         _mapper = mapper;
     }
 
-    public async Task<BookingResponse> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
+    public async Task<BookingResponse> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken = default)
     {
-        var booking = await _bookingRepository.GetByIdIncludeProperties(
+        var booking = await _bookingRepository.GetByIdIncludePropertiesAsync(
             request.BookingId,
+            cancellationToken,
             b => b.Invoice,
             b => b.Rooms) ?? throw new NotFoundException(BookingExceptionMessages.NotFound);
 

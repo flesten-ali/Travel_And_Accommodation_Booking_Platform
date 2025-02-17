@@ -28,18 +28,23 @@ public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand>
         _roomClassRepository = roomClassRepository;
         _userRepository = userRepository;
     }
-    public async Task<Unit> Handle(AddToCartCommand request, CancellationToken cancellationToken)
-    {
-        _ = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new NotFoundException(UserExceptionMessages.NotFound);
 
-        _ = await _roomClassRepository.GetByIdAsync(request.RoomClassId)
-            ?? throw new NotFoundException(RoomClassExceptionMessages.NotFound);
+    public async Task<Unit> Handle(AddToCartCommand request, CancellationToken cancellationToken = default)
+    {
+        if (!await _userRepository.ExistsAsync(x => x.Id == request.UserId, cancellationToken))
+        {
+            throw new NotFoundException(UserExceptionMessages.NotFound);
+        }
+
+        if (!await _roomClassRepository.ExistsAsync(x => x.Id == request.RoomClassId, cancellationToken))
+        {
+            throw new NotFoundException(RoomClassExceptionMessages.NotFound);
+        }
 
         var cartItem = _mapper.Map<CartItem>(request);
 
-        await _cartItemRepository.CreateAsync(cartItem);
-        await _unitOfWork.SaveChangesAsync();
+        await _cartItemRepository.CreateAsync(cartItem, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }

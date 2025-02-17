@@ -21,7 +21,7 @@ public class GetHotelReviewsQueryHandler
 
     public async Task<PaginatedList<HotelReviewsQueryReponse>> Handle(
         GetHotelReviewsQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var orderBy = SortBuilder.BuildReviewSort(request.PaginationParameters);
 
@@ -29,7 +29,8 @@ public class GetHotelReviewsQueryHandler
             orderBy,
             request.HotelId,
             request.PaginationParameters.PageSize,
-            request.PaginationParameters.PageNumber)
+            request.PaginationParameters.PageNumber,
+            cancellationToken)
             ?? throw new NotFoundException(ReviewExceptionMessages.NotFound);
 
         return _mapper.Map<PaginatedList<HotelReviewsQueryReponse>>(reviews);

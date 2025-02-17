@@ -2,8 +2,8 @@
 using MediatR;
 using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
-
 namespace TABP.Application.Cities.Queries.GetTrending;
+
 public class GetTrendingCitiesQueryHandler
     : IRequestHandler<GetTrendingCitiesQuery, IEnumerable<TrendingCitiesResponse>>
 {
@@ -18,12 +18,12 @@ public class GetTrendingCitiesQueryHandler
 
     public async Task<IEnumerable<TrendingCitiesResponse>> Handle(
         GetTrendingCitiesQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         if (request.Limit < 1)
             throw new ArgumentException(ValidationExceptionMessages.LimitGreaterThanZero);
 
-        var trendingHotels = await _bookingRepository.GetTrendingCitiesAsync(request.Limit);
+        var trendingHotels = await _bookingRepository.GetTrendingCitiesAsync(request.Limit, cancellationToken);
 
         return _mapper.Map<IEnumerable<TrendingCitiesResponse>>(trendingHotels);
     }

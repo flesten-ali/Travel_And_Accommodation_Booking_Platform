@@ -1,37 +1,36 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using TABP.Application.Exceptions;
 using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Pdf;
+namespace TABP.Application.Bookings.Queries.InvoicePdf;
 
-namespace TABP.Application.Bookings.Queries.PdfConfirmation;
 public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, InvoicePdfResponse>
 {
     private readonly IBookingRepository _bookingRepository;
     private readonly IInvoiceHtmlGenerationService _invoiceHtmlGenerationService;
     private readonly IPdfService _pdfService;
-    private readonly IMapper _mapper;
 
     public GetInvoicePdfQueryHandler(IBookingRepository bookingRepository,
         IInvoiceHtmlGenerationService invoiceHtmlGenerationService,
-        IPdfService pdfService,
-        IMapper mapper)
+        IPdfService pdfService)
     {
         _bookingRepository = bookingRepository;
         _invoiceHtmlGenerationService = invoiceHtmlGenerationService;
         _pdfService = pdfService;
-        _mapper = mapper;
     }
 
-    public async Task<InvoicePdfResponse> Handle(GetInvoicePdfQuery request, CancellationToken cancellationToken)
+    public async Task<InvoicePdfResponse> Handle(GetInvoicePdfQuery request, CancellationToken cancellationToken = default)
     {
-        var booking = await _bookingRepository.GetByIdIncludeProperties(request.BookingId, b => b.Invoice)
+        var booking = await _bookingRepository.GetByIdIncludePropertiesAsync(
+            request.BookingId,
+            cancellationToken,
+            b => b.Invoice)
             ?? throw new NotFoundException(BookingExceptionMessages.NotFound);
 
         var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
-        var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml);
+        var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml, cancellationToken);
 
         return new InvoicePdfResponse
         {

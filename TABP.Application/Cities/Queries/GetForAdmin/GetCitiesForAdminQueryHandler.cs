@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Helper;
-using TABP.Application.Shared;
-using TABP.Domain.Entities;
-using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
@@ -21,15 +18,16 @@ public class GetCitiesForAdminQueryHandler
     }
     public async Task<PaginatedList<CityForAdminResponse>> Handle(
         GetCitiesForAdminQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
-        var orderBy =SortBuilder.BuildCitySort(request.PaginationParameters);
+        var orderBy = SortBuilder.BuildCitySort(request.PaginationParameters);
 
         var cities = await _cityRepository
             .GetCitiesForAdminAsync(
             request.PaginationParameters.PageSize,
             request.PaginationParameters.PageNumber,
-            orderBy);
+            orderBy,
+            cancellationToken);
 
         return _mapper.Map<PaginatedList<CityForAdminResponse>>(cities);
     }

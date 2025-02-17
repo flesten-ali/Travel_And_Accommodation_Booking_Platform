@@ -8,10 +8,12 @@ public interface IRoomClassRepository : IRepository<RoomClass>
         Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy,
         Guid hotelId,
         int pageSize,
-        int pageNumber);
+        int pageNumber,
+        CancellationToken cancellationToken = default);
 
     Task<PaginatedList<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(
         Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy,
         int pageSize,
-        int pageNumber);
+        int pageNumber,
+        CancellationToken cancellationToken = default);
 }

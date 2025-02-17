@@ -19,15 +19,15 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateCityCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(UpdateCityCommand request, CancellationToken cancellationToken = default)
     {
-        var city = await _cityRepository.GetByIdAsync(request.Id)
+        var city = await _cityRepository.GetByIdAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(CityExceptionMessages.NotFound);
 
         _mapper.Map(request, city);
 
-        _cityRepository.UpdateAsync(city);
-        await _unitOfWork.SaveChangesAsync();
+        await _cityRepository.UpdateAsync(city, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }

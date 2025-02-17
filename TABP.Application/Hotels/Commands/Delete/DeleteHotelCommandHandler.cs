@@ -24,31 +24,32 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
         _unitOfWork = unitOfWork;
         _imageRepository = imageRepository;
     }
-    public async Task<Unit> Handle(DeleteHotelCommand request, CancellationToken cancellationToken)
+
+    public async Task<Unit> Handle(DeleteHotelCommand request, CancellationToken cancellationToken = default)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.Id)
+        var hotel = await _hotelRepository.GetByIdAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
 
-        if (await _roomClassRepository.ExistsAsync(rc => rc.HotelId == request.Id))
+        if (await _roomClassRepository.ExistsAsync(rc => rc.HotelId == request.Id, cancellationToken))
         {
             throw new EntityInUseException(HotelExceptionMessages.EntityInUse);
         }
 
-        await _unitOfWork.BeginTransactionAsync();
+        await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail);
-            await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Gallery);
+            await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail, cancellationToken);
+            await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Gallery, cancellationToken);
 
-            _hotelRepository.DeleteAsync(hotel);
+            await _hotelRepository.DeleteAsync(hotel, cancellationToken);
 
-            await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }
         catch
         {
-            await _unitOfWork.RollbackAsync();
+            await _unitOfWork.RollbackAsync(cancellationToken);
             throw;
         }
     }

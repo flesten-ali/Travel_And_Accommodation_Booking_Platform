@@ -8,5 +8,6 @@ public interface IReviewRepository : IRepository<Review>
         Func<IQueryable<Review>, IOrderedQueryable<Review>> orderBy,
         Guid hotelId,
         int pageSize,
-        int pageNumber);
+        int pageNumber,
+        CancellationToken cancellationToken = default);
 }

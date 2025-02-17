@@ -8,7 +8,10 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class BookingRepository(AppDbContext context) : Repository<Booking>(context), IBookingRepository
 {
-    public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotelsAsync(Guid guestId, int limit)
+    public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotelsAsync(
+        Guid guestId,
+        int limit,
+        CancellationToken cancellationToken = default)
     {
         var query = await DbSet
                          .Include(b => b.Invoice)
@@ -22,7 +25,7 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
                              hotel = b.Rooms.Select(r => r.RoomClass.Hotel).FirstOrDefault()!,
                          })
                          .AsNoTracking()
-                         .ToListAsync();
+                         .ToListAsync(cancellationToken);
 
         var recentlyVisitedHotels = query
                           .Select(x => new RecentlyVisitedHotelsResult
@@ -32,9 +35,9 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
                               CityName = x.hotel.City.Name,
                               Rate = x.hotel.Rate,
                               ThumbnailUrl = context.Images
-                                                    .Where(img => img.ImageableId == x.hotel.Id && img.ImageType == ImageType.Thumbnail)
-                                                    .Select(img => img.ImageUrl)
-                                                    .FirstOrDefault() ?? "",
+                                                .Where(img => img.ImageableId == x.hotel.Id && img.ImageType == ImageType.Thumbnail)
+                                                .Select(img => img.ImageUrl)
+                                                .FirstOrDefault() ?? "",
                               BookingDate = x.booking.BookingDate,
                               CheckInDate = x.booking.CheckInDate,
                               CheckOutDate = x.booking.CheckOutDate,
@@ -48,36 +51,32 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
         return recentlyVisitedHotels;
     }
 
-    public async Task<IEnumerable<TrendingCitiesResult>> GetTrendingCitiesAsync(int limit)
+    public async Task<IEnumerable<TrendingCitiesResult>> GetTrendingCitiesAsync(
+        int limit,
+        CancellationToken cancellationToken = default)
     {
-        var trendingHotels = await DbSet
+        var trendingCities = await DbSet
             .Include(b => b.Rooms)
-            .ThenInclude(r => r.RoomClass)
-            .ThenInclude(rc => rc.Hotel)
-            .ThenInclude(h => h.City)
-            .SelectMany(b => b.Rooms, (b, r) => new
-            {
-                room = r
-            })
+               .ThenInclude(r => r.RoomClass)
+                  .ThenInclude(rc => rc.Hotel)
+                     .ThenInclude(h => h.City)
+            .SelectMany(b => b.Rooms, (b, r) => new { room = r })
             .GroupBy(x => x.room.RoomClass.Hotel.City)
             .OrderByDescending(g => g.Count())
             .Take(limit)
-            .Select(g => new
-            {
-                city = g.Key
-            })
+            .Select(g => new { city = g.Key })
             .Select(x => new TrendingCitiesResult
             {
                 Id = x.city.Id,
                 Name = x.city.Name,
                 ThumbnailUrl = context.Images
-                                      .Where(img => img.ImageableId == x.city.Id && img.ImageType == ImageType.Thumbnail)
-                                      .Select(img => img.ImageUrl)
-                                      .FirstOrDefault() ?? "",
+                     .Where(img => img.ImageableId == x.city.Id && img.ImageType == ImageType.Thumbnail)
+                     .Select(img => img.ImageUrl)
+                     .FirstOrDefault() ?? "",
             })
             .AsNoTracking()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
-        return trendingHotels;
+        return trendingCities;
     }
 }

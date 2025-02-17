@@ -12,15 +12,16 @@ public class ReviewRepository(AppDbContext context) : Repository<Review>(context
         Func<IQueryable<Review>, IOrderedQueryable<Review>> orderBy,
         Guid hotelId,
         int pageSize,
-        int pageNumber)
+        int pageNumber,
+        CancellationToken cancellationToken = default)
     {
         var hotelReviews = DbSet.Where(r => r.HotelId == hotelId);
 
         var reviews = orderBy(hotelReviews).Include(r => r.User);
 
         var requstedPage = reviews.GetRequestedPage(pageSize, pageNumber);
-        var paginationMetaData = await requstedPage.GetPaginationMetaDataAsync(pageSize, pageNumber);
+        var paginationMetaData = await requstedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<Review>(await requstedPage.ToListAsync(), paginationMetaData);
+        return new PaginatedList<Review>(await requstedPage.ToListAsync(cancellationToken), paginationMetaData);
     }
 }

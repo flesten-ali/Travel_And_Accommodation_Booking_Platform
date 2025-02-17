@@ -24,12 +24,13 @@ public class GuestController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetRecentlyVisitedHotels(
         Guid id,
-        [FromQuery] GetRecentlyVisitedHotelsRequest request)
+        [FromQuery] GetRecentlyVisitedHotelsRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _mapper.Map<GetRecentlyVisitedHotelsQuery>(request);
         query.GuestId = id;
 
-        var hotels = await _mediator.Send(query);
+        var hotels = await _mediator.Send(query, cancellationToken);
 
         return Ok(hotels);
     }

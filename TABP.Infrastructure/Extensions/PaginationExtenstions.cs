@@ -12,8 +12,9 @@ public static class PaginationExtenstions
     public static async Task<PaginationMetaData> GetPaginationMetaDataAsync<T>(
         this IQueryable<T> queryable,
         int pageSize,
-        int pageNumber)
+        int pageNumber,
+        CancellationToken cancellationToken = default)
     {
-        return new PaginationMetaData(pageSize, pageNumber, await queryable.CountAsync());
+        return new PaginationMetaData(pageSize, pageNumber, await queryable.CountAsync(cancellationToken));
     }
 }

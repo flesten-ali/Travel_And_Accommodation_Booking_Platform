@@ -19,12 +19,12 @@ public class CreateCityCommandHandler : IRequestHandler<CreateCityCommand, CityR
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<CityResponse> Handle(CreateCityCommand request, CancellationToken cancellationToken)
+    public async Task<CityResponse> Handle(CreateCityCommand request, CancellationToken cancellationToken = default)
     {
         var city = _mapper.Map<City>(request);
 
-        await _cityRepository.CreateAsync(city);
-        await _unitOfWork.SaveChangesAsync();
+        await _cityRepository.CreateAsync(city, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<CityResponse>(city);
     }

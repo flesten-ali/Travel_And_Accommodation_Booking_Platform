@@ -4,5 +4,8 @@ namespace TABP.Domain.Interfaces.Persistence.Repositories;
 
 public interface IImageRepository : IRepository<Image>
 {
-    Task DeleteByIdAsync(Guid entityId, ImageType imageType);
+    Task DeleteByIdAsync(
+        Guid entityId,
+        ImageType imageType,
+        CancellationToken cancellationToken = default);
 }

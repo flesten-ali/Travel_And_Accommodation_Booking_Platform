@@ -4,8 +4,8 @@ using TABP.Application.Cities.Common;
 using TABP.Application.Exceptions;
 using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
-
 namespace TABP.Application.Cities.Queries.GetById;
+
 public class GetCityByIdQueryHandler : IRequestHandler<GetCityByIdQuery, CityResponse>
 {
     private readonly ICityRepository _cityRepository;
@@ -17,9 +17,9 @@ public class GetCityByIdQueryHandler : IRequestHandler<GetCityByIdQuery, CityRes
         _mapper = mapper;
     }
 
-    public async Task<CityResponse> Handle(GetCityByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CityResponse> Handle(GetCityByIdQuery request, CancellationToken cancellationToken = default)
     {
-        var city = await _cityRepository.GetByIdAsync(request.Id)
+        var city = await _cityRepository.GetByIdAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException(CityExceptionMessages.NotFound);
 
         return _mapper.Map<CityResponse>(city);

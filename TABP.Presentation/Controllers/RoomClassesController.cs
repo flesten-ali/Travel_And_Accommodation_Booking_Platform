@@ -11,7 +11,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/room-classes")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)]
+[Authorize(Roles = Roles.Admin)]
 public class RoomClassesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -22,11 +22,13 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetRoomClassesForAdmin([FromQuery] GetRoomClassesForAdminRequest request)
+    public async Task<IActionResult> GetRoomClassesForAdmin(
+        [FromQuery] GetRoomClassesForAdminRequest request,
+        CancellationToken cancellationToken)
     {
         var query = _mapper.Map<GetRoomClassesForAdminQuery>(request);
 
-        var roomClasses = await _mediator.Send(query);
+        var roomClasses = await _mediator.Send(query, cancellationToken);
 
         Response.Headers.Append("x-pagination",
             JsonSerializer.Serialize(roomClasses.PaginationMetaData));
