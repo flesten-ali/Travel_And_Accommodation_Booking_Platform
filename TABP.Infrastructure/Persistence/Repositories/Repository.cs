@@ -7,7 +7,7 @@ using TABP.Infrastructure.Exceptions;
 using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 
-public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
+public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>, new()
 {
     private readonly AppDbContext _context;
     private DbSet<T> _dbSet;
@@ -88,19 +88,24 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await GetByIdAsync(id, cancellationToken)
-            ?? throw new NotFoundException(id);
+        if (!await DbSet.AnyAsync(e => e.Id == id, cancellationToken))
+            throw new NotFoundException(id);
+
+        var entity = new T { Id = id };
 
         DbSet.Remove(entity);
     }
 
-    public Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
+        if (!await DbSet.AnyAsync(e => e.Id == entity.Id, cancellationToken))
+            throw new NotFoundException(entity.Id);
+
         if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
         {
             ((IAuditEntity)entity).UpdatedDate = DateTime.Now;
         }
 
-        return Task.FromResult(DbSet.Update(entity));
+        DbSet.Update(entity);
     }
 }
