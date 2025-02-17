@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Users.Login;
 using TABP.Application.Users.Register;
 using TABP.Domain.Constants;
@@ -11,6 +12,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/users")]
 [ApiController]
+[SwaggerTag("User Authentication and Management")]
 public class UsersController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -23,6 +25,10 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("login")]
+    [SwaggerOperation(
+        Summary = "Login a user",
+        Description = "Authenticate a user and generate an access token."
+    )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -36,6 +42,10 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("register-user")]
+    [SwaggerOperation(
+        Summary = "Register a new user",
+        Description = "Register a new user with the role of Guest."
+    )]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -50,6 +60,10 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("register-admin")]
+    [SwaggerOperation(
+        Summary = "Register a new admin",
+        Description = "Register a new user with the role of Admin (admin privileges required)."
+    )]
     [Authorize(Roles = Roles.Admin)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

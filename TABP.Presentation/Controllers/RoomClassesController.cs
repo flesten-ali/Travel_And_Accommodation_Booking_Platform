@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.RoomClasses.GetForAdmin;
 using TABP.Domain.Constants;
@@ -12,12 +13,17 @@ namespace TABP.Presentation.Controllers;
 [Route("api/room-classes")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
+[SwaggerTag("Room Class Management")]
 public class RoomClassesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;
 
     [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get room classes for admin",
+        Description = "Fetch a list of room classes for administrative purposes."
+    )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]

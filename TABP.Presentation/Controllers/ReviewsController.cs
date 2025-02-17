@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.Reviews.GetForHotel;
 using TABP.Domain.Constants;
@@ -12,12 +13,17 @@ namespace TABP.Presentation.Controllers;
 [Route("api/{hotelId:guid}/reviews")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
+[SwaggerTag("Hotel Reviews Operations")]
 public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;
 
     [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get reviews for a hotel",
+        Description = "Fetch a list of reviews for the specified hotel."
+    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

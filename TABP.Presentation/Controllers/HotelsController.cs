@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.Hotels.Commands.Create;
 using TABP.Application.Hotels.Commands.Delete;
@@ -23,12 +24,17 @@ namespace TABP.Presentation.Controllers;
 [Route("api/hotels")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
+[SwaggerTag("Hotel Management API")]
 public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;
 
     [HttpGet("search")]
+    [SwaggerOperation(
+        Summary = "Search hotels",
+        Description = "Search for hotels using various filters such as location, price, and amenities."
+    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,6 +53,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpGet("{id:guid}/details")]
+    [SwaggerOperation(
+        Summary = "Get hotel details",
+        Description = "Fetch detailed information about a specific hotel."
+    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,6 +73,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpPost]
+    [SwaggerOperation(
+        Summary = "Create a new hotel",
+        Description = "Create a new hotel by providing necessary details such as name, address, and facilities."
+    )]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -79,6 +93,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpGet("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Get hotel by ID",
+        Description = "Retrieve information of a hotel by its unique identifier."
+    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,6 +110,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpPost("{id:guid}/thumbnail")]
+    [SwaggerOperation(
+        Summary = "Upload hotel thumbnail",
+        Description = "Upload a thumbnail image for the specified hotel."
+    )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,6 +133,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpPost("{id:guid}/gallery")]
+    [SwaggerOperation(
+        Summary = "Upload hotel gallery images",
+        Description = "Upload images to the gallery for the specified hotel."
+    )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -130,6 +156,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpGet("featured-deals")]
+    [SwaggerOperation(
+        Summary = "Get featured hotel deals",
+        Description = "Fetch a list of featured deals for hotels based on the specified limit."
+    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -143,6 +173,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpGet("get-for-admin")]
+    [SwaggerOperation(
+        Summary = "Get hotels for admin",
+        Description = "Retrieve a list of hotels for admin management purposes."
+    )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -162,6 +196,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpPut("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Update hotel details",
+        Description = "Update the details of an existing hotel using its ID."
+    )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -178,6 +216,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpDelete("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Delete a hotel",
+        Description = "Delete an existing hotel by its unique ID."
+    )]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -193,6 +235,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     }
 
     [HttpGet("{id:guid}/room-classes")]
+    [SwaggerOperation(
+        Summary = "Get room classes for a hotel",
+        Description = "Retrieve a list of room classes for a specific hotel."
+    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

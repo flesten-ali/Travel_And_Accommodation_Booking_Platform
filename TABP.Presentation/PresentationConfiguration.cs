@@ -34,6 +34,8 @@ public static class PresentationConfiguration
     {
         services.AddSwaggerGen(setupAction =>
         {
+            setupAction.EnableAnnotations();
+
             setupAction.AddSecurityDefinition("Authentication", new()
             {
                 Type = SecuritySchemeType.Http,
