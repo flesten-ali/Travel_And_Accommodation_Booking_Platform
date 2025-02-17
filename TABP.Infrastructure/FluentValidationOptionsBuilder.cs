@@ -43,7 +43,7 @@ internal class FluentValidationValidateOptions<TOptions> : IValidateOptions<TOpt
             return ValidateOptionsResult.Success;
         }
         var errors = validationResults.Errors.Select(err =>
-        $"options validaions faild for ${err.PropertyName} with errror {err.ErrorMessage}!"
+           $"options validaions faild for ${err.PropertyName} with errror {err.ErrorMessage}!"
         );
         return ValidateOptionsResult.Fail(errors);
     }
