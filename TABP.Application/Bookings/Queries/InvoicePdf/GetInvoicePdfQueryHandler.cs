@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TABP.Domain.Constants.ExceptionsMessages;
+using TABP.Domain.Constants.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Html;

@@ -1,4 +1,4 @@
-﻿namespace TABP.Domain.Constants.ExceptionsMessages;
+﻿namespace TABP.Domain.Constants.ExceptionMessages;
 
 public static class UserExceptionMessages
 {

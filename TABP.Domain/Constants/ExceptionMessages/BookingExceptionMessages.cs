@@ -1,4 +1,4 @@
-﻿namespace TABP.Domain.Constants.ExceptionsMessages;
+﻿namespace TABP.Domain.Constants.ExceptionMessages;
 public static class BookingExceptionMessages
 {
     public const string NotFound = "The booking with the specified ID could not be found. Please verify the booking details.";
