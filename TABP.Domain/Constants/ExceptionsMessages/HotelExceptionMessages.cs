@@ -1,4 +1,4 @@
-﻿namespace TABP.Application.Exceptions.Messages;
+﻿namespace TABP.Domain.Constants.ExceptionsMessages;
 
 public static class HotelExceptionMessages
 {

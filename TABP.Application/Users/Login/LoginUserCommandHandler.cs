@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Exceptions;
+using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Security.Jwt;
 using TABP.Domain.Interfaces.Security.Password;

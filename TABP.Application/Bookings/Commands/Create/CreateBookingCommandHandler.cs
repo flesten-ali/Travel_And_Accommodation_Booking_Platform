@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Bookings.Common;
-using TABP.Application.Exceptions;
-using TABP.Application.Exceptions.Messages;
 using TABP.Domain.Constants;
+using TABP.Domain.Constants.ExceptionsMessages;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
+using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Services.Date;
@@ -115,7 +115,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
                 user.Email,
                 "Your Booking Invoice",
                 invoiceHtml,
-                [emailAttachment], 
+                [emailAttachment],
                 cancellationToken);
 
             await _unitOfWork.CommitAsync(cancellationToken);

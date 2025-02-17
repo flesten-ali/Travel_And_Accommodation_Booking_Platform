@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Exceptions;
-using TABP.Application.Exceptions.Messages;
 using TABP.Application.Hotels.Common;
+using TABP.Domain.Constants.ExceptionsMessages;
 using TABP.Domain.Entities;
+using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 

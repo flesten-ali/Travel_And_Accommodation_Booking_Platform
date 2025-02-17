@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Exceptions;
-using TABP.Application.Exceptions.Messages;
 using TABP.Application.Helper;
+using TABP.Domain.Constants.ExceptionsMessages;
+using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 

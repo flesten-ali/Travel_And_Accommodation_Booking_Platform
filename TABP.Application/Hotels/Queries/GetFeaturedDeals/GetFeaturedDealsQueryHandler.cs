@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Exceptions.Messages;
+using TABP.Domain.Constants.ExceptionsMessages;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 namespace TABP.Application.Hotels.Queries.GetFeaturedDeals;
 
