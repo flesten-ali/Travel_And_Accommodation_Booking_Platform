@@ -1,4 +1,5 @@
-﻿using TABP.Domain.Constants;
+﻿using TABP.Domain.Common;
+using TABP.Domain.Constants;
 namespace TABP.Domain.Entities;
 
 public class User : EntityBase<Guid>

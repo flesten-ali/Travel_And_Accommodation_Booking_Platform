@@ -1,4 +1,5 @@
-﻿using TABP.Domain.Enums;
+﻿using TABP.Domain.Common;
+using TABP.Domain.Enums;
 namespace TABP.Domain.Entities;
 
 public class Image : EntityBase<Guid>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using TABP.Domain.Common;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;

@@ -1,4 +1,6 @@
-﻿namespace TABP.Domain.Entities;
+﻿using TABP.Domain.Common;
+
+namespace TABP.Domain.Entities;
 
 public class Owner : EntityBase<Guid>
 {

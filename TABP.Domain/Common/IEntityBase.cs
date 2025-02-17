@@ -1,4 +1,4 @@
-﻿namespace TABP.Domain.Entities;
+﻿namespace TABP.Domain.Common;
 
 public interface IEntityBase<TKey>
 {
