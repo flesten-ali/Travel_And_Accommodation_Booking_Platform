@@ -27,8 +27,10 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
 
     public async Task<Unit> Handle(DeleteCityCommand request, CancellationToken cancellationToken = default)
     {
-        var city = await _cityRepository.GetByIdAsync(request.Id, cancellationToken)
-            ?? throw new NotFoundException(CityExceptionMessages.NotFound);
+        if (!await _cityRepository.ExistsAsync(c => c.Id == request.Id, cancellationToken))
+        {
+            throw new NotFoundException(CityExceptionMessages.NotFound);
+        }
 
         if (await _hotelRepository.ExistsAsync(h => h.CityId == request.Id, cancellationToken))
         {
@@ -39,7 +41,7 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
         try
         {
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail, cancellationToken);
-            await _cityRepository.DeleteAsync(city, cancellationToken);
+            await _cityRepository.DeleteAsync(request.Id, cancellationToken);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 

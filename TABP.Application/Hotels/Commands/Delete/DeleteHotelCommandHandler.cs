@@ -27,8 +27,10 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
 
     public async Task<Unit> Handle(DeleteHotelCommand request, CancellationToken cancellationToken = default)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.Id, cancellationToken)
-            ?? throw new NotFoundException(HotelExceptionMessages.NotFound);
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.Id, cancellationToken))
+        {
+            throw new NotFoundException(HotelExceptionMessages.NotFound);
+        }
 
         if (await _roomClassRepository.ExistsAsync(rc => rc.HotelId == request.Id, cancellationToken))
         {
@@ -41,7 +43,7 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Thumbnail, cancellationToken);
             await _imageRepository.DeleteByIdAsync(request.Id, ImageType.Gallery, cancellationToken);
 
-            await _hotelRepository.DeleteAsync(hotel, cancellationToken);
+            await _hotelRepository.DeleteAsync(request.Id, cancellationToken);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 

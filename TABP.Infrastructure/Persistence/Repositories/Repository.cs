@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Infrastructure.Exceptions;
 using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 
@@ -85,9 +86,12 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         return entity;
     }
 
-    public Task DeleteAsync(T entity , CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(DbSet.Remove(entity));
+        var entity = await GetByIdAsync(id, cancellationToken)
+            ?? throw new NotFoundException(id);
+
+        DbSet.Remove(entity);
     }
 
     public Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
@@ -96,6 +100,7 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>
         {
             ((IAuditEntity)entity).UpdatedDate = DateTime.Now;
         }
+
         return Task.FromResult(DbSet.Update(entity));
     }
 }
