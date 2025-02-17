@@ -12,6 +12,7 @@ using TABP.Domain.Interfaces.Services.Guids;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Image;
 using TABP.Domain.Interfaces.Services.Pdf;
+using TABP.Infrastructure.Persistence;
 using TABP.Infrastructure.Persistence.DbContexts;
 using TABP.Infrastructure.Persistence.Repositories;
 using TABP.Infrastructure.Security.Jwt;

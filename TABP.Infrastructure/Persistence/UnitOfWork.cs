@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using TABP.Domain.Interfaces.Persistence;
-namespace TABP.Infrastructure.Persistence.DbContexts;
+using TABP.Infrastructure.Persistence.DbContexts;
+namespace TABP.Infrastructure.Persistence;
 
 public class UnitOfWork : IUnitOfWork
 {
