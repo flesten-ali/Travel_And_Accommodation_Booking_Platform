@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
+using TABP.Application.RoomClasses.Commands.Create;
+using TABP.Application.RoomClasses.Queries.GetById;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.RoomClass;
@@ -40,5 +42,44 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
             JsonSerializer.Serialize(roomClasses.PaginationMetaData));
 
         return Ok(roomClasses.Items);
+    }
+
+    [HttpPost]
+    [SwaggerOperation(
+        Summary = "Create a new room class",
+        Description = "Creates a new room class with the provided details and returns the created entity."
+    )]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateRoomClass(
+          CreateRoomClassRequest request,
+          CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<CreateRoomClassCommand>(request);
+
+        var createdRoomClass = await _mediator.Send(command, cancellationToken);
+
+        return CreatedAtAction(nameof(GetRoomClass), new { id = createdRoomClass.Id }, createdRoomClass);
+    }
+
+    [HttpGet("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Get room class by ID",
+        Description = "Retrieves the details of a specific room class by its unique identifier."
+    )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetRoomClass(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetRoomClassByIdQuery { Id = id };
+
+        var roomClass = await _mediator.Send(query, cancellationToken);
+
+        return Ok(roomClass);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using TABP.Application.RoomClasses.Commands.Create;
+using TABP.Application.RoomClasses.Common;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Application.RoomClasses.Queries.GetForHotel;
 using TABP.Domain.Entities;
@@ -23,5 +25,9 @@ public class RoomClassesProfile : Profile
         CreateMap<PaginatedList<RoomClassForAdminResult>, PaginatedList<RoomClassForAdminResponse>>();
 
         CreateMap<RoomClassForAdminResult, RoomClassForAdminResponse>();
+
+        CreateMap<CreateRoomClassCommand, RoomClass>();
+
+        CreateMap<RoomClass, RoomClassResponse>();
     }
 }
