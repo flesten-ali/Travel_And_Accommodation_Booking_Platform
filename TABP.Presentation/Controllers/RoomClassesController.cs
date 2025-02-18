@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.RoomClasses.Commands.Create;
+using TABP.Application.RoomClasses.Commands.Delete;
 using TABP.Application.RoomClasses.Commands.Update;
 using TABP.Application.RoomClasses.Queries.GetById;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
@@ -86,8 +87,8 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
 
     [HttpPut("{id:guid}")]
     [SwaggerOperation(
-    Summary = "Update an existing room class",
-    Description = "Updates the details of a room class identified by its unique ID."
+        Summary = "Update an existing room class",
+        Description = "Updates the details of a room class identified by its unique ID."
     )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -101,6 +102,25 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
     {
         var command = _mapper.Map<UpdateRoomClassCommand>(request);
         command.Id = id;
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Delete a room class",
+        Description = "Deletes the room class identified by its unique ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteRoomClass(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteRoomClassCommand { Id = id };
 
         await _mediator.Send(command, cancellationToken);
 
