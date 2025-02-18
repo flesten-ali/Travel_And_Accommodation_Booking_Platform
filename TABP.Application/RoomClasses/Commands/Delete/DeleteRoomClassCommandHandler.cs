@@ -34,7 +34,7 @@ public class DeleteRoomClassCommandHandler : IRequestHandler<DeleteRoomClassComm
 
         if (await _roomRepository.ExistsAsync(r => r.RoomClassId == request.Id, cancellationToken))
         {
-            throw new NotFoundException(RoomClassExceptionMessages.EntityInUseForRooms);
+            throw new EntityInUseException(RoomClassExceptionMessages.EntityInUseForRooms);
         }
 
         await _unitOfWork.BeginTransactionAsync(cancellationToken);
