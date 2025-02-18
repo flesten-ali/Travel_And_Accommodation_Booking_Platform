@@ -78,9 +78,9 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var command = _mapper.Map<CreateCityCommand>(request);
 
-        var city = await _mediator.Send(command, cancellationToken);
+        var createdCity = await _mediator.Send(command, cancellationToken);
 
-        return CreatedAtAction(nameof(GetCity), new { id = city.Id }, city);
+        return CreatedAtAction(nameof(GetCity), new { id = createdCity.Id }, createdCity);
     }
 
     [HttpGet("{id:guid}")]
