@@ -60,6 +60,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetHotelDetails(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetHotelQuery()
@@ -100,6 +101,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetHotel(Guid id, CancellationToken cancellationToken)
     {
         var query = new GetHotelByIdQuery { HotelId = id };
