@@ -4,7 +4,7 @@ using TABP.Application.Helper;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
-namespace TABP.Application.RoomClasses.GetForHotel;
+namespace TABP.Application.RoomClasses.Queries.GetForHotel;
 public class GetHotelRoomClassesQueryHandler
     : IRequestHandler<GetHotelRoomClassesQuery, PaginatedList<HotelRoomClassesQueryResponse>>
 {

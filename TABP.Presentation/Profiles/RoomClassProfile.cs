@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using TABP.Application.RoomClasses.GetForAdmin;
 using TABP.Application.RoomClasses.GetForHotel;
+using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Presentation.DTOs.Hotel;
 using TABP.Presentation.DTOs.RoomClass;
 

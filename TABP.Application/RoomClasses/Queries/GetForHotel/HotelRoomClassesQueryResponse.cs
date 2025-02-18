@@ -1,6 +1,6 @@
 ﻿using TABP.Domain.Enums;
 
-namespace TABP.Application.RoomClasses.GetForHotel;
+namespace TABP.Application.RoomClasses.Queries.GetForHotel;
 public class HotelRoomClassesQueryResponse
 {
     public Guid Id { get; set; }

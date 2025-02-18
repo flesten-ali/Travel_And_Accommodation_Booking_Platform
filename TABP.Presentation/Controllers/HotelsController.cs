@@ -15,7 +15,7 @@ using TABP.Application.Hotels.Queries.GetDetails;
 using TABP.Application.Hotels.Queries.GetFeaturedDeals;
 using TABP.Application.Hotels.Queries.GetForAdmin;
 using TABP.Application.Hotels.Queries.SearchHotels;
-using TABP.Application.RoomClasses.GetForHotel;
+using TABP.Application.RoomClasses.Queries.GetForHotel;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs;
 using TABP.Presentation.DTOs.Hotel;

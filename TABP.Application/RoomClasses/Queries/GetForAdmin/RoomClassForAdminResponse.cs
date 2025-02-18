@@ -2,7 +2,7 @@
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 
-namespace TABP.Application.RoomClasses.GetForAdmin;
+namespace TABP.Application.RoomClasses.Queries.GetForAdmin;
 public class RoomClassForAdminResponse
 {
     public Guid Id { get; set; }

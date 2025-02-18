@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
-using TABP.Application.RoomClasses.GetForAdmin;
+using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.RoomClass;
 namespace TABP.Presentation.Controllers;

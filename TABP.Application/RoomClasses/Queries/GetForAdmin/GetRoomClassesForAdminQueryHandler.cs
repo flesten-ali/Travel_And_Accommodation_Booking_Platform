@@ -4,7 +4,7 @@ using TABP.Application.Helper;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
-namespace TABP.Application.RoomClasses.GetForAdmin;
+namespace TABP.Application.RoomClasses.Queries.GetForAdmin;
 public class GetRoomClassesForAdminQueryHandler
     : IRequestHandler<GetRoomClassesForAdminQuery, PaginatedList<RoomClassForAdminResponse>>
 {

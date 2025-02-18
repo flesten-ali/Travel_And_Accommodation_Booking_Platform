@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using TABP.Application.RoomClasses.GetForAdmin;
-using TABP.Application.RoomClasses.GetForHotel;
+using TABP.Application.RoomClasses.Queries.GetForAdmin;
+using TABP.Application.RoomClasses.Queries.GetForHotel;
 using TABP.Domain.Entities;
 using TABP.Domain.Models;
 namespace TABP.Application.Profiles;
