@@ -82,6 +82,7 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
         Description = "Delete an existing booking by its unique ID."
     )]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
