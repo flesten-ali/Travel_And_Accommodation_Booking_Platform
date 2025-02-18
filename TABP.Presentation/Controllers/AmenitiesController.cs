@@ -33,9 +33,9 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     {
         var command = _mapper.Map<CreateAmenityCommand>(request);
 
-        var amenity = await _mediator.Send(command, cancellationToken);
+        var createdAmenity = await _mediator.Send(command, cancellationToken);
 
-        return CreatedAtAction(nameof(GetAmenity), new { id = amenity.Id }, amenity);
+        return CreatedAtAction(nameof(GetAmenity), new { id = createdAmenity.Id }, createdAmenity);
     }
 
     [HttpGet("{id:guid}")]
