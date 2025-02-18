@@ -19,12 +19,9 @@ public class GetRoomClassByIdQueryHandler : IRequestHandler<GetRoomClassByIdQuer
 
     public async Task<RoomClassResponse> Handle(GetRoomClassByIdQuery request, CancellationToken cancellationToken = default)
     {
-        if (!await _roomClassRepository.ExistsAsync(rc => rc.Id == request.Id, cancellationToken))
-        {
-            throw new NotFoundException(RoomClassExceptionMessages.NotFound);
-        }
+        var roomClass = await _roomClassRepository.GetByIdAsync(request.Id, cancellationToken)
+                        ?? throw new NotFoundException(RoomClassExceptionMessages.NotFound);
 
-        var roomClass = await _roomClassRepository.GetByIdAsync(request.Id, cancellationToken);
         return _mapper.Map<RoomClassResponse>(roomClass);
     }
 }
