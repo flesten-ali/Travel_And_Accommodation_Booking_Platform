@@ -1,20 +1,19 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Amenities.Commands.Create;
+using TABP.Application.Amenities.Commands.Delete;
 using TABP.Application.Amenities.Commands.Update;
 using TABP.Application.Amenities.Common;
 using TABP.Application.Amenities.Queries.GetById;
-using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Amenity;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/amenities")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)]
+[Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Manage amenities in the system. Requires Admin access.")]
 public class AmenitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
@@ -70,6 +69,25 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     {
         var command = _mapper.Map<UpdateAmenityCommand>(request);
         command.Id = id;
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(
+    Summary = "Delete a amenity",
+    Description = "Delete an existing amenity by its unique ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteAmenity(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteAmenityCommand { Id = id };
 
         await _mediator.Send(command, cancellationToken);
 
