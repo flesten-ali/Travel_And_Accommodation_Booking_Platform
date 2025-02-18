@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Bookings.Commands.Create;
+using TABP.Application.Bookings.Commands.Delete;
 using TABP.Application.Bookings.Queries.GetBookingById;
 using TABP.Application.Bookings.Queries.InvoicePdf;
 using TABP.Domain.Constants;
@@ -73,5 +74,23 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
         var result = await _mediator.Send(query, cancellationToken);
 
         return File(result.PdfContent, "application/pdf", "invoice.pdf");
+    }
+
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Delete a booking",
+        Description = "Delete an existing booking by its unique ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteBooking(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteBookingCommand { Id = id };
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }
