@@ -68,7 +68,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         }
 
         var rooms = await _roomRepository.GetAllByIdAsync(request.RoomIds, cancellationToken);
-        if (rooms == null || rooms.Count() != request.RoomIds.Count())
+        if (rooms.Count() != request.RoomIds.Count())
         {
             throw new NotFoundException(RoomExceptionMessages.NotFound);
         }
