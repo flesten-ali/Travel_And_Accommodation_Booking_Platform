@@ -17,4 +17,9 @@
     <ProjectReference Include="..\TABP.Domain\TABP.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Discounts\" />
+    <Folder Include="Owners\" />
+  </ItemGroup>
+
 </Project>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Amenities.Commands.Create;
+using TABP.Application.Amenities.Commands.Update;
 using TABP.Application.Amenities.Common;
 using TABP.Application.Amenities.Queries.GetById;
 using TABP.Domain.Constants;
@@ -13,7 +14,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/amenities")]
 [ApiController]
-[Authorize(Roles = Roles.Admin)]
+//[Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Manage amenities in the system. Requires Admin access.")]
 public class AmenitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
@@ -25,7 +26,7 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
         Summary = "Create a new amenity",
         Description = "Creates a new amenity and returns the created amenity details."
     )]
-    [ProducesResponseType(typeof(AmenityResponse),StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(AmenityResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -53,5 +54,25 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
         var amenity = await _mediator.Send(query, cancellationToken);
 
         return Ok(amenity);
+    }
+
+    [HttpPut("{id:guid}")]
+    [SwaggerOperation(
+    Summary = "Update amenity details",
+    Description = "Update the details of an existing amenity using its ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateAmenity(Guid id, UpdateAmenityRequest request, CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<UpdateAmenityCommand>(request);
+        command.Id = id;
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }

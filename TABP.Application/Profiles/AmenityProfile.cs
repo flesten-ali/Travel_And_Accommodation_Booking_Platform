@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TABP.Application.Amenities.Commands.Create;
+using TABP.Application.Amenities.Commands.Update;
 using TABP.Application.Amenities.Common;
 using TABP.Domain.Entities;
 
@@ -9,6 +10,9 @@ public class AmenityProfile : Profile
     public AmenityProfile()
     {
         CreateMap<CreateAmenityCommand, Amenity>();
+
         CreateMap<Amenity, AmenityResponse>();
+
+        CreateMap<UpdateAmenityCommand, Amenity>();
     }
 }
