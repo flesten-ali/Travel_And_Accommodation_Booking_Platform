@@ -80,4 +80,22 @@ public class SortBuilder
             _ => (roomClasses) => roomClasses.OrderBy(h => h.Id)
         };
     }
+
+    public static Func<IQueryable<Room>, IOrderedQueryable<Room>> BuildRoomSort(
+     PaginationParameters paginationParameters)
+    {
+        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
+        return paginationParameters.OrderColumn switch
+        {
+            "date" => isDescending
+                    ? (rooms) => rooms.OrderByDescending(x => x.CreatedDate)
+                    : (rooms) => rooms.OrderBy(x => x.CreatedDate),
+
+            "roomnumber" => isDescending
+                        ? (rooms) => rooms.OrderByDescending(x => x.RoomNumber)
+                        : (rooms) => rooms.OrderBy(x => x.RoomNumber),
+
+            _ => (rooms) => rooms.OrderBy(h => h.Id)
+        };
+    }
 }
