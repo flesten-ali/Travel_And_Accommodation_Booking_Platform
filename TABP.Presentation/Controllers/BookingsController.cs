@@ -52,9 +52,9 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     {
         var command = _mapper.Map<CreateBookingCommand>(request);
 
-        var booking = await _mediator.Send(command, cancellationToken);
+        var createdBooking = await _mediator.Send(command, cancellationToken);
 
-        return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
+        return CreatedAtAction(nameof(GetBooking), new { id = createdBooking.Id }, createdBooking);
     }
 
     [HttpPost("{id:guid}/invoice")]
