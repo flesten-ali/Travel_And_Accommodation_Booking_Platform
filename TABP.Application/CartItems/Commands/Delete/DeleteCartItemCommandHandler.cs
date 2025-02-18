@@ -4,7 +4,7 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
-namespace TABP.Application.CartItems.Delete;
+namespace TABP.Application.CartItems.Commands.Delete;
 public class DeleteCartItemCommandHandler : IRequestHandler<DeleteCartItemCommand>
 {
     private readonly ICartItemRepository _cartItemRepository;

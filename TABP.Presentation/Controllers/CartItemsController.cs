@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using TABP.Application.CartItems.AddToCart;
+using TABP.Application.CartItems.Commands.AddToCart;
 using TABP.Application.CartItems.Delete;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.CartItem;

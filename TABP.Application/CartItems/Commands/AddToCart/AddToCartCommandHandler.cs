@@ -6,7 +6,7 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
-namespace TABP.Application.CartItems.AddToCart;
+namespace TABP.Application.CartItems.Commands.AddToCart;
 public class AddToCartCommandHandler : IRequestHandler<AddToCartCommand>
 {
     private readonly ICartItemRepository _cartItemRepository;
