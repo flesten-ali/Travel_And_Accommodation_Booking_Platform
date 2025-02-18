@@ -34,7 +34,7 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
 
         if (await _roomClassRepository.ExistsAsync(rc => rc.HotelId == request.Id, cancellationToken))
         {
-            throw new EntityInUseException(HotelExceptionMessages.EntityInUse);
+            throw new EntityInUseException(HotelExceptionMessages.EntityInUseForRoomClasses);
         }
 
         await _unitOfWork.BeginTransactionAsync(cancellationToken);
