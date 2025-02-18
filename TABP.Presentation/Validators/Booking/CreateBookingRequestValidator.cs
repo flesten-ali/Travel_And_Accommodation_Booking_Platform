@@ -7,16 +7,17 @@ public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequ
     public CreateBookingRequestValidator()
     {
         RuleFor(b => b.HotelId)
-           .NotNull()
-           .WithMessage("Hotel ID is required.");
+           .NotNull().WithMessage("Hotel ID is required.");
 
         RuleFor(b => b.UserId)
-            .NotNull()
-            .WithMessage("User ID is required.");
+            .NotNull().WithMessage("User ID is required.");
 
         RuleFor(b => b.RoomIds)
-            .NotEmpty()
-            .WithMessage("At least one room must be selected.");
+            .NotEmpty().WithMessage("At least one room must be selected.")
+            .Must(ids => ids.Distinct().Count() == ids.Count())
+            .WithMessage("RoomIds list contains duplicate values.")
+            .Must(ids => ids.All(id => id != Guid.Empty))
+            .WithMessage("RoomIds must contain valid GUIDs.");
 
         RuleFor(x => x.CheckInDate)
             .NotEmpty().WithMessage("Check-in date is required. Format: MM-dd-yyyy.")
@@ -30,11 +31,9 @@ public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequ
             .WithMessage("Check-out date must be after the check-in date.");
 
         RuleFor(b => b.PaymentMethod)
-            .IsInEnum()
-            .WithMessage("Invalid payment  method.");
+            .IsInEnum().WithMessage("Invalid payment  method.");
 
         RuleFor(b => b.Remarks)
-            .MaximumLength(300)
-            .WithMessage("Remarks cannot exceed 300 characters.");
+            .MaximumLength(300).WithMessage("Remarks cannot exceed 300 characters.");
     }
 }
