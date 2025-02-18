@@ -14,8 +14,8 @@ public class PaginationParametersValidator : AbstractValidator<PaginationParamet
             .GreaterThan(0).WithMessage("Page number must be greater than 0.");
 
         RuleFor(x => x.OrderColumn)
-            .MaximumLength(20).WithMessage("SortBy cannot exceed 20 characters.")
+            .MaximumLength(20).WithMessage("Order column cannot exceed 20 characters.")
             .Must(value => string.IsNullOrEmpty(value) || value.All(char.IsLetter))
-            .WithMessage("SortBy must contain only lette");
+            .WithMessage("Order column must contain only lette");
     }
 }
