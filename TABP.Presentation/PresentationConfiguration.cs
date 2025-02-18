@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using TABP.Presentation.Controllers;
 using TABP.Presentation.Validators.Auth;
 namespace TABP.Presentation;
@@ -15,7 +16,12 @@ public static class PresentationConfiguration
                 .AddMapper()
                 .AddFluentValidations()
                 .AddControllers()
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                })
                 .AddApplicationPart(presentaionAssembly);
+
         return services;
     }
 
