@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
+using TABP.Application.Rooms.Commands.Create;
 using TABP.Application.Rooms.Queries.GetForAdmin;
 using TABP.Presentation.DTOs.Room;
 namespace TABP.Presentation.Controllers;
@@ -44,5 +45,26 @@ public class RoomsController : ControllerBase
             JsonSerializer.Serialize(rooms.PaginationMetaData));
 
         return Ok(rooms.Items);
+    }
+
+    [HttpPost]
+    [SwaggerOperation(
+    Summary = "Create a new room",
+    Description = "Create a new room by providing necessary details such as room number, room class Id, and floor."
+    )]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> CreateRoom( 
+    CreateRoomRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<CreateRoomCommand>(request);
+
+        var createdRoom = await _mediator.Send(command, cancellationToken);
+
+        return Created();
+        //return CreatedAtAction(nameof(GetRoom), new { id = createdRoom.Id }, createdRoom);
     }
 }
