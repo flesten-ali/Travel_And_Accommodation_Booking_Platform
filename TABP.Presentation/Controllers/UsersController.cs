@@ -13,16 +13,10 @@ namespace TABP.Presentation.Controllers;
 [Route("api/users")]
 [ApiController]
 [SwaggerTag("User Authentication and Management")]
-public class UsersController : ControllerBase
+public class UsersController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
-
-    public UsersController(IMediator mediator, IMapper mapper)
-    {
-        _mediator = mediator;
-        _mapper = mapper;
-    }
+    private readonly IMediator _mediator = mediator;
+    private readonly IMapper _mapper = mapper;
 
     [HttpPost("login")]
     [SwaggerOperation(

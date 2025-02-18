@@ -13,21 +13,15 @@ namespace TABP.Presentation.Controllers;
 [ApiController]
 //[Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Room Management")]
-public class RoomsController : ControllerBase
+public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
-
-    public RoomsController(IMediator mediator, IMapper mapper)
-    {
-        _mediator = mediator;
-        _mapper = mapper;
-    }
+    private readonly IMediator _mediator = mediator;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("get-for-admin")]
     [SwaggerOperation(
       Summary = "Get rooms for admin",
-      Description = "Fetch a list of rooms for administrative purposes."
+      Description = "Fetch a list of rooms for administrative spurposes."
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
