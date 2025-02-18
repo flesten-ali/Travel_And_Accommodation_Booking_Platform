@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TABP.Application.Rooms.Commands.Create;
+using TABP.Application.Rooms.Commands.Update;
 using TABP.Application.Rooms.Common;
 using TABP.Application.Rooms.Queries.GetForAdmin;
 using TABP.Domain.Entities;
@@ -17,5 +18,7 @@ public class RoomProfile : Profile
         CreateMap<CreateRoomCommand, Room>();
 
         CreateMap<Room, RoomResponse>();
+
+        CreateMap<UpdateRoomCommand, Room>();
     }
 }

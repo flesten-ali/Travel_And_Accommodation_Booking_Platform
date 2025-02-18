@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
+using TABP.Application.Hotels.Commands.Update;
 using TABP.Application.Rooms.Commands.Create;
+using TABP.Application.Rooms.Commands.Update;
 using TABP.Application.Rooms.Queries.GetById;
 using TABP.Application.Rooms.Queries.GetForAdmin;
+using TABP.Presentation.DTOs.Hotel;
 using TABP.Presentation.DTOs.Room;
 namespace TABP.Presentation.Controllers;
 
@@ -77,5 +80,25 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
         var room = await _mediator.Send(query, cancellationToken);
 
         return Ok(room);
+    }
+
+    [HttpPut("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Update room details",
+        Description = "Update the details of an existing room using its ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateRoom(Guid id, UpdateRoomRequest request, CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<UpdateRoomCommand>(request);
+        command.Id = id;
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }
