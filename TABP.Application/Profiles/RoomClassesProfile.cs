@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TABP.Application.RoomClasses.Commands.Create;
+using TABP.Application.RoomClasses.Commands.Update;
 using TABP.Application.RoomClasses.Common;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Application.RoomClasses.Queries.GetForHotel;
@@ -29,5 +30,7 @@ public class RoomClassesProfile : Profile
         CreateMap<CreateRoomClassCommand, RoomClass>();
 
         CreateMap<RoomClass, RoomClassResponse>();
+
+        CreateMap<UpdateRoomClassCommand, RoomClass>();
     }
 }

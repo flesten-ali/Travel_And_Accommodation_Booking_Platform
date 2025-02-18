@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.RoomClasses.Commands.Create;
+using TABP.Application.RoomClasses.Commands.Update;
 using TABP.Application.RoomClasses.Queries.GetById;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Domain.Constants;
@@ -21,7 +22,7 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
     private readonly IMediator _mediator = mediator;
     private readonly IMapper _mapper = mapper;
 
-    [HttpGet]
+    [HttpGet("get-for-admin")]
     [SwaggerOperation(
         Summary = "Get room classes for admin",
         Description = "Fetch a list of room classes for administrative purposes."
@@ -81,5 +82,28 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
         var roomClass = await _mediator.Send(query, cancellationToken);
 
         return Ok(roomClass);
+    }
+
+    [HttpPut("{id:guid}")]
+    [SwaggerOperation(
+    Summary = "Update an existing room class",
+    Description = "Updates the details of a room class identified by its unique ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateRoomClass(
+        Guid id,
+        UpdateRoomClassRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<UpdateRoomClassCommand>(request);
+        command.Id = id;
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }
