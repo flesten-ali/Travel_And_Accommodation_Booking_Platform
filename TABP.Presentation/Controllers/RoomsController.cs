@@ -14,7 +14,7 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Room;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/rooms")]
+[Route("api/room-classes/{roomClassId:guid}/rooms")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Room Management")]
@@ -56,10 +56,12 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateRoom(
+    Guid roomClassId,
     CreateRoomRequest request,
     CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateRoomCommand>(request);
+        command.RoomClassId = roomClassId;
 
         var createdRoom = await _mediator.Send(command, cancellationToken);
 
