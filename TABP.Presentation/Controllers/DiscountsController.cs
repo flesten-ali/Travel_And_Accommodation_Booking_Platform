@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Discounts.Commands.Create;
+using TABP.Application.Discounts.Commands.Delete;
 using TABP.Application.Discounts.Queries.GetById;
 using TABP.Presentation.DTOs.Discount;
 
@@ -74,5 +75,28 @@ public class DiscountsController : ControllerBase
         var discount = await _mediator.Send(query, cancellationToken);
 
         return Ok(discount);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Delete a discount",
+        Description = "Delete an existing discount by providing the discount and room class IDs."
+    )]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteDiscount(Guid roomClassId, Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteDiscountCommand
+        {
+            DiscountId = id,
+            RoomClassId = roomClassId
+        };
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }
