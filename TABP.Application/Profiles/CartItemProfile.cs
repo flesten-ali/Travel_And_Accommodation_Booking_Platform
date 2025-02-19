@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TABP.Application.CartItems.Commands.AddToCart;
+using TABP.Application.CartItems.Commands.Create;
 using TABP.Application.CartItems.Queries.GetAll;
 using TABP.Domain.Entities;
 using TABP.Domain.Models;
@@ -9,7 +9,7 @@ public class CartItemProfile : Profile
 {
     public CartItemProfile()
     {
-        CreateMap<AddToCartCommand, CartItem>();
+        CreateMap<CreateCartItemCommand, CartItem>();
 
         CreateMap<CartItem, CartItemResponse>();
 
