@@ -12,7 +12,7 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Booking;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/bookings")]
+[Route("api/user/bookings")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
 [SwaggerTag("Manage hotel bookings for guests.")]
