@@ -7,9 +7,6 @@ public class GetCartItemsRequestValidator :AbstractValidator<GetCartItemsRequest
 {
     public GetCartItemsRequestValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("UserId is required.");
-
         RuleFor(x=>x.PaginationParameters)
             .SetValidator(new PaginationParametersValidator());
     }
