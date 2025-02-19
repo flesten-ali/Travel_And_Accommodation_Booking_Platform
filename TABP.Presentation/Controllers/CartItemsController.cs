@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Text.Json;
 using TABP.Application.CartItems.Commands.AddToCart;
-using TABP.Application.CartItems.Delete;
-using TABP.Domain.Constants;
+using TABP.Application.CartItems.Commands.Delete;
+using TABP.Application.CartItems.Queries.GetAll;
 using TABP.Presentation.DTOs.CartItem;
 namespace TABP.Presentation.Controllers;
 
@@ -54,5 +54,28 @@ public class CartItemsController(IMediator mediator, IMapper mapper) : Controlle
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();
+    }
+
+    [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get cart items for guest",
+        Description = "Retrieve a list of cart items for guest."
+    )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetCartItems(
+        [FromQuery] GetCartItemsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var query = _mapper.Map<GetCartItemsQuery>(request);
+
+        var cartItems = await _mediator.Send(query, cancellationToken);
+
+        Response.Headers.Append("x-pagination",
+            JsonSerializer.Serialize(cartItems.PaginationMetaData));
+
+        return Ok(cartItems.Items);
     }
 }

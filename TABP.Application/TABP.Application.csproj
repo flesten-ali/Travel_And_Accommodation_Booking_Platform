@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CartItems\Queries\" />
     <Folder Include="Discounts\" />
     <Folder Include="Owners\" />
   </ItemGroup>

@@ -98,4 +98,18 @@ public class SortBuilder
             _ => (rooms) => rooms.OrderBy(h => h.Id)
         };
     }
+
+    public static Func<IQueryable<CartItem>, IOrderedQueryable<CartItem>> BuildCartItemSort(
+       PaginationParameters paginationParameters)
+    {
+        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
+        return paginationParameters.OrderColumn switch
+        {
+            "price" => isDescending
+                    ? (cartItems) => cartItems.OrderByDescending(x => x.RoomClass.Price)
+                    : (cartItems) => cartItems.OrderBy(x => x.RoomClass.Price),
+
+            _ => (rooms) => rooms.OrderBy(h => h.Id)
+        };
+    }
 }
