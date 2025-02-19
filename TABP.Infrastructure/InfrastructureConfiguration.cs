@@ -65,6 +65,7 @@ public static class InfrastructureConfiguration
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<ICartItemRepository, CartItemRepository>();
+        services.AddScoped<IDiscountRepository, DiscountRepository>();
         return services;
     }
 
