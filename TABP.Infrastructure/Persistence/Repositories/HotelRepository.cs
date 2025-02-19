@@ -18,9 +18,8 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         CancellationToken cancellationToken = default)
     {
         var hotels = DbSet.Where(filter);
-        hotels = orderBy(hotels);
 
-        var selectedResult = hotels.Select(h => new SearchHotelResult
+        var selectedResult = orderBy(hotels).Select(h => new SearchHotelResult
         {
             Name = h.Name,
             Description = h.Description,

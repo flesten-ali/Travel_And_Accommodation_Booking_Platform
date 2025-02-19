@@ -15,13 +15,13 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
         int pageNumber,
         CancellationToken cancellationToken = default)
     {
-        var filteredRoomClasses = DbSet.Where(rc => rc.HotelId == hotelId).AsNoTracking();
+        var filteredRoomClasses = DbSet
+            .Include(rc => rc.Discounts)
+            .Include(rc => rc.Amenities)
+            .Where(rc => rc.HotelId == hotelId)
+            .AsNoTracking();
 
-        var roomClasses = orderBy(filteredRoomClasses)
-                          .Include(rc => rc.Discounts)
-                          .Include(rc => rc.Amenities)
-                          .AsQueryable()
-                          .AsNoTracking();
+        var roomClasses = orderBy(filteredRoomClasses);
 
         var requestedPage = roomClasses.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);

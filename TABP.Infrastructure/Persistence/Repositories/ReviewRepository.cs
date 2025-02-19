@@ -15,9 +15,9 @@ public class ReviewRepository(AppDbContext context) : Repository<Review>(context
         int pageNumber,
         CancellationToken cancellationToken = default)
     {
-        var hotelReviews = DbSet.Where(r => r.HotelId == hotelId);
+        var hotelReviews = DbSet.Include(r => r.User).Where(r => r.HotelId == hotelId);
 
-        var reviews = orderBy(hotelReviews).Include(r => r.User);
+        var reviews = orderBy(hotelReviews);
 
         var requstedPage = reviews.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await requstedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
