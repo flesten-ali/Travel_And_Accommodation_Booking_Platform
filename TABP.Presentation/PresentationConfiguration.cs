@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using TABP.Presentation.Controllers;
-using TABP.Presentation.Validators.Auth;
+using TABP.Presentation.Validators.User;
 namespace TABP.Presentation;
 
 public static class PresentationConfiguration
