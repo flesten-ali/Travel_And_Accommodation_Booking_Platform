@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -7,12 +8,13 @@ using System.Text.Json;
 using TABP.Application.CartItems.Commands.AddToCart;
 using TABP.Application.CartItems.Commands.Delete;
 using TABP.Application.CartItems.Queries.GetAll;
+using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.CartItem;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/cart-items")]
 [ApiController]
-//[Authorize(Roles = Roles.Guest)]
+[Authorize(Roles = Roles.Guest)]
 [SwaggerTag("Manage shopping cart items for guests.")]
 public class CartItemsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
