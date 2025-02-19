@@ -1,19 +1,17 @@
 ﻿using FluentValidation;
 using TABP.Presentation.DTOs.Auth;
-namespace TABP.Presentation.Validators.Auth;
+namespace TABP.Presentation.Validators.User;
 
 public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
 {
     public LoginUserRequestValidator()
     {
-        RuleFor(u => u.Email)
-          .NotEmpty()
-          .EmailAddress()
-          .WithMessage("Email address is required.");
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("Email is required.")
+            .EmailAddress().WithMessage("Invalid email format.");
 
-        RuleFor(u => u.Password)
-            .NotEmpty()
-            .WithMessage("Password is required.");
-
+        RuleFor(x => x.Password)
+            .NotEmpty().WithMessage("Password is required.")
+            .MinimumLength(8).WithMessage("Password must be at least 8 characters long.");
     }
 }
