@@ -33,6 +33,7 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
         {
             throw new NotFoundException(RoomClassExceptionMessages.NotFound);
         }
+
         var room = _mapper.Map<Room>(request);
 
         await _roomRepository.CreateAsync(room, cancellationToken);
