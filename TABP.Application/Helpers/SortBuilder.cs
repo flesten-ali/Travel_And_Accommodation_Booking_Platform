@@ -109,7 +109,29 @@ public class SortBuilder
                     ? (cartItems) => cartItems.OrderByDescending(x => x.RoomClass.Price)
                     : (cartItems) => cartItems.OrderBy(x => x.RoomClass.Price),
 
-            _ => (rooms) => rooms.OrderBy(h => h.Id)
+            _ => (cartItems) => cartItems.OrderBy(h => h.Id)
+        };
+    }
+
+    public static Func<IQueryable<Discount>, IOrderedQueryable<Discount>> BuildDiscountSort(
+      PaginationParameters paginationParameters)
+    {
+        var isDescending = paginationParameters.SortOrder == SortOrder.Descending;
+        return paginationParameters.OrderColumn switch
+        {
+            "percentage" => isDescending
+                    ? (discounts) => discounts.OrderByDescending(x => x.Percentage)
+                    : (discounts) => discounts.OrderBy(x => x.Percentage),
+
+            "startdate" => isDescending
+                    ? (discounts) => discounts.OrderByDescending(x => x.StartDate)
+                    : (discounts) => discounts.OrderBy(x => x.StartDate),
+
+            "enddate" => isDescending
+                    ? (discounts) => discounts.OrderByDescending(x => x.EndDate)
+                    : (discounts) => discounts.OrderBy(x => x.EndDate),
+
+            _ => (discounts) => discounts.OrderBy(h => h.Id)
         };
     }
 }

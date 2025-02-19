@@ -1,28 +1,26 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Text.Json;
 using TABP.Application.Discounts.Commands.Create;
 using TABP.Application.Discounts.Commands.Delete;
 using TABP.Application.Discounts.Queries.GetById;
+using TABP.Application.Discounts.Queries.GetForRoomClass;
+using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Discount;
 
 namespace TABP.Presentation.Controllers;
 
 [Route("api/room-classes/{roomClassId:guid}/discounts")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)]
-public class DiscountsController : ControllerBase
+[Authorize(Roles = Roles.Admin)]
+public class DiscountsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
-
-    public DiscountsController(IMediator mediator, IMapper mapper)
-    {
-        _mediator = mediator;
-        _mapper = mapper;
-    }
+    private readonly IMediator _mediator = mediator;
+    private readonly IMapper _mapper = mapper;
 
     [HttpPost]
     [SwaggerOperation(
@@ -98,5 +96,31 @@ public class DiscountsController : ControllerBase
         await _mediator.Send(command, cancellationToken);
 
         return NoContent();
+    }
+
+    [HttpGet]
+    [SwaggerOperation(
+    Summary = "Get discounts of room class",
+    Description = "Retrieve a list of discounts for specific room class."
+    )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDiscountsForRoomClass(
+    Guid roomClassId,
+    [FromQuery] GetDiscountsForRoomClassRequest request,
+    CancellationToken cancellationToken)
+    {
+        var query = _mapper.Map<GetDiscountsForRoomClassQuery>(request);
+        query.RoomClassId = roomClassId;
+
+        var discounts = await _mediator.Send(query, cancellationToken);
+
+        Response.Headers.Append("x-pagination",
+            JsonSerializer.Serialize(discounts.PaginationMetaData));
+
+        return Ok(discounts.Items);
     }
 }
