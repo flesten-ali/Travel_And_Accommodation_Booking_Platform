@@ -13,8 +13,5 @@ public class CreateRoomRequestValidator : AbstractValidator<CreateRoomRequest>
         RuleFor(x => x.Floor)
          .NotEmpty().WithMessage("Floor is required.")
          .GreaterThanOrEqualTo(0).WithMessage("Floor cannot be negative.");
-
-        RuleFor(x => x.RoomClassId)
-         .NotEmpty().WithMessage("RoomClassId is required.");
     }
 }
