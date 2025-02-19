@@ -32,11 +32,15 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
 
     public async Task<HotelResponse> Handle(CreateHotelCommand request, CancellationToken cancellationToken = default)
     {
-        var city = await _cityRepository.GetByIdAsync(request.CityId, cancellationToken)
-            ?? throw new NotFoundException(CityExceptionMessages.NotFound);
+        if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId, cancellationToken))
+        {
+            throw new NotFoundException(CityExceptionMessages.NotFound);
+        }
 
-        var owner = await _ownerRepository.GetByIdAsync(request.OwnerId, cancellationToken)
-            ?? throw new NotFoundException(OwnerExceptionMessages.NotFound);
+        if (!await _ownerRepository.ExistsAsync(o => o.Id == request.OwnerId, cancellationToken))
+        {
+            throw new NotFoundException(OwnerExceptionMessages.NotFound);
+        }
 
         if (await _hotelRepository.ExistsAsync(hotel =>
            hotel.LatitudeCoordinates == request.LatitudeCoordinates && hotel.LongitudeCoordinates == request.LongitudeCoordinates,
@@ -46,8 +50,6 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
         }
 
         var hotel = _mapper.Map<Hotel>(request);
-        hotel.City = city;
-        hotel.Owner = owner;
 
         await _hotelRepository.CreateAsync(hotel, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
