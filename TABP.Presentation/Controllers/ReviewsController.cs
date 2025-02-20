@@ -38,7 +38,7 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
 
         var reviews = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("X-Pagination",
+        Response.Headers.Append("x-pagination",
             JsonSerializer.Serialize(reviews.PaginationMetaData));
 
         return Ok(reviews.Items);
