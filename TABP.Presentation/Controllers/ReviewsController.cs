@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.Reviews.Commands.Create;
+using TABP.Application.Reviews.Queries.GetById;
 using TABP.Application.Reviews.Queries.GetForHotel;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Review;
@@ -48,8 +49,8 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
 
     [HttpPost]
     [SwaggerOperation(
-     Summary = "Create a new review",
-     Description = "Create a new review by providing necessary details such as hotel ID."
+         Summary = "Create a new review",
+         Description = "Create a new review by providing necessary details such as hotel ID."
     )]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,7 +67,32 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
 
         var createdReview = await _mediator.Send(command, cancellationToken);
 
-        return Created();
-        //return CreatedAtAction(nameof(GetReview), new { id = createdReview.Id }, createdReview);
+        return CreatedAtAction(nameof(GetReview),
+            new
+            {
+                hotelId = createdReview.HotelId,
+                id = createdReview.Id
+            }, createdReview);
+    }
+
+    [HttpGet("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Get review by ID",
+    )]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetReview(Guid hotelId, Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetReviewByIdQuery
+        {
+            ReviewId = id,
+            HotelId = hotelId
+        };
+
+        var review = await _mediator.Send(query, cancellationToken);
+
+        return Ok(review);
     }
 }

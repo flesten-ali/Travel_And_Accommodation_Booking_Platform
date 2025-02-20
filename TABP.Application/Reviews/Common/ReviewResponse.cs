@@ -6,4 +6,5 @@ public class ReviewResponse
     public int Rate { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
+    public Guid HotelId { get; set; }
 }
