@@ -33,10 +33,12 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetRoomsForAdmin(
+      Guid roomClassId,
       [FromQuery] GetRoomsForAdminRequest request,
       CancellationToken cancellationToken)
     {
         var query = _mapper.Map<GetRoomsForAdminQuery>(request);
+        query.RoomClassId = roomClassId;
 
         var rooms = await _mediator.Send(query, cancellationToken);
 
@@ -48,8 +50,8 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
 
     [HttpPost]
     [SwaggerOperation(
-    Summary = "Create a new room",
-    Description = "Create a new room by providing necessary details such as room number, room class Id, and floor."
+        Summary = "Create a new room",
+        Description = "Create a new room by providing necessary details such as room number, room class Id, and floor."
     )]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -70,15 +72,21 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
 
     [HttpGet("{id:guid}")]
     [SwaggerOperation(
-    Summary = "Get room by ID",
-    Description = "Retrieve information of a room by its unique identifier."
+        Summary = "Get room by ID",
+        Description = "Retrieve information of a room by its unique identifier."
     )]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRoom(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRoom(
+        Guid roomClassId,
+        Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetRoomByIdQuery { RoomId = id };
+        var query = new GetRoomByIdQuery
+        {
+            RoomId = id,
+            RoomClassId = roomClassId
+        };
 
         var room = await _mediator.Send(query, cancellationToken);
 
@@ -95,10 +103,15 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateRoom(Guid id, UpdateRoomRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateRoom(
+        Guid roomClassId,
+        Guid id,
+        UpdateRoomRequest request,
+        CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UpdateRoomCommand>(request);
         command.Id = id;
+        command.RoomClassId = roomClassId;
 
         await _mediator.Send(command, cancellationToken);
 
@@ -107,17 +120,21 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
 
     [HttpDelete("{id:guid}")]
     [SwaggerOperation(
-    Summary = "Delete a room",
-    Description = "Delete an existing room by its unique ID."
+        Summary = "Delete a room",
+        Description = "Delete an existing room by its unique ID."
     )]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteRoom(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteRoom(Guid roomClassId, Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteRoomCommand { Id = id };
+        var command = new DeleteRoomCommand
+        {
+            RoomId = id,
+            RoomClassId = roomClassId
+        };
 
         await _mediator.Send(command, cancellationToken);
 
