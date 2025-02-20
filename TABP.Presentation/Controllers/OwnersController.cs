@@ -29,7 +29,7 @@ public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateOwner(
-      [FromBody] CreateOwnerRequset request,
+      CreateOwnerRequest request,
       CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateOwnerCommand>(request);

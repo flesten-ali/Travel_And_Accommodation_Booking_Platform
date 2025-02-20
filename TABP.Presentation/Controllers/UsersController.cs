@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Users.Login;
 using TABP.Application.Users.Register;
 using TABP.Domain.Constants;
-using TABP.Presentation.DTOs.Auth;
+using TABP.Presentation.DTOs.User;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/users")]
@@ -26,7 +26,7 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Login([FromBody] LoginUserRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login(LoginUserRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<LoginUserCommand>(request);
 
@@ -43,7 +43,7 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterUser(RegisterUserRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<RegisterUserCommand>(request);
         command.Role = Roles.Guest;
@@ -64,7 +64,7 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterAdmin(RegisterAdminRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<RegisterUserCommand>(request);
         command.Role = Roles.Admin;
