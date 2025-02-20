@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.Constants.ExceptionMessages;
 using TABP.Domain.Entities;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
@@ -29,14 +30,14 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
 
     public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken = default)
     {
-        if (await _userRepository.EmailExistsAsync(request.Email, cancellationToken))
+        if (await _userRepository.ExistsAsync(u => u.Email == request.Email, cancellationToken))
         {
-            throw new ExistsException($"User with email {request.Email} is exits");
+            throw new ExistsException(UserExceptionMessages.Exist);
         }
 
         var user = _mapper.Map<User>(request);
-
         user.PasswordHash = _passwordHasher.Hash(request.Password);
+
         await _userRepository.CreateAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
