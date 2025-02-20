@@ -17,8 +17,4 @@
     <ProjectReference Include="..\TABP.Domain\TABP.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="RoomClasses\Commands\ImageGallery\" />
-  </ItemGroup>
-
 </Project>

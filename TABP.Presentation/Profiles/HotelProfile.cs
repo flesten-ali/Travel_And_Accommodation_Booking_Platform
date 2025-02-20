@@ -16,7 +16,7 @@ public class HotelProfile : Profile
     {
         CreateMap<CreateHotelRequest, CreateHotelCommand>();
         CreateMap<UploadHotelThumbnailRequest, UploadHotelThumbnailCommand>();
-        CreateMap<UploadImageGalleryRequest, UploadHotelImageGalleryCommand>();
+        CreateMap<UploadHotelImageGalleryRequest, UploadHotelImageGalleryCommand>();
         CreateMap<SearchHotelRequest, SearchHotelsQuery>();
         CreateMap<GetHotelsForAdminRequest, GetHotelsForAdminQuery>();
         CreateMap<UpdateHotelRequest, UpdateHotelCommand>();
