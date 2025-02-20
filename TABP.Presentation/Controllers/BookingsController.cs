@@ -10,6 +10,7 @@ using TABP.Application.Bookings.Queries.GetBookingById;
 using TABP.Application.Bookings.Queries.InvoicePdf;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Booking;
+using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/user/bookings")]
@@ -49,16 +50,17 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateBooking(CreateBookingRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateBookingCommand>(request);
+        command.UserId = User.GetUserId();
 
         var createdBooking = await _mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetBooking), new { id = createdBooking.Id }, createdBooking);
     }
 
-    [HttpPost("{id:guid}/invoice")]
+    [HttpGet("{id:guid}/invoice")]
     [SwaggerOperation(
         Summary = "Get invoice PDF",
         Description = "Generates and retrieves an invoice PDF for the booking."
@@ -88,7 +90,11 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteBooking(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteBookingCommand { Id = id };
+        var command = new DeleteBookingCommand
+        {
+            BookingId = id,
+            UserId = User.GetUserId()
+        };
 
         await _mediator.Send(command, cancellationToken);
 
