@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TABP.Application.RoomClasses.Commands.Create;
+using TABP.Application.RoomClasses.Commands.ImageGallery;
 using TABP.Application.RoomClasses.Commands.Update;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Presentation.DTOs.RoomClass;
@@ -14,5 +15,7 @@ public class RoomClassProfile : Profile
         CreateMap<CreateRoomClassRequest, CreateRoomClassCommand>();
 
         CreateMap<UpdateRoomClassRequest, UpdateRoomClassCommand>();
+
+        CreateMap<UploadRoomClassImageGalleryRequest, UploadRoomClassImageGalleryCommand>();
     }
 }

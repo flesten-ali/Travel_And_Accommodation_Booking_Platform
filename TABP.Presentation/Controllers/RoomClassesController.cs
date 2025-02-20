@@ -7,6 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.RoomClasses.Commands.Create;
 using TABP.Application.RoomClasses.Commands.Delete;
+using TABP.Application.RoomClasses.Commands.ImageGallery;
 using TABP.Application.RoomClasses.Commands.Update;
 using TABP.Application.RoomClasses.Queries.GetById;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
@@ -121,6 +122,29 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
     public async Task<IActionResult> DeleteRoomClass(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteRoomClassCommand { Id = id };
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}/gallery")]
+    [SwaggerOperation(
+        Summary = "Upload room class gallery images",
+        Description = "Upload images to the gallery for the specified room class."
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> UploadRoomClassGalleryImages(
+    Guid id,
+    [FromForm] UploadRoomClassImageGalleryRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<UploadRoomClassImageGalleryCommand>(request);
+        command.RoomClassId = id;
 
         await _mediator.Send(command, cancellationToken);
 
