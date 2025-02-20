@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
-using TABP.Application.Reviews.GetForHotel;
+using TABP.Application.Reviews.Queries.GetForHotel;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Review;
 namespace TABP.Presentation.Controllers;
