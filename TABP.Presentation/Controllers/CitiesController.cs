@@ -74,7 +74,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateCity([FromBody] CreateCityRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateCity(CreateCityRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateCityCommand>(request);
 
