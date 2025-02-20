@@ -31,7 +31,7 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> CreateAmenity([FromBody] CreateAmenityRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateAmenity(CreateAmenityRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateAmenityCommand>(request);
 
