@@ -53,8 +53,8 @@ public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThu
             image.PublicId = publicId;
 
             await _imageRepository.DeleteByIdAsync(image.ImageableId, ImageType.Thumbnail, cancellationToken);
-
             await _imageRepository.CreateAsync(image, cancellationToken);
+
             await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
