@@ -7,7 +7,7 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
 namespace TABP.Application.CartItems.Queries.GetAll;
-public class GetCartItemsQueryHandler : IRequestHandler<GetCartItemsQuery, PaginatedList<CartItemResponse>>
+public class GetCartItemsQueryHandler : IRequestHandler<GetCartItemsQuery, PaginatedResponse<CartItemResponse>>
 {
     private readonly ICartItemRepository _cartItemRepository;
     private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ public class GetCartItemsQueryHandler : IRequestHandler<GetCartItemsQuery, Pagin
         _cartItemRepository = cartItemRepository;
         _mapper = mapper;
     }
-    public async Task<PaginatedList<CartItemResponse>> Handle(GetCartItemsQuery request, CancellationToken cancellationToken = default)
+    public async Task<PaginatedResponse<CartItemResponse>> Handle(GetCartItemsQuery request, CancellationToken cancellationToken = default)
     {
         if (!await _cartItemRepository.ExistsAsync(c => c.UserId == request.UserId, cancellationToken))
         {
@@ -32,6 +32,6 @@ public class GetCartItemsQueryHandler : IRequestHandler<GetCartItemsQuery, Pagin
             request.PaginationParameters.PageNumber,
             cancellationToken);
 
-        return _mapper.Map<PaginatedList<CartItemResponse>>(cartItems);
+        return _mapper.Map<PaginatedResponse<CartItemResponse>>(cartItems);
     }
 }

@@ -8,7 +8,7 @@ using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 public class CartItemRepository(AppDbContext context) : Repository<CartItem>(context), ICartItemRepository
 {
-    public async Task<PaginatedList<CartItem>> GetCartItemsAsync(
+    public async Task<PaginatedResponse<CartItem>> GetCartItemsAsync(
         Func<IQueryable<CartItem>, IOrderedQueryable<CartItem>> orderBy,
         int pageSize,
         int pageNumber,
@@ -23,6 +23,6 @@ public class CartItemRepository(AppDbContext context) : Repository<CartItem>(con
         var requestedPage = cartItems.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<CartItem>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
+        return new PaginatedResponse<CartItem>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
     }
 }

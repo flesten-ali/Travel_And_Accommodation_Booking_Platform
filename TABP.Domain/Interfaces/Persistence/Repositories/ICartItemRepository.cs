@@ -4,7 +4,7 @@ using TABP.Domain.Models;
 namespace TABP.Domain.Interfaces.Persistence.Repositories;
 public interface ICartItemRepository : IRepository<CartItem>
 {
-    Task<PaginatedList<CartItem>> GetCartItemsAsync(
+    Task<PaginatedResponse<CartItem>> GetCartItemsAsync(
         Func<IQueryable<CartItem>, IOrderedQueryable<CartItem>> orderBy,
         int pageSize,
         int pageNumber,

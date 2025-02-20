@@ -20,7 +20,7 @@ public class HotelProfile : Profile
     {
         CreateMap<SearchHotelResult, SearchHotelResponse>();
 
-        CreateMap<PaginatedList<SearchHotelResult>, PaginatedList<SearchHotelResponse>>();
+        CreateMap<PaginatedResponse<SearchHotelResult>, PaginatedResponse<SearchHotelResponse>>();
 
         CreateMap<CreateHotelCommand, Hotel>();
 
@@ -48,7 +48,7 @@ public class HotelProfile : Profile
 
         CreateMap<HotelForAdminResult, HotelForAdminResponse>();
 
-        CreateMap<PaginatedList<HotelForAdminResult>, PaginatedList<HotelForAdminResponse>>();
+        CreateMap<PaginatedResponse<HotelForAdminResult>, PaginatedResponse<HotelForAdminResponse>>();
 
         CreateMap<UpdateHotelCommand, Hotel>();
     }

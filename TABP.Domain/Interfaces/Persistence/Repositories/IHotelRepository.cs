@@ -5,7 +5,7 @@ namespace TABP.Domain.Interfaces.Persistence.Repositories;
 
 public interface IHotelRepository : IRepository<Hotel>
 {
-    Task<PaginatedList<SearchHotelResult>> SearchHotelsAsync(
+    Task<PaginatedResponse<SearchHotelResult>> SearchHotelsAsync(
         Expression<Func<Hotel, bool>> filter,
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
@@ -16,7 +16,7 @@ public interface IHotelRepository : IRepository<Hotel>
         int limit,
         CancellationToken cancellationToken = default);
 
-    Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(
+    Task<PaginatedResponse<HotelForAdminResult>> GetHotelsForAdminAsync(
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
         int pageNumber,

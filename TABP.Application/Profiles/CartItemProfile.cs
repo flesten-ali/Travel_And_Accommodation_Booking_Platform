@@ -13,6 +13,6 @@ public class CartItemProfile : Profile
 
         CreateMap<CartItem, CartItemResponse>();
 
-        CreateMap<PaginatedList<CartItem>, PaginatedList<CartItemResponse>>();
+        CreateMap<PaginatedResponse<CartItem>, PaginatedResponse<CartItemResponse>>();
     }
 }

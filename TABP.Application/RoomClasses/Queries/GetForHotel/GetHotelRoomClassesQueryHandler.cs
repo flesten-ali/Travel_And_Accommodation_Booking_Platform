@@ -6,7 +6,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Application.RoomClasses.Queries.GetForHotel;
 public class GetHotelRoomClassesQueryHandler
-    : IRequestHandler<GetHotelRoomClassesQuery, PaginatedList<HotelRoomClassesQueryResponse>>
+    : IRequestHandler<GetHotelRoomClassesQuery, PaginatedResponse<HotelRoomClassesQueryResponse>>
 {
     private readonly IRoomClassRepository _roomClassRepository;
     private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ public class GetHotelRoomClassesQueryHandler
         _roomClassRepository = roomClassRepository;
         _mapper = mapper;
     }
-    public async Task<PaginatedList<HotelRoomClassesQueryResponse>> Handle(
+    public async Task<PaginatedResponse<HotelRoomClassesQueryResponse>> Handle(
         GetHotelRoomClassesQuery request,
         CancellationToken cancellationToken = default)
     {
@@ -31,6 +31,6 @@ public class GetHotelRoomClassesQueryHandler
             request.PaginationParameters.PageNumber,
             cancellationToken);
 
-        return _mapper.Map<PaginatedList<HotelRoomClassesQueryResponse>>(roomClasses);
+        return _mapper.Map<PaginatedResponse<HotelRoomClassesQueryResponse>>(roomClasses);
     }
 }

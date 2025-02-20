@@ -8,7 +8,7 @@ using TABP.Infrastructure.Persistence.DbContexts;
 namespace TABP.Infrastructure.Persistence.Repositories;
 public class CityRepository(AppDbContext context) : Repository<City>(context), ICityRepository
 {
-    public async Task<PaginatedList<CityForAdminResult>> GetCitiesForAdminAsync(
+    public async Task<PaginatedResponse<CityForAdminResult>> GetCitiesForAdminAsync(
         int pageSize,
         int pageNumber,
         Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
@@ -30,6 +30,6 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
         var requestedPage = PaginationExtenstions.GetRequestedPage(cities, pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<CityForAdminResult>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
+        return new PaginatedResponse<CityForAdminResult>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
     }
 }

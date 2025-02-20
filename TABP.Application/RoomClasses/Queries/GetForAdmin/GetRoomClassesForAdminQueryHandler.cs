@@ -6,7 +6,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Application.RoomClasses.Queries.GetForAdmin;
 public class GetRoomClassesForAdminQueryHandler
-    : IRequestHandler<GetRoomClassesForAdminQuery, PaginatedList<RoomClassForAdminResponse>>
+    : IRequestHandler<GetRoomClassesForAdminQuery, PaginatedResponse<RoomClassForAdminResponse>>
 {
     private readonly IRoomClassRepository _roomClassRepository;
     private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ public class GetRoomClassesForAdminQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<RoomClassForAdminResponse>> Handle(
+    public async Task<PaginatedResponse<RoomClassForAdminResponse>> Handle(
         GetRoomClassesForAdminQuery request,
         CancellationToken cancellationToken = default)
     {
@@ -29,6 +29,6 @@ public class GetRoomClassesForAdminQueryHandler
             request.PaginationParameters.PageNumber,
             cancellationToken);
 
-        return _mapper.Map<PaginatedList<RoomClassForAdminResponse>>(roomClasses);
+        return _mapper.Map<PaginatedResponse<RoomClassForAdminResponse>>(roomClasses);
     }
 }

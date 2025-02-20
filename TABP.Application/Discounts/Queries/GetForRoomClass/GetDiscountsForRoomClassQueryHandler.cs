@@ -9,7 +9,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Application.Discounts.Queries.GetForRoomClass;
 public class GetDiscountsForRoomClassQueryHandler
-    : IRequestHandler<GetDiscountsForRoomClassQuery, PaginatedList<DiscountResponse>>
+    : IRequestHandler<GetDiscountsForRoomClassQuery, PaginatedResponse<DiscountResponse>>
 {
     private readonly IRoomClassRepository _roomClassRepository;
     private readonly IDiscountRepository _discountRepository;
@@ -25,7 +25,7 @@ public class GetDiscountsForRoomClassQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<DiscountResponse>> Handle(
+    public async Task<PaginatedResponse<DiscountResponse>> Handle(
         GetDiscountsForRoomClassQuery request,
         CancellationToken cancellationToken = default)
     {
@@ -43,6 +43,6 @@ public class GetDiscountsForRoomClassQueryHandler
             request.PaginationParameters.PageNumber,
             cancellationToken);
 
-        return _mapper.Map<PaginatedList<DiscountResponse>>(discounts);
+        return _mapper.Map<PaginatedResponse<DiscountResponse>>(discounts);
     }
 }

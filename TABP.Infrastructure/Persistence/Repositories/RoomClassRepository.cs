@@ -8,7 +8,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(context), IRoomClassRepository
 {
-    public async Task<PaginatedList<RoomClass>> GetByHotelIdAsync(
+    public async Task<PaginatedResponse<RoomClass>> GetByHotelIdAsync(
         Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy,
         Guid hotelId,
         int pageSize,
@@ -26,10 +26,10 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
         var requestedPage = roomClasses.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<RoomClass>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
+        return new PaginatedResponse<RoomClass>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
     }
 
-    public async Task<PaginatedList<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(
+    public async Task<PaginatedResponse<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(
         Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy,
         int pageSize,
         int pageNumber,
@@ -51,6 +51,6 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
         var requestedPage = roomClasses.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<RoomClassForAdminResult>(await requestedPage.ToListAsync(cancellationToken), paginationMetaDate);
+        return new PaginatedResponse<RoomClassForAdminResult>(await requestedPage.ToListAsync(cancellationToken), paginationMetaDate);
     }
 }

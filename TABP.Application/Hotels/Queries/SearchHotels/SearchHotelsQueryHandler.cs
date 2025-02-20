@@ -9,7 +9,7 @@ using TABP.Domain.Models;
 namespace TABP.Application.Hotels.Queries.SearchHotels;
 
 public class SearchHotelsQueryHandler :
-    IRequestHandler<SearchHotelsQuery, PaginatedList<SearchHotelResponse>>
+    IRequestHandler<SearchHotelsQuery, PaginatedResponse<SearchHotelResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ public class SearchHotelsQueryHandler :
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<SearchHotelResponse>> Handle(
+    public async Task<PaginatedResponse<SearchHotelResponse>> Handle(
         SearchHotelsQuery request,
         CancellationToken cancellationToken = default)
     {
@@ -34,7 +34,7 @@ public class SearchHotelsQueryHandler :
             request.PaginationParameters.PageNumber,
             cancellationToken);
 
-        return _mapper.Map<PaginatedList<SearchHotelResponse>>(result);
+        return _mapper.Map<PaginatedResponse<SearchHotelResponse>>(result);
     }
 
     private static Expression<Func<Hotel, bool>> BuildFilterExpression(SearchHotelsQuery request)

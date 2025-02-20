@@ -8,7 +8,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Application.Reviews.Queries.GetForHotel;
 public class GetHotelReviewsQueryHandler
-    : IRequestHandler<GetHotelReviewsQuery, PaginatedList<HotelReviewsQueryReponse>>
+    : IRequestHandler<GetHotelReviewsQuery, PaginatedResponse<HotelReviewsQueryReponse>>
 {
     private readonly IReviewRepository _reviewRepository;
     private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ public class GetHotelReviewsQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<HotelReviewsQueryReponse>> Handle(
+    public async Task<PaginatedResponse<HotelReviewsQueryReponse>> Handle(
         GetHotelReviewsQuery request,
         CancellationToken cancellationToken = default)
     {
@@ -33,6 +33,6 @@ public class GetHotelReviewsQueryHandler
             cancellationToken)
             ?? throw new NotFoundException(ReviewExceptionMessages.NotFound);
 
-        return _mapper.Map<PaginatedList<HotelReviewsQueryReponse>>(reviews);
+        return _mapper.Map<PaginatedResponse<HotelReviewsQueryReponse>>(reviews);
     }
 }

@@ -4,14 +4,14 @@ using TABP.Domain.Models;
 namespace TABP.Domain.Interfaces.Persistence.Repositories;
 public interface IRoomClassRepository : IRepository<RoomClass>
 {
-    Task<PaginatedList<RoomClass>> GetByHotelIdAsync(
+    Task<PaginatedResponse<RoomClass>> GetByHotelIdAsync(
         Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy,
         Guid hotelId,
         int pageSize,
         int pageNumber,
         CancellationToken cancellationToken = default);
 
-    Task<PaginatedList<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(
+    Task<PaginatedResponse<RoomClassForAdminResult>> GetRoomClassesForAdminAsync(
         Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> orderBy,
         int pageSize,
         int pageNumber,

@@ -14,7 +14,7 @@ public class ReviewProfile : Profile
         CreateMap<Review, HotelReviewsQueryReponse>()
             .ForMember(dest => dest.ReviwerName, opt => opt.MapFrom(src => src.User.UserName));
 
-        CreateMap<PaginatedList<Review>, PaginatedList<HotelReviewsQueryReponse>>();
+        CreateMap<PaginatedResponse<Review>, PaginatedResponse<HotelReviewsQueryReponse>>();
 
         CreateMap<CreateReviewCommand, Review>();
 

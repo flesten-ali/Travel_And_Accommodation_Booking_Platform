@@ -4,7 +4,7 @@ using TABP.Domain.Models;
 namespace TABP.Domain.Interfaces.Persistence.Repositories;
 public interface IRoomRepository : IRepository<Room>
 {
-    Task<PaginatedList<RoomForAdminResult>> GetRoomsForAdminAsync(
+    Task<PaginatedResponse<RoomForAdminResult>> GetRoomsForAdminAsync(
         Func<IQueryable<Room>, IOrderedQueryable<Room>> orderBy,
         int pageSize,
         int pageNumber,

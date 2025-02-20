@@ -13,6 +13,6 @@ public class DiscountProfile : Profile
 
         CreateMap<Discount, DiscountResponse>();
 
-        CreateMap<PaginatedList<Discount>, PaginatedList<DiscountResponse>>();
+        CreateMap<PaginatedResponse<Discount>, PaginatedResponse<DiscountResponse>>();
     }
 }

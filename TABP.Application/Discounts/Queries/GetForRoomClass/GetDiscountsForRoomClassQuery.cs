@@ -4,7 +4,7 @@ using TABP.Application.Shared;
 using TABP.Domain.Models;
 
 namespace TABP.Application.Discounts.Queries.GetForRoomClass;
-public class GetDiscountsForRoomClassQuery : IRequest<PaginatedList<DiscountResponse>>
+public class GetDiscountsForRoomClassQuery : IRequest<PaginatedResponse<DiscountResponse>>
 {
     public Guid RoomClassId { get; set; }
     public PaginationParameters PaginationParameters { get; set; }

@@ -7,7 +7,7 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
 namespace TABP.Application.Rooms.Queries.GetForAdmin;
-public class GetRoomsForAdminQueryHandler : IRequestHandler<GetRoomsForAdminQuery, PaginatedList<RoomForAdminResponse>>
+public class GetRoomsForAdminQueryHandler : IRequestHandler<GetRoomsForAdminQuery, PaginatedResponse<RoomForAdminResponse>>
 {
     private readonly IRoomClassRepository _roomClassRepository;
     private readonly IRoomRepository _roomRepository;
@@ -23,7 +23,7 @@ public class GetRoomsForAdminQueryHandler : IRequestHandler<GetRoomsForAdminQuer
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<RoomForAdminResponse>> Handle(GetRoomsForAdminQuery request, CancellationToken cancellationToken = default)
+    public async Task<PaginatedResponse<RoomForAdminResponse>> Handle(GetRoomsForAdminQuery request, CancellationToken cancellationToken = default)
     {
         if (!await _roomClassRepository.ExistsAsync(rc => rc.Id == request.RoomClassId, cancellationToken))
         {
@@ -38,6 +38,6 @@ public class GetRoomsForAdminQueryHandler : IRequestHandler<GetRoomsForAdminQuer
             request.PaginationParameters.PageNumber,
             cancellationToken);
 
-        return _mapper.Map<PaginatedList<RoomForAdminResponse>>(roomClasses);
+        return _mapper.Map<PaginatedResponse<RoomForAdminResponse>>(roomClasses);
     }
 }

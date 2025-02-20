@@ -9,7 +9,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class RoomRepository(AppDbContext context) : Repository<Room>(context), IRoomRepository
 {
-    public async Task<PaginatedList<RoomForAdminResult>> GetRoomsForAdminAsync(
+    public async Task<PaginatedResponse<RoomForAdminResult>> GetRoomsForAdminAsync(
         Func<IQueryable<Room>, IOrderedQueryable<Room>> orderBy,
         int pageSize,
         int pageNumber,
@@ -29,6 +29,6 @@ public class RoomRepository(AppDbContext context) : Repository<Room>(context), I
         var requestedPage = rooms.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<RoomForAdminResult>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
+        return new PaginatedResponse<RoomForAdminResult>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
     }
 }

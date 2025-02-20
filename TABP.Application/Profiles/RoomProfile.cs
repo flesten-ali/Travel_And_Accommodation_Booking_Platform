@@ -11,7 +11,7 @@ public class RoomProfile : Profile
 {
     public RoomProfile()
     {
-        CreateMap<PaginatedList<RoomForAdminResult>, PaginatedList<RoomForAdminResponse>>();
+        CreateMap<PaginatedResponse<RoomForAdminResult>, PaginatedResponse<RoomForAdminResponse>>();
 
         CreateMap<RoomForAdminResult, RoomForAdminResponse>();
 

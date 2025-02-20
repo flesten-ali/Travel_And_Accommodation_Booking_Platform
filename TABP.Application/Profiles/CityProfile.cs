@@ -18,7 +18,7 @@ public class CityProfile : Profile
 
         CreateMap<CityForAdminResult, CityForAdminResponse>();
 
-        CreateMap<PaginatedList<CityForAdminResult>, PaginatedList<CityForAdminResponse>>();
+        CreateMap<PaginatedResponse<CityForAdminResult>, PaginatedResponse<CityForAdminResponse>>();
 
         CreateMap<CreateCityCommand, City>();
 

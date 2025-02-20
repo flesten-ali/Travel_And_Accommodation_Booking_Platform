@@ -3,7 +3,7 @@ using TABP.Application.Shared;
 using TABP.Domain.Models;
 namespace TABP.Application.Hotels.Queries.SearchHotels;
 
-public class SearchHotelsQuery : IRequest<PaginatedList<SearchHotelResponse>>
+public class SearchHotelsQuery : IRequest<PaginatedResponse<SearchHotelResponse>>
 {
     public string City { get; set; }
     public DateTime CheckInDate { get; set; }

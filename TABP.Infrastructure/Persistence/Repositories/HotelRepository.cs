@@ -10,7 +10,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class HotelRepository(AppDbContext context) : Repository<Hotel>(context), IHotelRepository
 {
-    public async Task<PaginatedList<SearchHotelResult>> SearchHotelsAsync(
+    public async Task<PaginatedResponse<SearchHotelResult>> SearchHotelsAsync(
         Expression<Func<Hotel, bool>> filter,
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
@@ -35,7 +35,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         var resultToReturn = selectedResult.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await resultToReturn.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<SearchHotelResult>(await resultToReturn.ToListAsync(cancellationToken), paginationMetaData);
+        return new PaginatedResponse<SearchHotelResult>(await resultToReturn.ToListAsync(cancellationToken), paginationMetaData);
     }
 
     public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(
@@ -81,7 +81,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         return featuredDeals;
     }
 
-    public async Task<PaginatedList<HotelForAdminResult>> GetHotelsForAdminAsync(
+    public async Task<PaginatedResponse<HotelForAdminResult>> GetHotelsForAdminAsync(
         Func<IQueryable<Hotel>,
         IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
@@ -104,6 +104,6 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         var requestedPage = PaginationExtenstions.GetRequestedPage(hotels, pageSize, pageNumber);
         var paginationMetaDate = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<HotelForAdminResult>(await hotels.ToListAsync(cancellationToken), paginationMetaDate);
+        return new PaginatedResponse<HotelForAdminResult>(await hotels.ToListAsync(cancellationToken), paginationMetaDate);
     }
 }

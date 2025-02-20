@@ -9,7 +9,7 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class DiscountRepository(AppDbContext context) : Repository<Discount>(context), IDiscountRepository
 {
-    public async Task<PaginatedList<Discount>> GetDiscountsForRoomClass(
+    public async Task<PaginatedResponse<Discount>> GetDiscountsForRoomClass(
         Func<IQueryable<Discount>, IOrderedQueryable<Discount>> orderBy,
         Guid roomClassId,
         int pageSize,
@@ -25,6 +25,6 @@ public class DiscountRepository(AppDbContext context) : Repository<Discount>(con
         var requestedPage = resultDiscounts.GetRequestedPage(pageSize, pageNumber);
         var paginationMetaData = await requestedPage.GetPaginationMetaDataAsync(pageSize, pageNumber, cancellationToken);
 
-        return new PaginatedList<Discount>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
+        return new PaginatedResponse<Discount>(await requestedPage.ToListAsync(cancellationToken), paginationMetaData);
     }
 }

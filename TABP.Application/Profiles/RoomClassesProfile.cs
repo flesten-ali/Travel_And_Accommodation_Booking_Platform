@@ -23,9 +23,9 @@ public class RoomClassesProfile : Profile
 
         CreateMap<Amenity, AmenityResponse>();
 
-        CreateMap<PaginatedList<RoomClass>, PaginatedList<HotelRoomClassesQueryResponse>>();
+        CreateMap<PaginatedResponse<RoomClass>, PaginatedResponse<HotelRoomClassesQueryResponse>>();
 
-        CreateMap<PaginatedList<RoomClassForAdminResult>, PaginatedList<RoomClassForAdminResponse>>();
+        CreateMap<PaginatedResponse<RoomClassForAdminResult>, PaginatedResponse<RoomClassForAdminResponse>>();
 
         CreateMap<RoomClassForAdminResult, RoomClassForAdminResponse>();
 

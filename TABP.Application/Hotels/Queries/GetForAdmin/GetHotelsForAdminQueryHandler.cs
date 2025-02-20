@@ -6,7 +6,7 @@ using TABP.Domain.Models;
 namespace TABP.Application.Hotels.Queries.GetForAdmin;
 
 public class GetHotelsForAdminQueryHandler
-    : IRequestHandler<GetHotelsForAdminQuery, PaginatedList<HotelForAdminResponse>>
+    : IRequestHandler<GetHotelsForAdminQuery, PaginatedResponse<HotelForAdminResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ public class GetHotelsForAdminQueryHandler
         _hotelRepository = hotelRepository;
         _mapper = mapper;
     }
-    public async Task<PaginatedList<HotelForAdminResponse>> Handle(
+    public async Task<PaginatedResponse<HotelForAdminResponse>> Handle(
         GetHotelsForAdminQuery request,
         CancellationToken cancellationToken = default)
     {
@@ -27,7 +27,7 @@ public class GetHotelsForAdminQueryHandler
             request.PaginationParameters.PageNumber,
             cancellationToken);
 
-        return _mapper.Map<PaginatedList<HotelForAdminResponse>>(hotels);
+        return _mapper.Map<PaginatedResponse<HotelForAdminResponse>>(hotels);
     }
 
 }
