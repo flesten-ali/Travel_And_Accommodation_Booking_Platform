@@ -9,8 +9,5 @@ public class GetRoomsForAdminRequestValidator : AbstractValidator<GetRoomsForAdm
     {
         RuleFor(x => x.PaginationParameters)
             .SetValidator(new PaginationParametersValidator());
-
-        RuleFor(x => x.RoomClassId)
-            .NotEmpty().WithMessage("RoomClassId is required.");
     }
 }

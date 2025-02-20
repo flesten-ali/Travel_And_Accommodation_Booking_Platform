@@ -9,9 +9,6 @@ public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequ
         RuleFor(b => b.HotelId)
            .NotNull().WithMessage("Hotel ID is required.");
 
-        RuleFor(b => b.UserId)
-            .NotNull().WithMessage("User ID is required.");
-
         RuleFor(b => b.RoomIds)
             .NotEmpty().WithMessage("At least one room must be selected.")
             .Must(ids => ids.Distinct().Count() == ids.Count())
