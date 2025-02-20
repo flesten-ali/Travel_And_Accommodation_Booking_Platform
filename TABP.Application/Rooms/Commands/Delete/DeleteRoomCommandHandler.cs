@@ -10,29 +10,40 @@ public class DeleteRoomCommandHandler : IRequestHandler<DeleteRoomCommand>
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBookingRepository _bookingRepository;
+    private readonly IRoomClassRepository _roomClassRepository;
 
-    public DeleteRoomCommandHandler(IRoomRepository roomRepository,
+    public DeleteRoomCommandHandler(
+        IRoomRepository roomRepository,
         IUnitOfWork unitOfWork,
-        IBookingRepository bookingRepository)
+        IBookingRepository bookingRepository,
+        IRoomClassRepository roomClassRepository)
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
         _bookingRepository = bookingRepository;
+        _roomClassRepository = roomClassRepository;
     }
 
     public async Task<Unit> Handle(DeleteRoomCommand request, CancellationToken cancellationToken = default)
     {
-        if (!await _roomRepository.ExistsAsync(r => r.Id == request.Id, cancellationToken))
+        if (!await _roomClassRepository.ExistsAsync(rc => rc.Id == request.RoomClassId, cancellationToken))
         {
-            throw new NotFoundException(RoomExceptionMessages.NotFound);
+            throw new NotFoundException(RoomClassExceptionMessages.NotFound);
         }
 
-        if (await _bookingRepository.ExistsAsync(b => b.Rooms.Any(r => r.Id == request.Id), cancellationToken))
+        if (!await _roomRepository
+            .ExistsAsync(r => r.Id == request.RoomId && r.RoomClassId == request.RoomClassId, cancellationToken))
+        {
+            throw new NotFoundException(RoomExceptionMessages.NotFoundForTheRoomClass);
+        }
+
+        if (await _bookingRepository
+            .ExistsAsync(b => b.Rooms.Any(r => r.Id == request.RoomId && r.RoomClassId == request.RoomClassId), cancellationToken))
         {
             throw new EntityInUseException(RoomExceptionMessages.EntityInUseForBookings);
         }
 
-        _roomRepository.Delete(request.Id);
+        _roomRepository.Delete(request.RoomId);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
