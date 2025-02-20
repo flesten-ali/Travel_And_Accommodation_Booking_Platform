@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Helper;
+using TABP.Application.Helpers;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 namespace TABP.Application.Hotels.Queries.GetForAdmin;

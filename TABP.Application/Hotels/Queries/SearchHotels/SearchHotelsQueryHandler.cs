@@ -2,7 +2,7 @@
 using MediatR;
 using System.Linq.Expressions;
 using TABP.Application.Extensions;
-using TABP.Application.Helper;
+using TABP.Application.Helpers;
 using TABP.Domain.Entities;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;

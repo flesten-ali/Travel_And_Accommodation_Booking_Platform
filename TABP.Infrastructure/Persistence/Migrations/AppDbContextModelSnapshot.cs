@@ -34,7 +34,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("RoomClassesId");
 
-                    b.ToTable("AmenityRoomClass");
+                    b.ToTable("AmenityRoomClass", (string)null);
                 });
 
             modelBuilder.Entity("BookingRoom", b =>
@@ -49,7 +49,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("RoomsId");
 
-                    b.ToTable("BookingRoom");
+                    b.ToTable("BookingRoom", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Amenity", b =>
@@ -67,7 +67,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenities");
+                    b.ToTable("Amenities", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Booking", b =>
@@ -99,7 +99,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.CartItem", b =>
@@ -120,7 +120,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.City", b =>
@@ -155,7 +155,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Discount", b =>
@@ -181,7 +181,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("RoomClassId");
 
-                    b.ToTable("Discounts");
+                    b.ToTable("Discounts", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Hotel", b =>
@@ -224,7 +224,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Image", b =>
@@ -250,7 +250,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Invoice", b =>
@@ -278,7 +278,7 @@ namespace TABP.Infrastructure.Migrations
                     b.HasIndex("BookingId")
                         .IsUnique();
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Owner", b =>
@@ -305,7 +305,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Owners");
+                    b.ToTable("Owners", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Review", b =>
@@ -339,7 +339,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.Room", b =>
@@ -367,7 +367,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("RoomClassId");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.RoomClass", b =>
@@ -409,7 +409,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("RoomClasses");
+                    b.ToTable("RoomClasses", (string)null);
                 });
 
             modelBuilder.Entity("TABP.Domain.Entities.User", b =>
@@ -436,7 +436,7 @@ namespace TABP.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("AmenityRoomClass", b =>
