@@ -2,7 +2,7 @@
 using TABP.Presentation.DTOs.Owner;
 
 namespace TABP.Presentation.Validators.Owner;
-public class CreateOwnerRequsetValidator : AbstractValidator<CreateOwnerRequset>
+public class CreateOwnerRequsetValidator : AbstractValidator<CreateOwnerRequest>
 {
     public CreateOwnerRequsetValidator()
     {

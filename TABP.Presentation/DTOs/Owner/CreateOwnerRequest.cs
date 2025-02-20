@@ -1,5 +1,5 @@
 ﻿namespace TABP.Presentation.DTOs.Owner;
-public class CreateOwnerRequset
+public class CreateOwnerRequest
 {
     public string Name { get; set; }
     public string Address { get; set; }

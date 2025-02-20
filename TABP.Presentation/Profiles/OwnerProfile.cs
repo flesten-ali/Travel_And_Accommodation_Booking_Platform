@@ -7,6 +7,6 @@ public class OwnerProfile : Profile
 {
     public OwnerProfile()
     {
-        CreateMap<CreateOwnerRequset, CreateOwnerCommand>();
+        CreateMap<CreateOwnerRequest, CreateOwnerCommand>();
     }
 }
