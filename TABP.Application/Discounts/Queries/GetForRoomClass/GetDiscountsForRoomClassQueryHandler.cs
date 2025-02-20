@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Discounts.Common;
-using TABP.Application.Helper;
+using TABP.Application.Helpers;
 using TABP.Domain.Constants.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;

@@ -2,7 +2,7 @@
 using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 
-namespace TABP.Application.Helper;
+namespace TABP.Application.Helpers;
 public class SortBuilder
 {
     public static Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> BuildHotelSort(
@@ -52,8 +52,8 @@ public class SortBuilder
         return paginationParameters.OrderColumn switch
         {
             "date" => isDescending
-                    ? (reviews) => reviews.OrderByDescending(x => x.CreatedAt)
-                    : (reviews) => reviews.OrderBy(x => x.CreatedAt),
+                    ? (reviews) => reviews.OrderByDescending(x => x.CreatedDate)
+                    : (reviews) => reviews.OrderBy(x => x.CreatedDate),
 
             _ => (reviews) => reviews.OrderBy(h => h.Id)
         };
