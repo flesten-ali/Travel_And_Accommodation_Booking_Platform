@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.Reviews.Commands.Create;
+using TABP.Application.Reviews.Commands.Update;
 using TABP.Application.Reviews.Queries.GetById;
 using TABP.Application.Reviews.Queries.GetForHotel;
 using TABP.Domain.Constants;
@@ -95,5 +96,31 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
         var review = await _mediator.Send(query, cancellationToken);
 
         return Ok(review);
+    }
+
+    [HttpPut("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Update review details",
+        Description = "Update the details of an existing review using its ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateReview(
+    Guid hotelId,
+    Guid id,
+    UpdateReviewRequest request,
+    CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<UpdateReviewCommand>(request);
+        command.Id = id;
+        command.HotelId = hotelId;
+        command.UserId = User.GetUserId();
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }

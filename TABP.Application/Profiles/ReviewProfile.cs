@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TABP.Application.Reviews.Commands.Create;
+using TABP.Application.Reviews.Commands.Update;
 using TABP.Application.Reviews.Common;
 using TABP.Application.Reviews.Queries.GetForHotel;
 using TABP.Domain.Entities;
@@ -18,5 +19,7 @@ public class ReviewProfile : Profile
         CreateMap<CreateReviewCommand, Review>();
 
         CreateMap<Review, ReviewResponse>();
+
+        CreateMap<UpdateReviewCommand, Review>();
     }
 }
