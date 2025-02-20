@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using TABP.Application.Reviews.Commands.Create;
+using TABP.Application.Reviews.Common;
 using TABP.Application.Reviews.Queries.GetForHotel;
 using TABP.Domain.Entities;
 using TABP.Domain.Models;
@@ -12,5 +14,9 @@ public class ReviewProfile : Profile
             .ForMember(dest => dest.ReviwerName, opt => opt.MapFrom(src => src.User.UserName));
 
         CreateMap<PaginatedList<Review>, PaginatedList<HotelReviewsQueryReponse>>();
+
+        CreateMap<CreateReviewCommand, Review>();
+
+        CreateMap<Review, ReviewResponse>();
     }
 }
