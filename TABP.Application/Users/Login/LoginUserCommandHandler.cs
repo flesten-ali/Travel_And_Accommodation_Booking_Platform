@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Domain.Constants.ExceptionMessages;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Interfaces.Security.Jwt;
-using TABP.Domain.Interfaces.Security.Password;
 namespace TABP.Application.Users.Login;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserResponse>
@@ -14,7 +14,6 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUs
 
     public LoginUserCommandHandler(
         IUserRepository userRepository,
-        IPasswordHasher passwordHasher,
         IJwtGenerator jwtGenerator,
         IMapper mapper
     )
@@ -30,7 +29,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUs
             request.Email,
             request.Password,
             cancellationToken)
-            ?? throw new UserUnauthorizedException("Invalid email or password");
+            ?? throw new UserUnauthorizedException(UserExceptionMessages.UnauthorizedLogin);
 
         var token = _jwtGenerator.GenerateToken(user);
 

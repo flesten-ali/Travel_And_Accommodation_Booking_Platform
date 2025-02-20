@@ -30,11 +30,6 @@ public class UserRepository : Repository<User>, IUserRepository
         return null;
     }
 
-    public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
-    {
-        return await DbSet.AnyAsync(u => u.Email == email, cancellationToken);
-    }
-
     public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await DbSet.Where(u => u.Email == email).FirstOrDefaultAsync(cancellationToken);
