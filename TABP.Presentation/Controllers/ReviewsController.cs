@@ -78,6 +78,7 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
     [HttpGet("{id:guid}")]
     [SwaggerOperation(
         Summary = "Get review by ID",
+        Description = "Retrieve information of a review by its unique identifier."
     )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
