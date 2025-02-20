@@ -34,7 +34,7 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateDiscount(
     Guid roomClassId,
-    [FromBody] CreateDiscountRequest request,
+    CreateDiscountRequest request,
     CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateDiscountCommand>(request);
