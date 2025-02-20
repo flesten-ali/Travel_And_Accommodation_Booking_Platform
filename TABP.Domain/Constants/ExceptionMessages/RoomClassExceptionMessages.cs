@@ -7,8 +7,4 @@ public static class RoomClassExceptionMessages
                                                    The room class cannot be deleted because it has dependent rooms.
                                                    Please remove or reassign the dependent rooms before deleting the room class.
                                               """;
-    //public const string EntityInUseForCartItems = """
-    //                                               The room class cannot be deleted because it has dependent cart items.
-    //                                               Please remove or reassign the dependent cart items before deleting the room class.
-    //                                              """;
 }

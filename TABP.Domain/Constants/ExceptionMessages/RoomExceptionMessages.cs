@@ -9,4 +9,5 @@ public static class RoomExceptionMessages
                                                        The room cannot be deleted because it has dependent bookings. 
                                                        Please remove or reassign the dependent bookings before deleting the room.
                                                     """;
+    public const string NotFoundForTheRoomClass = "The specified room could not be found in the provided room class.";
 }
