@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Owners.Commands.Create;
+using TABP.Application.Owners.Commands.Delete;
 using TABP.Application.Owners.Queries.GetById;
+using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Owner;
 
 namespace TABP.Presentation.Controllers;
 [Route("api/owners")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)] // deleete
+[Authorize(Roles = Roles.Admin)]
 public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
@@ -53,5 +56,24 @@ public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBa
         var owner = await _mediator.Send(query, cancellationToken);
 
         return Ok(owner);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(
+    Summary = "Delete an owner",
+    Description = "Delete an existing owner by its unique ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteOwner(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteOwnerCommand { Id = id };
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
     }
 }
