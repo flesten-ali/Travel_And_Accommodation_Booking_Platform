@@ -149,7 +149,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromForm] UploadImageGalleryRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UploadImageGalleryCommand>(request);
+        var command = _mapper.Map<UploadHotelImageGalleryCommand>(request);
         command.HotelId = id;
 
         await _mediator.Send(command, cancellationToken);

@@ -28,7 +28,7 @@ public class HotelProfile : Profile
             .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
             .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Thumbnail));
 
-        CreateMap<UploadImageGalleryCommand, Image>()
+        CreateMap<UploadHotelImageGalleryCommand, Image>()
         .ForMember(dest => dest.ImageableId, opt => opt.MapFrom(src => src.HotelId))
         .ForMember(dest => dest.ImageType, opt => opt.MapFrom(src => ImageType.Gallery));
 

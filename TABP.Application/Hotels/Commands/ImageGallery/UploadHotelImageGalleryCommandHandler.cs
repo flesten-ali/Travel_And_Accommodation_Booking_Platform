@@ -9,7 +9,7 @@ using TABP.Domain.Interfaces.Services.Guids;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Hotels.Commands.ImageGallery;
-internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGalleryCommand>
+internal class UploadHotelImageGalleryCommandHandler : IRequestHandler<UploadHotelImageGalleryCommand>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository _imageRepository;
@@ -18,7 +18,7 @@ internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGal
     private readonly IMapper _mapper;
     private readonly IGuidProvider _guidProvider;
 
-    public UploadImageGalleryCommandHandler(
+    public UploadHotelImageGalleryCommandHandler(
         IHotelRepository hotelRepository,
         IImageRepository imageRepository,
         IImageUploadService imageUploadService,
@@ -35,7 +35,7 @@ internal class UploadImageGalleryCommandHandler : IRequestHandler<UploadImageGal
         _guidProvider = guidProvider;
     }
 
-    public async Task<Unit> Handle(UploadImageGalleryCommand request, CancellationToken cancellationToken = default)
+    public async Task<Unit> Handle(UploadHotelImageGalleryCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId, cancellationToken))
         {
