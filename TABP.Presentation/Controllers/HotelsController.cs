@@ -19,6 +19,7 @@ using TABP.Application.RoomClasses.Queries.GetForHotel;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs;
 using TABP.Presentation.DTOs.Hotel;
+using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/hotels")]
@@ -46,8 +47,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
 
         var hotels = await _mediator.Send(command, cancellationToken);
 
-        Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(hotels.PaginationMetaData));
+        Response.AddPaginationHeader(hotels.PaginationMetaData);
 
         return Ok(hotels.Items);
     }
@@ -191,8 +191,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
 
         var hotels = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(hotels.PaginationMetaData));
+        Response.AddPaginationHeader(hotels.PaginationMetaData);
 
         return Ok(hotels.Items);
     }
@@ -260,8 +259,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
 
         var roomClasses = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(roomClasses.PaginationMetaData));
+        Response.AddPaginationHeader(roomClasses.PaginationMetaData);
 
         return Ok(roomClasses.Items);
     }

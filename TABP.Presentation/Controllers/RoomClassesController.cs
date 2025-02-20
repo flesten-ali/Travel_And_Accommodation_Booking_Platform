@@ -13,6 +13,7 @@ using TABP.Application.RoomClasses.Queries.GetById;
 using TABP.Application.RoomClasses.Queries.GetForAdmin;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.RoomClass;
+using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/room-classes")]
@@ -41,8 +42,7 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
 
         var roomClasses = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(roomClasses.PaginationMetaData));
+        Response.AddPaginationHeader(roomClasses.PaginationMetaData);
 
         return Ok(roomClasses.Items);
     }

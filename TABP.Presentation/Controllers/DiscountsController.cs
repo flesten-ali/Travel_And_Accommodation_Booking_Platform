@@ -11,6 +11,7 @@ using TABP.Application.Discounts.Queries.GetById;
 using TABP.Application.Discounts.Queries.GetForRoomClass;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Discount;
+using TABP.Presentation.Extensions;
 
 namespace TABP.Presentation.Controllers;
 
@@ -118,8 +119,7 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
 
         var discounts = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(discounts.PaginationMetaData));
+        Response.AddPaginationHeader(discounts.PaginationMetaData);
 
         return Ok(discounts.Items);
     }

@@ -14,6 +14,7 @@ using TABP.Application.Cities.Queries.GetForAdmin;
 using TABP.Application.Cities.Queries.GetTrending;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.City;
+using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
 [Route("api/cities")]
@@ -59,8 +60,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
 
         var cities = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(cities.PaginationMetaData));
+        Response.AddPaginationHeader(cities.PaginationMetaData);
 
         return Ok(cities.Items);
     }

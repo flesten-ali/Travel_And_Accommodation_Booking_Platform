@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Text.Json;
 using TABP.Application.CartItems.Commands.Create;
 using TABP.Application.CartItems.Commands.Delete;
 using TABP.Application.CartItems.Queries.GetAll;
@@ -85,8 +84,7 @@ public class CartItemsController(IMediator mediator, IMapper mapper) : Controlle
 
         var cartItems = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("x-pagination",
-            JsonSerializer.Serialize(cartItems.PaginationMetaData));
+        Response.AddPaginationHeader(cartItems.PaginationMetaData);
 
         return Ok(cartItems.Items);
     }
