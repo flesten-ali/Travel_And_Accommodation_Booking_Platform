@@ -42,16 +42,25 @@ internal class UploadHotelImageGalleryCommandHandler : IRequestHandler<UploadHot
             throw new NotFoundException(HotelExceptionMessages.NotFound);
         }
 
-        var publicId = _guidProvider.NewGuid().ToString();
-        var imageUrl = await _imageUploadService.UploadAsync(request.Image, publicId, cancellationToken);
+        await _unitOfWork.BeginTransactionAsync(cancellationToken);
+        try
+        {
+            var publicId = _guidProvider.NewGuid().ToString();
+            var imageUrl = await _imageUploadService.UploadAsync(request.Image, publicId, cancellationToken);
 
-        var image = _mapper.Map<Image>(request);
-        image.ImageUrl = imageUrl;
-        image.PublicId = publicId;
+            var image = _mapper.Map<Image>(request);
+            image.ImageUrl = imageUrl;
+            image.PublicId = publicId;
 
-        await _imageRepository.CreateAsync(image, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _imageRepository.CreateAsync(image, cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
-        return Unit.Value;
+            return Unit.Value;
+        }
+        catch
+        {
+            await _unitOfWork.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
 }
