@@ -1,3 +1,5 @@
-﻿namespace TABP.Presentation.DTOs.Auth;
+﻿namespace TABP.Presentation.DTOs.User;
 
-public record RegisterAdminRequest(string UserName, string Email, string Password);
+public class RegisterAdminRequest : RegisterUserRequest
+{
+}
