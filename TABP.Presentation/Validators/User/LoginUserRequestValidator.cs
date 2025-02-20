@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TABP.Presentation.DTOs.Auth;
+using TABP.Presentation.DTOs.User;
 namespace TABP.Presentation.Validators.User;
 
 public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
