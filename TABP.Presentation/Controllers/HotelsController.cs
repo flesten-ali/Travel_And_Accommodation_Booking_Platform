@@ -68,9 +68,9 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
             HotelId = id
         };
 
-        var response = await _mediator.Send(query, cancellationToken);
+        var hotel = await _mediator.Send(query, cancellationToken);
 
-        return Ok(response);
+        return Ok(hotel);
     }
 
     [HttpPost]
@@ -83,7 +83,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateHotel(
-        [FromBody] CreateHotelRequest request,
+        CreateHotelRequest request,
         CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateHotelCommand>(request);
@@ -169,7 +169,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var query = new GetFeaturedDealsQuery { Limit = limit };
 
-        var featuredDeals = await _mediator.Send(query, cancellationToken);
+        var featuredDeals = await _mediator.Send(query, cancellationToken); 
 
         return Ok(featuredDeals);
     }
@@ -207,7 +207,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateHotel(Guid id, UpdateHotelRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateHotel(
+        Guid id,
+        UpdateHotelRequest request,
+        CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UpdateHotelCommand>(request);
         command.Id = id;
@@ -257,7 +260,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
 
         var roomClasses = await _mediator.Send(query, cancellationToken);
 
-        Response.Headers.Append("X-Pagination",
+        Response.Headers.Append("x-pagination",
             JsonSerializer.Serialize(roomClasses.PaginationMetaData));
 
         return Ok(roomClasses.Items);
