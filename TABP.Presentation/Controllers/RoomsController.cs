@@ -67,7 +67,11 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
 
         var createdRoom = await _mediator.Send(command, cancellationToken);
 
-        return CreatedAtAction(nameof(GetRoom), new { id = createdRoom.Id }, createdRoom);
+        return CreatedAtAction(nameof(GetRoom), new
+        {
+            roomClassId,
+            id = createdRoom.Id
+        }, createdRoom);
     }
 
     [HttpGet("{id:guid}")]
@@ -80,7 +84,8 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRoom(
         Guid roomClassId,
-        Guid id, CancellationToken cancellationToken)
+        Guid id, 
+        CancellationToken cancellationToken)
     {
         var query = new GetRoomByIdQuery
         {

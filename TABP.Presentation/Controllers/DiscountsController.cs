@@ -46,7 +46,7 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
             nameof(GetDiscount),
             new
             {
-                roomClassId = createdDiscount.RoomClassId,
+                roomClassId,
                 id = createdDiscount.Id
             },
             createdDiscount);
