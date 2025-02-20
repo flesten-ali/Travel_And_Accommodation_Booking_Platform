@@ -46,7 +46,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
 
         var hotels = await _mediator.Send(command, cancellationToken);
 
-        Response.Headers.Append("X-Pagination",
+        Response.Headers.Append("x-pagination",
             JsonSerializer.Serialize(hotels.PaginationMetaData));
 
         return Ok(hotels.Items);
@@ -146,7 +146,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UploadHotelGalleryImages(
         Guid id,
-        [FromForm] UploadImageGalleryRequest request,
+        [FromForm] UploadHotelImageGalleryRequest request,
         CancellationToken cancellationToken)
     {
         var command = _mapper.Map<UploadHotelImageGalleryCommand>(request);
