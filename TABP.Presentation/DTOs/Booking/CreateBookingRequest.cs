@@ -9,6 +9,5 @@ public class CreateBookingRequest
     public DateTime CheckInDate { get; set; }
     public DateTime CheckOutDate { get; set; }
     public string? Remarks { get; set; }
-    public Guid UserId { get; set; }
     public IEnumerable<Guid> RoomIds { get; set; } = [];
 }
