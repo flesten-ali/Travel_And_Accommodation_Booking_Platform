@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 using TABP.Application.Reviews.Commands.Create;
+using TABP.Application.Reviews.Commands.Delete;
 using TABP.Application.Reviews.Commands.Update;
 using TABP.Application.Reviews.Queries.GetById;
 using TABP.Application.Reviews.Queries.GetForHotel;
@@ -118,6 +119,30 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
         command.Id = id;
         command.HotelId = hotelId;
         command.UserId = User.GetUserId();
+
+        await _mediator.Send(command, cancellationToken);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    [SwaggerOperation(
+        Summary = "Delete a review",
+        Description = "Delete an existing review by its unique ID."
+    )]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteReview(Guid hotelId, Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteReviewCommand
+        {
+            HotelId = hotelId,
+            ReviewId = id,
+            UserId = User.GetUserId(),
+        };
 
         await _mediator.Send(command, cancellationToken);
 
