@@ -10,4 +10,5 @@ public static class RoomExceptionMessages
                                                        Please remove or reassign the dependent bookings before deleting the room.
                                                     """;
     public const string NotFoundForTheRoomClass = "The specified room could not be found in the provided room class.";
+    public const string NotFoundForHotel = "The specified room could not be found in the provided hotel.";
 }
