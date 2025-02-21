@@ -1,6 +1,4 @@
-﻿using Raven.Client.Exceptions;
-
-namespace TABP.Domain.Exceptions;
-public class EntityInUseException(string msg) : ConflictException(msg)
+﻿namespace TABP.Domain.Exceptions;
+public class EntityInUseException(string message) : DomainException(message, "Entity is Already in Use")
 {
 }

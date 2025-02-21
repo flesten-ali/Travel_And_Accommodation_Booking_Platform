@@ -7,7 +7,7 @@ using TABP.Presentation.Controllers;
 using TABP.Presentation.Validators.User;
 namespace TABP.Presentation;
 
-public static class PresentationConfiguration
+public static class PresentationDependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
@@ -18,6 +18,7 @@ public static class PresentationConfiguration
                 .AddControllers()
                 .AddJsonOptions(opt =>
                 {
+                    opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 })
                 .AddApplicationPart(presentaionAssembly);
@@ -46,7 +47,7 @@ public static class PresentationConfiguration
             {
                 Type = SecuritySchemeType.Http,
                 Scheme = "Bearer",
-                Description = "Input a valid Token to be authenticated"
+                Description = "Input a valid token to be authenticated"
             });
 
             setupAction.AddSecurityRequirement(new()
@@ -64,6 +65,10 @@ public static class PresentationConfiguration
                     new List<string>()
                 }
             });
+
+            //var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+            //setupAction.IncludeXmlComments(xmlCommentsFullPath);
         });
         return services;
     }

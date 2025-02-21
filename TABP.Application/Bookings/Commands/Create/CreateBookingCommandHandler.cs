@@ -75,7 +75,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
 
         if (rooms.Any(r => r.RoomClass.HotelId != request.HotelId))
         {
-            throw new RoomNotBelongToHotelException(RoomExceptionMessages.NotBelongToHotel);
+            throw new NotFoundException(RoomExceptionMessages.NotFoundForHotel);
         }
 
         await _unitOfWork.BeginTransactionAsync(cancellationToken);

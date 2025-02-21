@@ -1,6 +1,4 @@
-﻿using Raven.Client.Exceptions;
-
-namespace TABP.Domain.Exceptions;
-public class ExistsException(string msg) : ConflictException(msg)
+﻿namespace TABP.Domain.Exceptions;
+public class ExistsException(string message) : DomainException(message, "Conflict Detected")
 {
 }
