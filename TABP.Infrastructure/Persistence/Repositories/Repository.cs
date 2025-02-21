@@ -22,6 +22,8 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>, 
         T entity,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+
         if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
         {
             ((IAuditEntity)entity).CreatedDate = DateTime.UtcNow;
@@ -95,6 +97,8 @@ public class Repository<T> : IRepository<T> where T : class, IEntityBase<Guid>, 
 
     public void Update(T entity)
     {
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+
         if (typeof(IAuditEntity).IsAssignableFrom(typeof(T)))
         {
             ((IAuditEntity)entity).UpdatedDate = DateTime.Now;

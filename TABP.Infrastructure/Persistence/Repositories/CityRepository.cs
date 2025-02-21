@@ -9,9 +9,9 @@ namespace TABP.Infrastructure.Persistence.Repositories;
 public class CityRepository(AppDbContext context) : Repository<City>(context), ICityRepository
 {
     public async Task<PaginatedResponse<CityForAdminResult>> GetCitiesForAdminAsync(
+        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
         int pageSize,
         int pageNumber,
-        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
         CancellationToken cancellationToken = default)
     {
         var allCities = DbSet.AsNoTracking();

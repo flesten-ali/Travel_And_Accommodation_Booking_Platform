@@ -1,21 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TABP.Domain.Entities;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+using TABP.Domain.Interfaces.Services.Date;
 using TABP.Domain.Models;
 using TABP.Infrastructure.Extensions;
 using TABP.Infrastructure.Persistence.DbContexts;
 
 namespace TABP.Infrastructure.Persistence.Repositories;
 
-public class RoomRepository(AppDbContext context) : Repository<Room>(context), IRoomRepository
+public class RoomRepository(AppDbContext context, IDateTimeProvider dateTimeProvider) : Repository<Room>(context), IRoomRepository
 {
+    private readonly IDateTimeProvider _dateTimeProvider;
+
     public async Task<PaginatedResponse<RoomForAdminResult>> GetRoomsForAdminAsync(
         Func<IQueryable<Room>, IOrderedQueryable<Room>> orderBy,
         int pageSize,
         int pageNumber,
         CancellationToken cancellationToken = default)
     {
-        var currentDate = DateTime.UtcNow;
+        var currentDate = _dateTimeProvider.UtcNow;
         var allRooms = DbSet.AsNoTracking();
 
         var rooms = orderBy(allRooms).Select(room => new RoomForAdminResult

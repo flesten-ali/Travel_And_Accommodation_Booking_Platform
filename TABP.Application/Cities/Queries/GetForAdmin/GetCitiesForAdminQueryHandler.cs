@@ -24,9 +24,9 @@ public class GetCitiesForAdminQueryHandler
 
         var cities = await _cityRepository
             .GetCitiesForAdminAsync(
+            orderBy,
             request.PaginationParameters.PageSize,
             request.PaginationParameters.PageNumber,
-            orderBy,
             cancellationToken);
 
         return _mapper.Map<PaginatedResponse<CityForAdminResponse>>(cities);

@@ -5,8 +5,8 @@ namespace TABP.Domain.Interfaces.Persistence.Repositories;
 public interface ICityRepository : IRepository<City>
 {
     Task<PaginatedResponse<CityForAdminResult>> GetCitiesForAdminAsync(
+        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
         int pageSize,
         int pageNumber,
-        Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
         CancellationToken cancellationToken = default);
 }

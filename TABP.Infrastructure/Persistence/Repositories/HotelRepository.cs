@@ -82,8 +82,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
     }
 
     public async Task<PaginatedResponse<HotelForAdminResult>> GetHotelsForAdminAsync(
-        Func<IQueryable<Hotel>,
-        IOrderedQueryable<Hotel>> orderBy,
+        Func<IQueryable<Hotel>,IOrderedQueryable<Hotel>> orderBy,
         int pageSize,
         int pageNumber,
         CancellationToken cancellationToken = default)
