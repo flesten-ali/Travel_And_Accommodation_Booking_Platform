@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-namespace TABP.Infrastructure;
+namespace TABP.Infrastructure.Common;
 
 public static class FluentValidationOptionsBuilder
 {

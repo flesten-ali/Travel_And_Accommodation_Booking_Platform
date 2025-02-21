@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TABP.Domain.Interfaces.Security.Jwt;
+using TABP.Infrastructure.Common;
 
 namespace TABP.Infrastructure.Security.Jwt;
 
