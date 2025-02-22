@@ -30,7 +30,7 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
     {
         if (await _amenityRepository.ExistsAsync(a => a.Name == request.Name, cancellationToken))
         {
-            throw new ExistsException(AmenityExceptionMessages.Exist);
+            throw new ConflictException(AmenityExceptionMessages.Exist);
         }
 
         var amenity = _mapper.Map<Amenity>(request);

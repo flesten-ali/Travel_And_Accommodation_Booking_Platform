@@ -21,7 +21,7 @@ public class GetCartItemsQueryHandler : IRequestHandler<GetCartItemsQuery, Pagin
     {
         if (!await _cartItemRepository.ExistsAsync(c => c.UserId == request.UserId, cancellationToken))
         {
-            throw new CartEmptyException(CartExceptionMessages.CartEmpty);
+            throw new BadRequestException(CartExceptionMessages.CartEmpty);
         }
 
         var orderBy = SortBuilder.BuildCartItemSort(request.PaginationParameters);

@@ -47,7 +47,7 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
           && hotel.LongitudeCoordinates == request.LongitudeCoordinates,
           cancellationToken))
         {
-            throw new ExistsException(HotelExceptionMessages.ExistsInLocation);
+            throw new ConflictException(HotelExceptionMessages.ExistsInLocation);
         }
 
         _mapper.Map(request, hotel);

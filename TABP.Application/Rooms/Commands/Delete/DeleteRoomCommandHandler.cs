@@ -40,7 +40,7 @@ public class DeleteRoomCommandHandler : IRequestHandler<DeleteRoomCommand>
         if (await _bookingRepository
             .ExistsAsync(b => b.Rooms.Any(r => r.Id == request.RoomId && r.RoomClassId == request.RoomClassId), cancellationToken))
         {
-            throw new EntityInUseException(RoomExceptionMessages.EntityInUseForBookings);
+            throw new ConflictException(RoomExceptionMessages.EntityInUseForBookings);
         }
 
         _roomRepository.Delete(request.RoomId);

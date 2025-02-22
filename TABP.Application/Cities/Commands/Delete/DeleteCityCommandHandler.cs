@@ -34,7 +34,7 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
 
         if (await _hotelRepository.ExistsAsync(h => h.CityId == request.Id, cancellationToken))
         {
-            throw new EntityInUseException(CityExceptionMessages.EntityInUse);
+            throw new ConflictException(CityExceptionMessages.EntityInUse);
         }
 
         await _unitOfWork.BeginTransactionAsync(cancellationToken);

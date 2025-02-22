@@ -25,7 +25,7 @@ public class CreateOwnerCommandHandler : IRequestHandler<CreateOwnerCommand, Own
     {
         if (await _ownerRepository.ExistsAsync(o => o.Email == request.Email, cancellationToken))
         {
-            throw new ExistsException(OwnerExceptionMessages.ExistWithEmail);
+            throw new ConflictException(OwnerExceptionMessages.ExistWithEmail);
         }
 
         var owner = _mapper.Map<Owner>(request);

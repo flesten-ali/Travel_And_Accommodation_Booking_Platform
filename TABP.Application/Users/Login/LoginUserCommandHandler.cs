@@ -29,7 +29,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUs
             request.Email,
             request.Password,
             cancellationToken)
-            ?? throw new UserUnauthorizedException(UserExceptionMessages.UnauthorizedLogin);
+            ?? throw new UnauthorizedException(UserExceptionMessages.UnauthorizedLogin);
 
         var token = _jwtGenerator.GenerateToken(user);
 

@@ -64,7 +64,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
 
         if (user.Role != Roles.Guest)
         {
-            throw new UserUnauthorizedException(UserExceptionMessages.UnauthorizedBooking);
+            throw new UnauthorizedException(UserExceptionMessages.UnauthorizedBooking);
         }
 
         var rooms = await _roomRepository.GetAllByIdAsync(request.RoomIds, cancellationToken);

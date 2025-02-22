@@ -30,7 +30,7 @@ public class DeleteOwnerCommandHandler : IRequestHandler<DeleteOwnerCommand>
 
         if (await _hotelRepository.ExistsAsync(h => h.OwnerId == request.Id, cancellationToken))
         {
-            throw new EntityInUseException(OwnerExceptionMessages.EntityInUse);
+            throw new ConflictException(OwnerExceptionMessages.EntityInUse);
         }
 
         _ownerRepository.Delete(request.Id);

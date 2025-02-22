@@ -30,9 +30,9 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> _logger) : I
         int statusCode = exception switch
         {
             NotFoundException => (int)HttpStatusCode.NotFound,
-            ExistsException or EntityInUseException  => (int)HttpStatusCode.Conflict,
-            UserUnauthorizedException => (int)HttpStatusCode.Unauthorized,
-            CartEmptyException => (int)HttpStatusCode.BadRequest,
+            ConflictException => (int)HttpStatusCode.Conflict,
+            UnauthorizedException => (int)HttpStatusCode.Unauthorized,
+            BadRequestException => (int)HttpStatusCode.BadRequest,
             _ => (int)HttpStatusCode.InternalServerError,
         };
 

@@ -32,7 +32,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
     {
         if (await _userRepository.ExistsAsync(u => u.Email == request.Email, cancellationToken))
         {
-            throw new ExistsException(UserExceptionMessages.Exist);
+            throw new ConflictException(UserExceptionMessages.Exist);
         }
 
         var user = _mapper.Map<User>(request);
