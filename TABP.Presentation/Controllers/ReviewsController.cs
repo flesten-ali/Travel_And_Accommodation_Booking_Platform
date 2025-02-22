@@ -21,9 +21,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Hotel Reviews Operations")]
 public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet]
     [SwaggerOperation(
         Summary = "Get reviews for a hotel",
@@ -38,10 +35,10 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
         [FromQuery] GetHotelReviewsRequest request,
         CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetHotelReviewsQuery>(request);
+        var query = mapper.Map<GetHotelReviewsQuery>(request);
         query.HotelId = hotelId;
 
-        var reviews = await _mediator.Send(query, cancellationToken);
+        var reviews = await mediator.Send(query, cancellationToken);
 
         Response.AddPaginationHeader(reviews.PaginationMetaData);
 
@@ -62,11 +59,11 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
      CreateReviewRequest request,
      CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateReviewCommand>(request);
+        var command = mapper.Map<CreateReviewCommand>(request);
         command.UserId = User.GetUserId();
         command.HotelId = hotelId;
 
-        var createdReview = await _mediator.Send(command, cancellationToken);
+        var createdReview = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetReview),
             new
@@ -93,7 +90,7 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
             HotelId = hotelId
         };
 
-        var review = await _mediator.Send(query, cancellationToken);
+        var review = await mediator.Send(query, cancellationToken);
 
         return Ok(review);
     }
@@ -114,12 +111,12 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
     UpdateReviewRequest request,
     CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UpdateReviewCommand>(request);
+        var command = mapper.Map<UpdateReviewCommand>(request);
         command.Id = id;
         command.HotelId = hotelId;
         command.UserId = User.GetUserId();
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -143,7 +140,7 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
             UserId = User.GetUserId(),
         };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }

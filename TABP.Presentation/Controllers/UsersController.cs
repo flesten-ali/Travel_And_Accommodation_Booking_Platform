@@ -15,9 +15,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("User Authentication and Management")]
 public class UsersController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpPost("login")]
     [SwaggerOperation(
         Summary = "Login a user",
@@ -28,9 +25,9 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login(LoginUserRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<LoginUserCommand>(request);
+        var command = mapper.Map<LoginUserCommand>(request);
 
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await mediator.Send(command, cancellationToken);
 
         return Ok(result);
     }
@@ -45,10 +42,10 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> RegisterUser(RegisterUserRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<RegisterUserCommand>(request);
+        var command = mapper.Map<RegisterUserCommand>(request);
         command.Role = Roles.Guest;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return Created();
     }
@@ -66,10 +63,10 @@ public class UsersController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> RegisterAdmin(RegisterAdminRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<RegisterUserCommand>(request);
+        var command = mapper.Map<RegisterUserCommand>(request);
         command.Role = Roles.Admin;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return Created();
     }

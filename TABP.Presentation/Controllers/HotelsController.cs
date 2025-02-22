@@ -28,9 +28,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Hotel Management API")]
 public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet("search")]
     [SwaggerOperation(
         Summary = "Search hotels",
@@ -43,9 +40,9 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromQuery] SearchHotelRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<SearchHotelsQuery>(request);
+        var command = mapper.Map<SearchHotelsQuery>(request);
 
-        var hotels = await _mediator.Send(command, cancellationToken);
+        var hotels = await mediator.Send(command, cancellationToken);
 
         Response.AddPaginationHeader(hotels.PaginationMetaData);
 
@@ -68,7 +65,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
             HotelId = id
         };
 
-        var hotel = await _mediator.Send(query, cancellationToken);
+        var hotel = await mediator.Send(query, cancellationToken);
 
         return Ok(hotel);
     }
@@ -86,9 +83,9 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         CreateHotelRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateHotelCommand>(request);
+        var command = mapper.Map<CreateHotelCommand>(request);
 
-        var createdHotel = await _mediator.Send(command, cancellationToken);
+        var createdHotel = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetHotel), new { id = createdHotel.Id }, createdHotel);
     }
@@ -106,7 +103,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var query = new GetHotelByIdQuery { HotelId = id };
 
-        var hotel = await _mediator.Send(query, cancellationToken);
+        var hotel = await mediator.Send(query, cancellationToken);
 
         return Ok(hotel);
     }
@@ -126,10 +123,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromForm] UploadHotelThumbnailRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UploadHotelThumbnailCommand>(request);
+        var command = mapper.Map<UploadHotelThumbnailCommand>(request);
         command.HotelId = id;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -149,10 +146,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromForm] UploadHotelImageGalleryRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UploadHotelImageGalleryCommand>(request);
+        var command = mapper.Map<UploadHotelImageGalleryCommand>(request);
         command.HotelId = id;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -169,7 +166,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var query = new GetFeaturedDealsQuery { Limit = limit };
 
-        var featuredDeals = await _mediator.Send(query, cancellationToken); 
+        var featuredDeals = await mediator.Send(query, cancellationToken); 
 
         return Ok(featuredDeals);
     }
@@ -187,9 +184,9 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromQuery] GetHotelsForAdminRequest request,
         CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetHotelsForAdminQuery>(request);
+        var query = mapper.Map<GetHotelsForAdminQuery>(request);
 
-        var hotels = await _mediator.Send(query, cancellationToken);
+        var hotels = await mediator.Send(query, cancellationToken);
 
         Response.AddPaginationHeader(hotels.PaginationMetaData);
 
@@ -211,10 +208,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         UpdateHotelRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UpdateHotelCommand>(request);
+        var command = mapper.Map<UpdateHotelCommand>(request);
         command.Id = id;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -233,7 +230,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var command = new DeleteHotelCommand { Id = id };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -254,10 +251,10 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromQuery] GetHotelRoomClassesRequest request,
         CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetHotelRoomClassesQuery>(request);
+        var query = mapper.Map<GetHotelRoomClassesQuery>(request);
         query.HotelId = id;
 
-        var roomClasses = await _mediator.Send(query, cancellationToken);
+        var roomClasses = await mediator.Send(query, cancellationToken);
 
         Response.AddPaginationHeader(roomClasses.PaginationMetaData);
 

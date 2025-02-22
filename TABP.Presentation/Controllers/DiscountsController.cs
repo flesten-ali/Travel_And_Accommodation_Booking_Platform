@@ -20,9 +20,6 @@ namespace TABP.Presentation.Controllers;
 [Authorize(Roles = Roles.Admin)]
 public class DiscountsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpPost]
     [SwaggerOperation(
         Summary = "Create a new discount for a specific room class",
@@ -38,10 +35,10 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
     CreateDiscountRequest request,
     CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateDiscountCommand>(request);
+        var command = mapper.Map<CreateDiscountCommand>(request);
         command.RoomClassId = roomClassId;
 
-        var createdDiscount = await _mediator.Send(command, cancellationToken);
+        var createdDiscount = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(
             nameof(GetDiscount),
@@ -71,7 +68,7 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
             RoomClassId = roomClassId
         };
 
-        var discount = await _mediator.Send(query, cancellationToken);
+        var discount = await mediator.Send(query, cancellationToken);
 
         return Ok(discount);
     }
@@ -94,7 +91,7 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
             RoomClassId = roomClassId
         };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -114,10 +111,10 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
     [FromQuery] GetDiscountsForRoomClassRequest request,
     CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetDiscountsForRoomClassQuery>(request);
+        var query = mapper.Map<GetDiscountsForRoomClassQuery>(request);
         query.RoomClassId = roomClassId;
 
-        var discounts = await _mediator.Send(query, cancellationToken);
+        var discounts = await mediator.Send(query, cancellationToken);
 
         Response.AddPaginationHeader(discounts.PaginationMetaData);
 

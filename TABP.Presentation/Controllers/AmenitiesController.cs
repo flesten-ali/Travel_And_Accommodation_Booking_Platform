@@ -19,9 +19,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Manage amenities in the system. Requires Admin access.")]
 public class AmenitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpPost]
     [SwaggerOperation(
         Summary = "Create a new amenity",
@@ -33,9 +30,9 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> CreateAmenity(CreateAmenityRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateAmenityCommand>(request);
+        var command = mapper.Map<CreateAmenityCommand>(request);
 
-        var createdAmenity = await _mediator.Send(command, cancellationToken);
+        var createdAmenity = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetAmenity), new { id = createdAmenity.Id }, createdAmenity);
     }
@@ -52,7 +49,7 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     {
         var query = new GetAmenityByIdQuery { AmenityId = id };
 
-        var amenity = await _mediator.Send(query, cancellationToken);
+        var amenity = await mediator.Send(query, cancellationToken);
 
         return Ok(amenity);
     }
@@ -69,10 +66,10 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateAmenity(Guid id, UpdateAmenityRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UpdateAmenityCommand>(request);
+        var command = mapper.Map<UpdateAmenityCommand>(request);
         command.Id = id;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -91,7 +88,7 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     {
         var command = new DeleteAmenityCommand { Id = id };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }

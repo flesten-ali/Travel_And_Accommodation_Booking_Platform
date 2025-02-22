@@ -16,9 +16,6 @@ namespace TABP.Presentation.Controllers;
 [Authorize(Roles = Roles.Admin)]
 public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpPost]
     [SwaggerOperation(
         Summary = "Create a new owner",
@@ -32,9 +29,9 @@ public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBa
       CreateOwnerRequest request,
       CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateOwnerCommand>(request);
+        var command = mapper.Map<CreateOwnerCommand>(request);
 
-        var createdOwner = await _mediator.Send(command, cancellationToken);
+        var createdOwner = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetOwner), new { id = createdOwner.Id }, createdOwner);
     }
@@ -53,7 +50,7 @@ public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var query = new GetOwnerByIdQuery { OwnerId = id };
 
-        var owner = await _mediator.Send(query, cancellationToken);
+        var owner = await mediator.Send(query, cancellationToken);
 
         return Ok(owner);
     }
@@ -72,7 +69,7 @@ public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var command = new DeleteOwnerCommand { Id = id };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }

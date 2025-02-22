@@ -21,9 +21,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Room Management")]
 public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet("get-for-admin")]
     [SwaggerOperation(
       Summary = "Get rooms for admin",
@@ -38,10 +35,10 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
       [FromQuery] GetRoomsForAdminRequest request,
       CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetRoomsForAdminQuery>(request);
+        var query = mapper.Map<GetRoomsForAdminQuery>(request);
         query.RoomClassId = roomClassId;
 
-        var rooms = await _mediator.Send(query, cancellationToken);
+        var rooms = await mediator.Send(query, cancellationToken);
 
         Response.AddPaginationHeader(rooms.PaginationMetaData);
 
@@ -62,10 +59,10 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
     CreateRoomRequest request,
     CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateRoomCommand>(request);
+        var command = mapper.Map<CreateRoomCommand>(request);
         command.RoomClassId = roomClassId;
 
-        var createdRoom = await _mediator.Send(command, cancellationToken);
+        var createdRoom = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetRoom), new
         {
@@ -93,7 +90,7 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
             RoomClassId = roomClassId
         };
 
-        var room = await _mediator.Send(query, cancellationToken);
+        var room = await mediator.Send(query, cancellationToken);
 
         return Ok(room);
     }
@@ -114,11 +111,11 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
         UpdateRoomRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UpdateRoomCommand>(request);
+        var command = mapper.Map<UpdateRoomCommand>(request);
         command.Id = id;
         command.RoomClassId = roomClassId;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -141,7 +138,7 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
             RoomClassId = roomClassId
         };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }

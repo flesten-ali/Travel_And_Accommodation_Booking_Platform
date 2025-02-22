@@ -19,9 +19,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Manage hotel bookings for guests.")]
 public class BookingsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet("{id:guid}")]
     [SwaggerOperation(
         Summary = "Get a booking by ID",
@@ -35,7 +32,7 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     {
         var query = new GetBookingByIdQuery { BookingId = id };
 
-        var booking = await _mediator.Send(query, cancellationToken);
+        var booking = await mediator.Send(query, cancellationToken);
 
         return Ok(booking);
     }
@@ -52,10 +49,10 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateBooking(CreateBookingRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateBookingCommand>(request);
+        var command = mapper.Map<CreateBookingCommand>(request);
         command.UserId = User.GetUserId();
 
-        var createdBooking = await _mediator.Send(command, cancellationToken);
+        var createdBooking = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetBooking), new { id = createdBooking.Id }, createdBooking);
     }
@@ -73,7 +70,7 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     {
         var query = new GetInvoicePdfQuery { BookingId = id };
 
-        var result = await _mediator.Send(query, cancellationToken);
+        var result = await mediator.Send(query, cancellationToken);
 
         return File(result.PdfContent, "application/pdf", "invoice.pdf");
     }
@@ -96,7 +93,7 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
             UserId = User.GetUserId()
         };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }

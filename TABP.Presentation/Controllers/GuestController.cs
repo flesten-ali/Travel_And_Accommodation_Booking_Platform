@@ -16,9 +16,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Manage guest-related operations including retrieving recently visited hotels.")]
 public class GuestController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet("recently-visited-hotels")]
     [SwaggerOperation(
         Summary = "Get recently visited hotels",
@@ -33,10 +30,10 @@ public class GuestController(IMediator mediator, IMapper mapper) : ControllerBas
         [FromQuery] GetRecentlyVisitedHotelsRequest request,
         CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetRecentlyVisitedHotelsQuery>(request);
+        var query = mapper.Map<GetRecentlyVisitedHotelsQuery>(request);
         query.GuestId = User.GetUserId();
 
-        var hotels = await _mediator.Send(query, cancellationToken);
+        var hotels = await mediator.Send(query, cancellationToken);
 
         return Ok(hotels);
     }

@@ -18,9 +18,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Manage shopping cart items for guests.")]
 public class CartItemsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpPost]
     [SwaggerOperation(
         Summary = "Add an item to the cart",
@@ -34,10 +31,10 @@ public class CartItemsController(IMediator mediator, IMapper mapper) : Controlle
         CreateCartItemRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateCartItemCommand>(request);
+        var command = mapper.Map<CreateCartItemCommand>(request);
         command.UserId = User.GetUserId();
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -60,7 +57,7 @@ public class CartItemsController(IMediator mediator, IMapper mapper) : Controlle
             UserId = User.GetUserId(),
         };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -79,10 +76,10 @@ public class CartItemsController(IMediator mediator, IMapper mapper) : Controlle
         [FromQuery] GetCartItemsRequest request,
         CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetCartItemsQuery>(request);
+        var query = mapper.Map<GetCartItemsQuery>(request);
         query.UserId = User.GetUserId();
 
-        var cartItems = await _mediator.Send(query, cancellationToken);
+        var cartItems = await mediator.Send(query, cancellationToken);
 
         Response.AddPaginationHeader(cartItems.PaginationMetaData);
 

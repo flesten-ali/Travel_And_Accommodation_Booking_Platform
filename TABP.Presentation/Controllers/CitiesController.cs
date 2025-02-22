@@ -23,9 +23,6 @@ namespace TABP.Presentation.Controllers;
 [SwaggerTag("Manage city-related operations including retrieval, creation, update, and deletion.")]
 public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet("trending-cities")]
     [SwaggerOperation(
         Summary = "Get trending cities",
@@ -38,7 +35,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var query = new GetTrendingCitiesQuery { Limit = limit };
 
-        var cities = await _mediator.Send(query, cancellationToken);
+        var cities = await mediator.Send(query, cancellationToken);
 
         return Ok(cities);
     }
@@ -56,9 +53,9 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromQuery] GetCitiesForAdminRequest request,
         CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<GetCitiesForAdminQuery>(request);
+        var query = mapper.Map<GetCitiesForAdminQuery>(request);
 
-        var cities = await _mediator.Send(query, cancellationToken);
+        var cities = await mediator.Send(query, cancellationToken);
 
         Response.AddPaginationHeader(cities.PaginationMetaData);
 
@@ -76,9 +73,9 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCity(CreateCityRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<CreateCityCommand>(request);
+        var command = mapper.Map<CreateCityCommand>(request);
 
-        var createdCity = await _mediator.Send(command, cancellationToken);
+        var createdCity = await mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(nameof(GetCity), new { id = createdCity.Id }, createdCity);
     }
@@ -97,7 +94,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var query = new GetCityByIdQuery { Id = id };
 
-        var city = await _mediator.Send(query, cancellationToken);
+        var city = await mediator.Send(query, cancellationToken);
 
         return Ok(city);
     }
@@ -116,7 +113,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     {
         var command = new DeleteCityCommand { Id = id };
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -133,10 +130,10 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> UpdateCity(Guid id, UpdateCityRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UpdateCityCommand>(request);
+        var command = mapper.Map<UpdateCityCommand>(request);
         command.Id = id;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
@@ -156,10 +153,10 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
         [FromForm] UploadCityThumbnailRequest request,
         CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<UploadCityThumbnailCommand>(request);
+        var command = mapper.Map<UploadCityThumbnailCommand>(request);
         command.CityId = id;
 
-        await _mediator.Send(command, cancellationToken);
+        await mediator.Send(command, cancellationToken);
 
         return NoContent();
     }
