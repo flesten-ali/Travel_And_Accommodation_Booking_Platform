@@ -66,9 +66,9 @@ public static class PresentationDependencyInjection
                 }
             });
 
-            //var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            //var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
-            //setupAction.IncludeXmlComments(xmlCommentsFullPath);
+            var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+            setupAction.IncludeXmlComments(xmlCommentsFullPath);
         });
         return services;
     }
