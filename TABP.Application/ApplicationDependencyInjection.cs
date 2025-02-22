@@ -4,7 +4,7 @@ using System.Reflection;
 using TABP.Application.Behaviors;
 namespace TABP.Application;
 
-public static class ApplicationConfiguration
+public static class ApplicationDependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
