@@ -1,3 +1,4 @@
+using Serilog;
 using TABP.Application;
 using TABP.Infrastructure;
 using TABP.Presentation;
@@ -12,9 +13,13 @@ builder.Services.AddApplication()
                 .AddPresentation()
                 .AddWebApi();
 
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 app.UseExceptionHandler();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
