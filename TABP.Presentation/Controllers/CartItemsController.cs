@@ -51,11 +51,7 @@ public class CartItemsController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteCartItem(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteCartItemCommand
-        {
-            CartId = id,
-            UserId = User.GetUserId(),
-        };
+        var command = new DeleteCartItemCommand(id, User.GetUserId());
 
         await mediator.Send(command, cancellationToken);
 

@@ -32,9 +32,6 @@ public class GetInvoicePdfQueryHandler : IRequestHandler<GetInvoicePdfQuery, Inv
         var invoiceHtml = _invoiceHtmlGenerationService.GenerateHtml(booking);
         var invoicePdf = await _pdfService.GeneratePdfAsync(invoiceHtml, cancellationToken);
 
-        return new InvoicePdfResponse
-        {
-            PdfContent = invoicePdf,
-        };
+        return new InvoicePdfResponse(invoicePdf);
     }
 }

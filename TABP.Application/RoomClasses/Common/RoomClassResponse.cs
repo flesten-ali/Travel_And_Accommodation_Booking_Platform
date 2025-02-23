@@ -1,13 +1,11 @@
 ﻿using TABP.Domain.Enums;
 
 namespace TABP.Application.RoomClasses.Common;
-public class RoomClassResponse
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string? Description { get; set; }
-    public RoomType RoomType { get; set; }
-    public int AdultsCapacity { get; set; }
-    public int ChildrenCapacity { get; set; }
-    public double Price { get; set; }
-}
+public sealed record RoomClassResponse(
+    Guid Id, 
+    string Name,
+    string? Description, 
+    RoomType RoomType, 
+    int AdultsCapacity, 
+    int ChildrenCapacity,
+    double Price);

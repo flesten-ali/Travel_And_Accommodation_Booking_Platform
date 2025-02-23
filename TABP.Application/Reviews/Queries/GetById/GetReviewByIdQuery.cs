@@ -2,8 +2,4 @@
 using TABP.Application.Reviews.Common;
 
 namespace TABP.Application.Reviews.Queries.GetById;
-public class GetReviewByIdQuery : IRequest <ReviewResponse>
-{
-    public Guid HotelId { get; set; }
-    public Guid ReviewId { get; set; }
-}
+public sealed record GetReviewByIdQuery(Guid ReviewId, Guid HotelId) : IRequest<ReviewResponse>;

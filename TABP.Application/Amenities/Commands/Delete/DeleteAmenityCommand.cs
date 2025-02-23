@@ -1,7 +1,4 @@
 ﻿using MediatR;
 
 namespace TABP.Application.Amenities.Commands.Delete;
-public class DeleteAmenityCommand : IRequest
-{
-    public Guid Id { get; set; }
-}
+public sealed record DeleteAmenityCommand(Guid Id) : IRequest;

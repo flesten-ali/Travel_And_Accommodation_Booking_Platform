@@ -99,7 +99,7 @@ public class SearchHotelsQueryHandler :
 
     private static Expression<Func<Hotel, bool>> IsAmenityMatchExpression(SearchHotelsQuery request)
     {
-        return hotel => (request.Amenities == null || request.Amenities.Count == 0 ||
+        return hotel => (request.Amenities == null || !request.Amenities.Any() ||
              request.Amenities.All(reqAmenity =>
                  hotel.RoomClasses.Any(rc => rc.Name.ToLower().Contains(reqAmenity.ToLower()))));
     }

@@ -6,11 +6,11 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.WebAPI.Middleware;
 
-public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> _logger) : IExceptionHandler
+public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        _logger.LogError(
+        logger.LogError(
             exception,
             "Exception occurred  while processing request {Method} {Path} with message {Message}",
             httpContext.Request.Method,

@@ -1,3 +1,3 @@
 ﻿namespace TABP.Application.Users.Login;
 
-public record LoginUserResponse(string Token);
+public sealed record LoginUserResponse(string Token);

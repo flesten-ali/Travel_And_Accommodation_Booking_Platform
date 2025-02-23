@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Text.Json;
 using TABP.Application.Discounts.Commands.Create;
 using TABP.Application.Discounts.Commands.Delete;
 using TABP.Application.Discounts.Queries.GetById;
@@ -62,11 +61,7 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> GetDiscount(Guid roomClassId, Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetDiscountByIdQuery
-        {
-            DiscountId = id,
-            RoomClassId = roomClassId
-        };
+        var query = new GetDiscountByIdQuery(id, roomClassId);
 
         var discount = await mediator.Send(query, cancellationToken);
 
@@ -85,12 +80,8 @@ public class DiscountsController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteDiscount(Guid roomClassId, Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteDiscountCommand
-        {
-            DiscountId = id,
-            RoomClassId = roomClassId
-        };
-
+        var command = new DeleteDiscountCommand(id, roomClassId);
+  
         await mediator.Send(command, cancellationToken);
 
         return NoContent();

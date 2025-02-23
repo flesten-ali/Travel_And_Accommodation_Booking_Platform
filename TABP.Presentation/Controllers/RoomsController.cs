@@ -84,11 +84,7 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
         Guid id, 
         CancellationToken cancellationToken)
     {
-        var query = new GetRoomByIdQuery
-        {
-            RoomId = id,
-            RoomClassId = roomClassId
-        };
+        var query = new GetRoomByIdQuery(id, roomClassId);
 
         var room = await mediator.Send(query, cancellationToken);
 
@@ -132,11 +128,7 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteRoom(Guid roomClassId, Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteRoomCommand
-        {
-            RoomId = id,
-            RoomClassId = roomClassId
-        };
+        var command = new DeleteRoomCommand(id, roomClassId);
 
         await mediator.Send(command, cancellationToken);
 

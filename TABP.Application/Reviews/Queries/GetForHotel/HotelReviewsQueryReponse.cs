@@ -1,10 +1,8 @@
 ﻿namespace TABP.Application.Reviews.Queries.GetForHotel;
-public class HotelReviewsQueryReponse
-{
-    public Guid Id { get; set; }
-    public string Comment { get; set; }
-    public int Rate { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public DateTime? UpdatedDate { get; set; }
-    public string ReviwerName { get; set; }
-}
+public sealed record HotelReviewsQueryReponse(
+    Guid Id,
+    string Comment, 
+    int Rate, 
+    DateTime CreatedDate,
+    DateTime? UpdatedDate, 
+    string ReviwerName);

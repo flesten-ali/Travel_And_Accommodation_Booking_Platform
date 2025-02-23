@@ -1,7 +1,2 @@
 ﻿namespace TABP.Application.Amenities.Common;
-public class AmenityResponse
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string? Description { get; set; }
-}
+public sealed record AmenityResponse(Guid Id, string Name, string? Description);

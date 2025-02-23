@@ -1,8 +1,5 @@
 ﻿using MediatR;
 using TABP.Application.Bookings.Common;
-namespace TABP.Application.Bookings.Queries.GetBookingById;
+namespace TABP.Application.Bookings.Queries.GetById;
 
-public class GetBookingByIdQuery : IRequest<BookingResponse>
-{
-    public Guid BookingId { get; set; }
-}
+public sealed record GetBookingByIdQuery(Guid BookingId) : IRequest<BookingResponse>;

@@ -15,6 +15,7 @@ public static class WebApiDependencyInjection
                        .AddExceptionHandler<GlobalExceptionHandler>()
                        .AddSwagger();
     }
+
     public static IServiceCollection AddControllers(this IServiceCollection services)
     {
         var presentaionAssembly = typeof(Presentation.AssemblyReference).Assembly;
@@ -37,8 +38,6 @@ public static class WebApiDependencyInjection
     {
         services.AddSwaggerGen(setupAction =>
         {
-            setupAction.EnableAnnotations();
-
             setupAction.AddSecurityDefinition("Authentication", new()
             {
                 Type = SecuritySchemeType.Http,
@@ -56,7 +55,6 @@ public static class WebApiDependencyInjection
                             Type= ReferenceType.SecurityScheme,
                             Id = "Authentication"
                         },
-
                     },
                     new List<string>()
                 }

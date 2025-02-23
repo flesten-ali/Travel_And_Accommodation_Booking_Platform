@@ -48,7 +48,7 @@ public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> GetOwner(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetOwnerByIdQuery { OwnerId = id };
+        var query = new GetOwnerByIdQuery(id) ;
 
         var owner = await mediator.Send(query, cancellationToken);
 
@@ -67,7 +67,7 @@ public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteOwner(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteOwnerCommand { Id = id };
+        var command = new DeleteOwnerCommand(id) ;
 
         await mediator.Send(command, cancellationToken);
 

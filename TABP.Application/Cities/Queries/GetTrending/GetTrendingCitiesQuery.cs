@@ -1,7 +1,4 @@
 ﻿using MediatR;
 
 namespace TABP.Application.Cities.Queries.GetTrending;
-public class GetTrendingCitiesQuery : IRequest<IEnumerable<TrendingCitiesResponse>>
-{
-    public int Limit { get; set; }
-}
+public sealed record GetTrendingCitiesQuery(int Limit) : IRequest<IEnumerable<TrendingCitiesResponse>>;

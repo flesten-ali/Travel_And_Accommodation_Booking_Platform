@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Bookings.Commands.Create;
 using TABP.Application.Bookings.Commands.Delete;
-using TABP.Application.Bookings.Queries.GetBookingById;
+using TABP.Application.Bookings.Queries.GetById;
 using TABP.Application.Bookings.Queries.InvoicePdf;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Booking;
@@ -30,7 +30,7 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> GetBooking(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetBookingByIdQuery { BookingId = id };
+        var query = new GetBookingByIdQuery(id);
 
         var booking = await mediator.Send(query, cancellationToken);
 
@@ -68,7 +68,7 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> GetInvoicePdf(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetInvoicePdfQuery { BookingId = id };
+        var query = new GetInvoicePdfQuery(id);
 
         var result = await mediator.Send(query, cancellationToken);
 
@@ -87,11 +87,7 @@ public class BookingsController(IMediator mediator, IMapper mapper) : Controller
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteBooking(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteBookingCommand
-        {
-            BookingId = id,
-            UserId = User.GetUserId()
-        };
+        var command = new DeleteBookingCommand(id, User.GetUserId());
 
         await mediator.Send(command, cancellationToken);
 

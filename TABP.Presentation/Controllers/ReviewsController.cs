@@ -84,12 +84,8 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetReview(Guid hotelId, Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetReviewByIdQuery
-        {
-            ReviewId = id,
-            HotelId = hotelId
-        };
-
+        var query = new GetReviewByIdQuery(id, hotelId);
+         
         var review = await mediator.Send(query, cancellationToken);
 
         return Ok(review);
@@ -133,12 +129,7 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteReview(Guid hotelId, Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteReviewCommand
-        {
-            HotelId = hotelId,
-            ReviewId = id,
-            UserId = User.GetUserId(),
-        };
+        var command = new DeleteReviewCommand(id, User.GetUserId(), hotelId);
 
         await mediator.Send(command, cancellationToken);
 

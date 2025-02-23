@@ -18,7 +18,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/room-classes")]
 [ApiController]
-[Authorize(Roles = Roles.Admin)]
+//[Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Room Class Management")]
 public class RoomClassesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
@@ -76,7 +76,7 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetRoomClass(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetRoomClassByIdQuery { Id = id };
+        var query = new GetRoomClassByIdQuery(id);
 
         var roomClass = await mediator.Send(query, cancellationToken);
 
@@ -118,7 +118,7 @@ public class RoomClassesController(IMediator mediator, IMapper mapper) : Control
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteRoomClass(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteRoomClassCommand { Id = id };
+        var command = new DeleteRoomClassCommand(id);
 
         await mediator.Send(command, cancellationToken);
 

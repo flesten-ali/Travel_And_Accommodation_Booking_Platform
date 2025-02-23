@@ -2,13 +2,11 @@
 using TABP.Application.Hotels.Common;
 namespace TABP.Application.Hotels.Commands.Create;
 
-public class CreateHotelCommand : IRequest<HotelResponse>
-{
-    public string Name { get; set; }
-    public string? Description { get; set; }
-    public int Rate { get; set; }
-    public double LongitudeCoordinates { get; set; }
-    public double LatitudeCoordinates { get; set; }
-    public Guid CityId { get; set; }
-    public Guid OwnerId { get; set; }
-}
+public sealed record CreateHotelCommand(
+    string Name,
+    string? Description, 
+    int Rate, 
+    double LongitudeCoordinates,
+    double LatitudeCoordinates,
+    Guid CityId,
+    Guid OwnerId) : IRequest<HotelResponse>;

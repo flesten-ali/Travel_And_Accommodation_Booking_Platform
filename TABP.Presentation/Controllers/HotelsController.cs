@@ -60,10 +60,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetHotelDetails(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetHotelQuery()
-        {
-            HotelId = id
-        };
+        var query = new GetHotelQuery(id);
 
         var hotel = await mediator.Send(query, cancellationToken);
 
@@ -101,7 +98,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetHotel(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetHotelByIdQuery { HotelId = id };
+        var query = new GetHotelByIdQuery(id);
 
         var hotel = await mediator.Send(query, cancellationToken);
 
@@ -164,7 +161,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetFeaturedDeals(int limit, CancellationToken cancellationToken)
     {
-        var query = new GetFeaturedDealsQuery { Limit = limit };
+        var query = new GetFeaturedDealsQuery(limit);
 
         var featuredDeals = await mediator.Send(query, cancellationToken); 
 
@@ -228,7 +225,7 @@ public class HotelsController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteHotel(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteHotelCommand { Id = id };
+        var command = new DeleteHotelCommand(id);
 
         await mediator.Send(command, cancellationToken);
 

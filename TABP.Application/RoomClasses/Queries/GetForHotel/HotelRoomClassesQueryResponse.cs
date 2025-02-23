@@ -1,32 +1,26 @@
 ﻿using TABP.Domain.Enums;
 
 namespace TABP.Application.RoomClasses.Queries.GetForHotel;
-public class HotelRoomClassesQueryResponse
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string? Description { get; set; }
-    public RoomType RoomType { get; set; }
-    public int AdultsCapacity { get; set; }
-    public int ChildrenCapacity { get; set; }
-    public double Price { get; set; }
-    public IEnumerable<string> GalleryUrls { get; set; } = [];
-    public IEnumerable<DiscountResponse> DiscountResponses { get; set; } = [];
-    public IEnumerable<AmenityResponse> AmenityResponses { get; set; } = [];
-}
+public sealed record HotelRoomClassesQueryResponse(
+    Guid Id,
+    string Name,
+    string? Description,
+    RoomType RoomType,
+    int AdultsCapacity,
+    int ChildrenCapacity,
+    double Price,
+    IEnumerable<string> GalleryUrls,
+    IEnumerable<DiscountResponse> DiscountResponses,
+    IEnumerable<AmenityResponse> AmenityResponses);
 
-public class AmenityResponse
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string? Description { get; set; }
-}
+public sealed record AmenityResponse(
+    Guid Id,
+    string Name,
+    string? Description);
 
-public class DiscountResponse
-{
-    public Guid Id { get; set; }
-    public double Percentage { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public Guid RoomClassId { get; set; }
-}
+public sealed record DiscountResponse(
+    Guid Id,
+    double Percentage,
+    DateTime StartDate,
+    DateTime EndDate,
+    Guid RoomClassId);

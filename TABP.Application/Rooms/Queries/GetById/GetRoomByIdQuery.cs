@@ -2,8 +2,4 @@
 using TABP.Application.Rooms.Common;
 
 namespace TABP.Application.Rooms.Queries.GetById;
-public class GetRoomByIdQuery : IRequest<RoomResponse>
-{
-    public Guid RoomClassId { get; set; }
-    public Guid RoomId { get; set; }
-}
+public sealed record GetRoomByIdQuery(Guid RoomId, Guid RoomClassId) : IRequest<RoomResponse>;

@@ -47,7 +47,7 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetAmenity(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetAmenityByIdQuery { AmenityId = id };
+        var query = new GetAmenityByIdQuery(id);
 
         var amenity = await mediator.Send(query, cancellationToken);
 
@@ -86,7 +86,7 @@ public class AmenitiesController(IMediator mediator, IMapper mapper) : Controlle
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAmenity(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteAmenityCommand { Id = id };
+        var command = new DeleteAmenityCommand(id);
 
         await mediator.Send(command, cancellationToken);
 

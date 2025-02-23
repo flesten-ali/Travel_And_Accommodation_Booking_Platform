@@ -33,7 +33,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetTrendingCities(int limit, CancellationToken cancellationToken)
     {
-        var query = new GetTrendingCitiesQuery { Limit = limit };
+        var query = new GetTrendingCitiesQuery(limit);
 
         var cities = await mediator.Send(query, cancellationToken);
 
@@ -92,7 +92,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetCity(Guid id, CancellationToken cancellationToken)
     {
-        var query = new GetCityByIdQuery { Id = id };
+        var query = new GetCityByIdQuery(id);
 
         var city = await mediator.Send(query, cancellationToken);
 
@@ -111,7 +111,7 @@ public class CitiesController(IMediator mediator, IMapper mapper) : ControllerBa
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteCity(Guid id, CancellationToken cancellationToken)
     {
-        var command = new DeleteCityCommand { Id = id };
+        var command = new DeleteCityCommand(id);
 
         await mediator.Send(command, cancellationToken);
 
