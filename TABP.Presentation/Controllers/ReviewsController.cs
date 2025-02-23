@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Text.Json;
 using TABP.Application.Reviews.Commands.Create;
 using TABP.Application.Reviews.Commands.Delete;
 using TABP.Application.Reviews.Commands.Update;
@@ -85,7 +84,7 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
     public async Task<IActionResult> GetReview(Guid hotelId, Guid id, CancellationToken cancellationToken)
     {
         var query = new GetReviewByIdQuery(id, hotelId);
-         
+
         var review = await mediator.Send(query, cancellationToken);
 
         return Ok(review);

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Text.Json;
 using TABP.Application.Rooms.Commands.Create;
 using TABP.Application.Rooms.Commands.Delete;
 using TABP.Application.Rooms.Commands.Update;
@@ -81,7 +80,7 @@ public class RoomsController(IMediator mediator, IMapper mapper) : ControllerBas
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetRoom(
         Guid roomClassId,
-        Guid id, 
+        Guid id,
         CancellationToken cancellationToken)
     {
         var query = new GetRoomByIdQuery(id, roomClassId);

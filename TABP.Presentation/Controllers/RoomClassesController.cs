@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Text.Json;
 using TABP.Application.RoomClasses.Commands.Create;
 using TABP.Application.RoomClasses.Commands.Delete;
 using TABP.Application.RoomClasses.Commands.ImageGallery;
@@ -18,7 +17,7 @@ namespace TABP.Presentation.Controllers;
 
 [Route("api/room-classes")]
 [ApiController]
-//[Authorize(Roles = Roles.Admin)]
+[Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Room Class Management")]
 public class RoomClassesController(IMediator mediator, IMapper mapper) : ControllerBase
 {
