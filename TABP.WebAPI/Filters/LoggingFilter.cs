@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text.Json;
 
-namespace TABP.WebAPI.Filter;
+namespace TABP.WebAPI.Filters;
 
 /// <summary>
 /// An action filter that logs incoming HTTP requests and outgoing responses.

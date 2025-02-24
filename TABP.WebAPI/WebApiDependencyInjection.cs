@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using TABP.WebAPI.Filter;
-using TABP.WebAPI.Middleware;
+using TABP.WebAPI.Filters;
+using TABP.WebAPI.Middlewares;
 
 namespace TABP.WebAPI;
 

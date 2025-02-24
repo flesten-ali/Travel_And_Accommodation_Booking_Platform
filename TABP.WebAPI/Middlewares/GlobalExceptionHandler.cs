@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using TABP.Domain.Exceptions;
 
-namespace TABP.WebAPI.Middleware;
+namespace TABP.WebAPI.Middlewares;
 
 /// <summary>
 /// Global exception handler middleware that intercepts unhandled exceptions, logs them,
