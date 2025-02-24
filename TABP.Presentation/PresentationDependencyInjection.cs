@@ -4,7 +4,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using TABP.Presentation.Validators.User;
 
 namespace TABP.Presentation;
 
@@ -91,6 +90,6 @@ public static class PresentationDependencyInjection
 
     public static IServiceCollection AddFluentValidations(this IServiceCollection services)
     {
-        return services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterUserRequestValidator>());
+        return services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AssemblyReference>());
     }
 }
