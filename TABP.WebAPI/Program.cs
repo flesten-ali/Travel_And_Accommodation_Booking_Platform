@@ -1,6 +1,7 @@
 using Serilog;
 using TABP.Application;
 using TABP.Infrastructure;
+using TABP.Infrastructure.Persistence.DbContexts;
 using TABP.Presentation;
 using TABP.WebAPI;
 
@@ -39,7 +40,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+await app.ApplyMigrationAsync();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

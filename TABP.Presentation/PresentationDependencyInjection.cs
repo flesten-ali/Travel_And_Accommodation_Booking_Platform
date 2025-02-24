@@ -26,10 +26,12 @@ public static class PresentationDependencyInjection
             opt.ReportApiVersions = true;
             opt.AssumeDefaultVersionWhenUnspecified = true;
             opt.DefaultApiVersion = new ApiVersion(1, 0);
+            opt.ApiVersionReader = new UrlSegmentApiVersionReader();
         })
         .AddMvc()
         .AddApiExplorer(opt =>
         {
+            opt.GroupNameFormat = "'v'V";
             opt.SubstituteApiVersionInUrl = true;
         });
 
@@ -41,11 +43,11 @@ public static class PresentationDependencyInjection
         var apiVersionDescriptionProvider = services.BuildServiceProvider()
                 .GetRequiredService<IApiVersionDescriptionProvider>();
 
-        services.AddSwaggerGen(opt =>
+        services.AddSwaggerGen(setupAction =>
         {
             foreach (var desc in apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
-                opt.SwaggerDoc(
+                setupAction.SwaggerDoc(
                     $"{desc.GroupName}", new()
                     {
                         Title = "Travel and Accommodation Booking Platform",
@@ -53,14 +55,14 @@ public static class PresentationDependencyInjection
                     });
             }
 
-            opt.AddSecurityDefinition("Authentication", new()
+            setupAction.AddSecurityDefinition("Authentication", new()
             {
                 Type = SecuritySchemeType.Http,
                 Scheme = "Bearer",
                 Description = "Input a valid token to be authenticated",
             });
 
-            opt.AddSecurityRequirement(new()
+            setupAction.AddSecurityRequirement(new()
             {
                 {
                     new()
@@ -77,7 +79,7 @@ public static class PresentationDependencyInjection
 
             var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
-            opt.IncludeXmlComments(xmlCommentsFullPath);
+            setupAction.IncludeXmlComments(xmlCommentsFullPath);
         });
         return services;
     }
