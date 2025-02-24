@@ -7,6 +7,6 @@ public static class PaginationExtensions
 {
     public static void AddPaginationHeader(this HttpResponse response, PaginationMetaData paginationMetaData)
     {
-        response.Headers["x-pagination"] = JsonSerializer.Serialize(paginationMetaData);
+        response.Headers["X-Pagination"] = JsonSerializer.Serialize(paginationMetaData);
     }
 }
