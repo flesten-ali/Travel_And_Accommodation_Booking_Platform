@@ -1,4 +1,4 @@
 ﻿namespace TABP.Presentation;
-public static class AssemblyReference
+public class AssemblyReference
 {
 }

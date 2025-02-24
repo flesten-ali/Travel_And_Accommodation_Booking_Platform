@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using TABP.Application.Reviews.Commands.Create;
 using TABP.Application.Reviews.Commands.Delete;
 using TABP.Application.Reviews.Commands.Update;
@@ -13,20 +12,29 @@ using TABP.Application.Reviews.Queries.GetForHotel;
 using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Review;
 using TABP.Presentation.Extensions;
+
 namespace TABP.Presentation.Controllers;
 
+/// <summary>
+/// Controller for managing hotel reviews, including creating, retrieving, updating, and deleting reviews.
+/// </summary>
 [ApiVersion(1)]
 [Route("api/v{version:apiVersion}/{hotelId:guid}/reviews")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
-[SwaggerTag("Hotel Reviews Operations")]
 public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
+    /// <summary>
+    /// Retrieves a list of reviews for the specified hotel.
+    /// </summary>
+    /// <param name="hotelId">The unique identifier of the hotel.</param>
+    /// <param name="request">The request containing filtering options for the reviews.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A list of reviews for the hotel.</returns>
+    /// <response code="200">Successfully retrieved the reviews for the hotel.</response>
+    /// <response code="400">The request data is invalid.</response>
+    /// <response code="404">No reviews found for the specified hotel.</response>
     [HttpGet]
-    [SwaggerOperation(
-        Summary = "Get reviews for a hotel",
-        Description = "Fetch a list of reviews for the specified hotel."
-    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -46,11 +54,18 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
         return Ok(reviews.Items);
     }
 
+    /// <summary>
+    /// Creates a new review for the specified hotel.
+    /// </summary>
+    /// <param name="hotelId">The unique identifier of the hotel to review.</param>
+    /// <param name="request">The review details to be created.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The newly created review.</returns>
+    /// <response code="201">Successfully created the review.</response>
+    /// <response code="400">The input data is invalid.</response>
+    /// <response code="401">The user is not authenticated.</response>
+    /// <response code="403">The user does not have permission to create a review.</response>
     [HttpPost]
-    [SwaggerOperation(
-         Summary = "Create a new review",
-         Description = "Create a new review by providing necessary details such as hotel ID."
-    )]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -74,11 +89,17 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
             }, createdReview);
     }
 
+    /// <summary>
+    /// Retrieves a review by its unique identifier.
+    /// </summary>
+    /// <param name="hotelId">The unique identifier of the hotel for the review.</param>
+    /// <param name="id">The unique identifier of the review.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The review details corresponding to the specified ID.</returns>
+    /// <response code="200">Successfully retrieved the review.</response>
+    /// <response code="400">The review ID is invalid.</response>
+    /// <response code="404">No review found with the specified ID.</response>
     [HttpGet("{id:guid}")]
-    [SwaggerOperation(
-        Summary = "Get review by ID",
-        Description = "Retrieve information of a review by its unique identifier."
-    )]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,11 +113,20 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
         return Ok(review);
     }
 
+    /// <summary>
+    /// Updates the details of an existing review using its ID.
+    /// </summary>
+    /// <param name="hotelId">The unique identifier of the hotel for the review.</param>
+    /// <param name="id">The unique identifier of the review to be updated.</param>
+    /// <param name="request">The updated review details.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>No content if the review is successfully updated.</returns>
+    /// <response code="204">Successfully updated the review.</response>
+    /// <response code="400">The input data is invalid.</response>
+    /// <response code="401">The user is not authenticated.</response>
+    /// <response code="403">The user does not have permission to update the review.</response>
+    /// <response code="404">No review found with the specified ID.</response>
     [HttpPut("{id:guid}")]
-    [SwaggerOperation(
-        Summary = "Update review details",
-        Description = "Update the details of an existing review using its ID."
-    )]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -118,11 +148,19 @@ public class ReviewsController(IMediator mediator, IMapper mapper) : ControllerB
         return NoContent();
     }
 
+    /// <summary>
+    /// Deletes an existing review by its unique identifier.
+    /// </summary>
+    /// <param name="hotelId">The unique identifier of the hotel for the review.</param>
+    /// <param name="id">The unique identifier of the review to be deleted.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>No content if the review is successfully deleted.</returns>
+    /// <response code="204">Successfully deleted the review.</response>
+    /// <response code="400">The review ID is invalid.</response>
+    /// <response code="401">The user is not authenticated.</response>
+    /// <response code="403">The user does not have permission to delete the review.</response>
+    /// <response code="404">No review found with the specified ID.</response>
     [HttpDelete("{id:guid}")]
-    [SwaggerOperation(
-        Summary = "Delete a review",
-        Description = "Delete an existing review by its unique ID."
-    )]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
