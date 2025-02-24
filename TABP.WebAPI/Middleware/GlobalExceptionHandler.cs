@@ -6,8 +6,22 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.WebAPI.Middleware;
 
+/// <summary>
+/// Global exception handler middleware that intercepts unhandled exceptions, logs them,
+/// and writes a <see cref="ProblemDetails"/> response to the HTTP response.
+/// </summary>
 public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
+    /// <summary>
+    /// Handles exceptions that occur during request processing.
+    /// Logs the exception details and writes a standardized error response.
+    /// </summary>
+    /// <param name="httpContext">The current HTTP context.</param>
+    /// <param name="exception">The exception that occurred.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>
+    /// A <see cref="ValueTask{TResult}"/> that resolves to <c>true</c> indicating the exception has been handled.
+    /// </returns>
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         logger.LogError(
@@ -25,6 +39,13 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         return true;
     }
 
+    /// <summary>
+    /// Creates a <see cref="ProblemDetails"/> object based on the provided exception and HTTP context.
+    /// Maps specific domain exceptions to corresponding HTTP status codes.
+    /// </summary>
+    /// <param name="httpContext">The HTTP context from which request details are extracted.</param>
+    /// <param name="exception">The exception to be transformed into a <see cref="ProblemDetails"/> response.</param>
+    /// <returns>A populated <see cref="ProblemDetails"/> instance with error details and HTTP status.</returns>
     private static ProblemDetails CreateProblemDetails(HttpContext httpContext, Exception exception)
     {
         int statusCode = exception switch
