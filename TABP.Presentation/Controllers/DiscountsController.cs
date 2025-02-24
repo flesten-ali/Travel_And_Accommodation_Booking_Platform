@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,9 +15,11 @@ using TABP.Presentation.Extensions;
 
 namespace TABP.Presentation.Controllers;
 
-[Route("api/room-classes/{roomClassId:guid}/discounts")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/room-classes/{roomClassId:guid}/discounts")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
+
 public class DiscountsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpPost]

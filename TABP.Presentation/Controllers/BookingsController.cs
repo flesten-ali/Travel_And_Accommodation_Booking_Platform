@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,8 +13,8 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Booking;
 using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
-
-[Route("api/user/bookings")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/user/bookings")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
 [SwaggerTag("Manage hotel bookings for guests.")]

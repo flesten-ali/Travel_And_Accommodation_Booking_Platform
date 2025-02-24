@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +11,8 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.User;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/users")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/users")]
 [ApiController]
 [SwaggerTag("User Authentication and Management")]
 public class UsersController(IMediator mediator, IMapper mapper) : ControllerBase

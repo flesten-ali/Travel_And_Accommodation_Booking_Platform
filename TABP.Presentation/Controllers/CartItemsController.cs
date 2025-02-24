@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,8 @@ using TABP.Presentation.DTOs.CartItem;
 using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/user/cart-items")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/user/cart-items")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
 [SwaggerTag("Manage shopping cart items for guests.")]

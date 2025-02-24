@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,8 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Amenity;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/amenities")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/amenities")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Manage amenities in the system. Requires Admin access.")]

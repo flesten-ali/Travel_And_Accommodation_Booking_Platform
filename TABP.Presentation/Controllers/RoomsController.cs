@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +15,8 @@ using TABP.Presentation.DTOs.Room;
 using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/room-classes/{roomClassId:guid}/rooms")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/room-classes/{roomClassId:guid}/rooms")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Room Management")]

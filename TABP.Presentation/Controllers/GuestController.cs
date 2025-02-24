@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +11,8 @@ using TABP.Presentation.DTOs.Guest;
 using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/guests")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/guests")]
 [ApiController]
 [Authorize(Roles = Roles.Guest)]
 [SwaggerTag("Manage guest-related operations including retrieving recently visited hotels.")]

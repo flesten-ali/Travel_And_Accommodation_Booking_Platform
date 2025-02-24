@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +18,8 @@ using TABP.Presentation.DTOs.City;
 using TABP.Presentation.Extensions;
 namespace TABP.Presentation.Controllers;
 
-[Route("api/cities")]
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/cities")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 [SwaggerTag("Manage city-related operations including retrieval, creation, update, and deletion.")]

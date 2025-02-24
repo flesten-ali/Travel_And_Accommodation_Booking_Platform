@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,9 @@ using TABP.Domain.Constants;
 using TABP.Presentation.DTOs.Owner;
 
 namespace TABP.Presentation.Controllers;
-[Route("api/owners")]
+
+[ApiVersion(1)]
+[Route("api/v{version:apiVersion}/owners")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 public class OwnersController(IMediator mediator, IMapper mapper) : ControllerBase
