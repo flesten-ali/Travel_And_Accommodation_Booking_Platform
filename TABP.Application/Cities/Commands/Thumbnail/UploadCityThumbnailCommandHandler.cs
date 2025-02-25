@@ -10,6 +10,10 @@ using TABP.Domain.Interfaces.Services.Guids;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Cities.Commands.Thumbnail;
+
+/// <summary>
+/// Handles the command to upload a new thumbnail for a city.
+/// </summary>
 public class UploadCityThumbnailCommandHandler : IRequestHandler<UploadCityThumbnailCommand>
 {
     private readonly ICityRepository _cityRepository;
@@ -35,6 +39,13 @@ public class UploadCityThumbnailCommandHandler : IRequestHandler<UploadCityThumb
         _guidProvider = guidProvider;
     }
 
+    /// <summary>
+    /// Handles the request to upload a new thumbnail image for a city.
+    /// </summary>
+    /// <param name="request">The request containing the city ID and thumbnail image.</param>
+    /// <param name="cancellationToken">The cancellation token for handling task cancellation.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="NotFoundException">Thrown if the city does not exist.</exception>
     public async Task<Unit> Handle(UploadCityThumbnailCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId, cancellationToken))

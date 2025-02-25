@@ -4,8 +4,12 @@ using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+
 namespace TABP.Application.Cities.Commands.Delete;
 
+/// <summary>
+/// Handles the command to delete a city.
+/// </summary>
 public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
 {
     private readonly ICityRepository _cityRepository;
@@ -25,6 +29,14 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
         _hotelRepository = hotelRepository;
     }
 
+    /// <summary>
+    /// Handles the request to delete a city.
+    /// </summary>
+    /// <param name="request">The request containing the ID of the city to delete.</param>
+    /// <param name="cancellationToken">The cancellation token for handling task cancellation.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="NotFoundException">Thrown if the city does not exist.</exception>
+    /// <exception cref="ConflictException">Thrown if the city is currently in use by any hotel.</exception>
     public async Task<Unit> Handle(DeleteCityCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _cityRepository.ExistsAsync(c => c.Id == request.Id, cancellationToken))

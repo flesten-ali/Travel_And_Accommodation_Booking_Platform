@@ -8,7 +8,12 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Rooms.Commands.Create;
-public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomResponse>
+
+/// <summary>
+/// Handles the command to create a new room for a specific room class.
+/// </summary>
+public class CreateRoomCommandHandler 
+    : IRequestHandler<CreateRoomCommand, RoomResponse>
 {
     private readonly IRoomClassRepository _roomClassRepository;
     private readonly IMapper _mapper;
@@ -27,7 +32,15 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RoomResponse> Handle(CreateRoomCommand request, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Handles the request to create a new room for the specified room class.
+    /// </summary>
+    /// <param name="request">The command containing the room class ID and room details.</param>
+    /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
+    /// <returns>A task representing the asynchronous operation, returning the created room's response.</returns>
+    public async Task<RoomResponse> Handle(
+        CreateRoomCommand request, 
+        CancellationToken cancellationToken = default)
     {
         if (!await _roomClassRepository.ExistsAsync(rc => rc.Id == request.RoomClassId, cancellationToken))
         {

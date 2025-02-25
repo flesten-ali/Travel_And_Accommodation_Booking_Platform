@@ -5,6 +5,10 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Bookings.Commands.Delete;
+
+/// <summary>
+/// Handles the deletion of a booking.
+/// </summary>
 public class DeleteBookingCommandHandler : IRequestHandler<DeleteBookingCommand>
 {
     private readonly IBookingRepository _bookingRepository;
@@ -21,6 +25,15 @@ public class DeleteBookingCommandHandler : IRequestHandler<DeleteBookingCommand>
         _userRepository = userRepository;
     }
 
+    /// <summary>
+    /// Handles the request to delete a booking.
+    /// </summary>
+    /// <param name="request">The delete booking command containing the user and booking IDs.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A <see cref="Unit"/> indicating successful completion.</returns>
+    /// <exception cref="NotFoundException">
+    /// Thrown if the user or booking does not exist.
+    /// </exception>
     public async Task<Unit> Handle(DeleteBookingCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _userRepository.ExistsAsync(u => u.Id == request.UserId, cancellationToken))

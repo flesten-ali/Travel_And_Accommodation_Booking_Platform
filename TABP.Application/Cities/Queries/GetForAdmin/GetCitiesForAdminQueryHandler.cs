@@ -5,6 +5,10 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 
 namespace TABP.Application.Cities.Queries.GetForAdmin;
+
+/// <summary>
+/// Handles the query to retrieve cities for admin purposes with pagination and sorting.
+/// </summary>
 public class GetCitiesForAdminQueryHandler
     : IRequestHandler<GetCitiesForAdminQuery, PaginatedResponse<CityForAdminResponse>>
 {
@@ -16,6 +20,15 @@ public class GetCitiesForAdminQueryHandler
         _cityRepository = cityRepository;
         _mapper = mapper;
     }
+
+    /// <summary>
+    /// Handles the request to retrieve a paginated list of cities for admin purposes.
+    /// </summary>
+    /// <param name="request">The request containing pagination and sorting parameters.</param>
+    /// <param name="cancellationToken">The cancellation token for handling task cancellation.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation, containing a paginated response of <see cref="CityForAdminResponse"/>.
+    /// </returns>
     public async Task<PaginatedResponse<CityForAdminResponse>> Handle(
         GetCitiesForAdminQuery request,
         CancellationToken cancellationToken = default)

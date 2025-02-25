@@ -5,6 +5,10 @@ using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Hotels.Queries.GetRecentlyVisited;
+
+/// <summary>
+/// Handles the query to retrieve a list of recently visited hotels by a guest.
+/// </summary
 public class GetRecentlyVisitedHotelsQueryHandler
     : IRequestHandler<GetRecentlyVisitedHotelsQuery, IEnumerable<RecentlyVisitedHotelsResponse>>
 {
@@ -22,6 +26,15 @@ public class GetRecentlyVisitedHotelsQueryHandler
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Handles the query to retrieve recently visited hotels by a guest.
+    /// </summary>
+    /// <param name="request">The query containing the guest ID and the limit for the number of hotels to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation token used to cancel the operation if needed.</param>
+    /// <returns>
+    /// A task representing the asynchronous operation.
+    /// The result is a list of recently visited hotels as <see cref="RecentlyVisitedHotelsResponse"/>.
+    /// </returns>
     public async Task<IEnumerable<RecentlyVisitedHotelsResponse>> Handle(
         GetRecentlyVisitedHotelsQuery request,
         CancellationToken cancellationToken = default)

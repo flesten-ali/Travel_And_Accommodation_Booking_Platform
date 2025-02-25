@@ -9,7 +9,12 @@ using TABP.Domain.Interfaces.Services.Guids;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.RoomClasses.Commands.ImageGallery;
-public class UploadRoomClassImageGalleryCommandHandler : IRequestHandler<UploadRoomClassImageGalleryCommand>
+
+/// <summary>
+/// Handles the command to upload an image to the gallery for a specific room class.
+/// </summary>
+public class UploadRoomClassImageGalleryCommandHandler
+    : IRequestHandler<UploadRoomClassImageGalleryCommand>
 {
     private readonly IRoomClassRepository _roomClassRepository;
     private readonly IImageRepository _imageRepository;
@@ -34,7 +39,19 @@ public class UploadRoomClassImageGalleryCommandHandler : IRequestHandler<UploadR
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UploadRoomClassImageGalleryCommand request, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Handles the request to upload an image to the gallery for a room class, ensuring the room class exists
+    /// and managing the transaction for image upload and storage.
+    /// </summary>
+    /// <param name="request">The command containing the room class ID and image data.</param>
+    /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
+    /// <returns>A task representing the asynchronous operation, returning 
+    /// <see cref="Unit.Value"/> on successful completion.</returns>
+    /// <exception cref="NotFoundException">Thrown if the room class does not exist.</exception>
+    /// <exception cref="Exception">Thrown if the transaction cannot be completed successfully.</exception>
+    public async Task<Unit> Handle(
+        UploadRoomClassImageGalleryCommand request, 
+        CancellationToken cancellationToken = default)
     {
         if (!await _roomClassRepository.ExistsAsync(rc => rc.Id == request.RoomClassId, cancellationToken))
         {
@@ -45,7 +62,11 @@ public class UploadRoomClassImageGalleryCommandHandler : IRequestHandler<UploadR
         try
         {
             var publicId = _guidProvider.NewGuid().ToString();
-            var imageUrl = await _imageUploadService.UploadAsync(request.Image, publicId, cancellationToken);
+
+            var imageUrl = await _imageUploadService.UploadAsync(
+                request.Image,
+                publicId, 
+                cancellationToken);
 
             var image = _mapper.Map<Image>(request);
             image.ImageUrl = imageUrl;

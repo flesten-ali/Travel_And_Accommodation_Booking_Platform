@@ -3,8 +3,17 @@ using TABP.Domain.Entities;
 using TABP.Domain.Enums;
 
 namespace TABP.Application.Helpers;
+
+/// <summary>
+/// Provides static methods to build sorting expressions for various entities based on the given pagination parameters.
+/// </summary>
 public class SortBuilder
 {
+    /// <summary>
+    /// Builds a sorting expression for the <see cref="Hotel"/> entity based on the specified pagination parameters.
+    /// </summary>
+    /// <param name="paginationParameters">The pagination parameters, including sorting column and order.</param>
+    /// <returns>A function that applies the sorting to an <see cref="IQueryable{Hotel}"/>.</returns>
     public static Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> BuildHotelSort(
         PaginationParameters paginationParameters)
     {
@@ -27,6 +36,11 @@ public class SortBuilder
         };
     }
 
+    /// <summary>
+    /// Builds a sorting expression for the <see cref="City"/> entity based on the specified pagination parameters.
+    /// </summary>
+    /// <param name="paginationParameters">The pagination parameters, including sorting column and order.</param>
+    /// <returns>A function that applies the sorting to an <see cref="IQueryable{City}"/>.</returns>
     public static Func<IQueryable<City>, IOrderedQueryable<City>> BuildCitySort(
         PaginationParameters paginationParameters)
     {
@@ -45,6 +59,11 @@ public class SortBuilder
         };
     }
 
+    /// <summary>
+    /// Builds a sorting expression for the <see cref="Review"/> entity based on the specified pagination parameters.
+    /// </summary>
+    /// <param name="paginationParameters">The pagination parameters, including sorting column and order.</param>
+    /// <returns>A function that applies the sorting to an <see cref="IQueryable{Review}"/>.</returns>
     public static Func<IQueryable<Review>, IOrderedQueryable<Review>> BuildReviewSort(
         PaginationParameters paginationParameters)
     {
@@ -59,6 +78,11 @@ public class SortBuilder
         };
     }
 
+    /// <summary>
+    /// Builds a sorting expression for the <see cref="RoomClass"/> entity based on the specified pagination parameters.
+    /// </summary>
+    /// <param name="paginationParameters">The pagination parameters, including sorting column and order.</param>
+    /// <returns>A function that applies the sorting to an <see cref="IQueryable{RoomClass}"/>.</returns>
     public static Func<IQueryable<RoomClass>, IOrderedQueryable<RoomClass>> BuildRoomClassSort(
         PaginationParameters paginationParameters)
     {
@@ -81,6 +105,11 @@ public class SortBuilder
         };
     }
 
+    /// <summary>
+    /// Builds a sorting expression for the <see cref="Room"/> entity based on the specified pagination parameters.
+    /// </summary>
+    /// <param name="paginationParameters">The pagination parameters, including sorting column and order.</param>
+    /// <returns>A function that applies the sorting to an <see cref="IQueryable{Room}"/>.</returns>
     public static Func<IQueryable<Room>, IOrderedQueryable<Room>> BuildRoomSort(
      PaginationParameters paginationParameters)
     {
@@ -99,6 +128,11 @@ public class SortBuilder
         };
     }
 
+    /// <summary>
+    /// Builds a sorting expression for the <see cref="CartItem"/> entity based on the specified pagination parameters.
+    /// </summary>
+    /// <param name="paginationParameters">The pagination parameters, including sorting column and order.</param>
+    /// <returns>A function that applies the sorting to an <see cref="IQueryable{CartItem}"/>.</returns>
     public static Func<IQueryable<CartItem>, IOrderedQueryable<CartItem>> BuildCartItemSort(
        PaginationParameters paginationParameters)
     {
@@ -113,6 +147,11 @@ public class SortBuilder
         };
     }
 
+    /// <summary>
+    /// Builds a sorting expression for the <see cref="Discount"/> entity based on the specified pagination parameters.
+    /// </summary>
+    /// <param name="paginationParameters">The pagination parameters, including sorting column and order.</param>
+    /// <returns>A function that applies the sorting to an <see cref="IQueryable{Discount}"/>.</returns>
     public static Func<IQueryable<Discount>, IOrderedQueryable<Discount>> BuildDiscountSort(
       PaginationParameters paginationParameters)
     {

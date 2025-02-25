@@ -10,6 +10,11 @@ using TABP.Domain.Interfaces.Services.Guids;
 using TABP.Domain.Interfaces.Services.Image;
 
 namespace TABP.Application.Hotels.Commands.Thumbnail;
+
+/// <summary>
+/// Handles the process of uploading a hotel thumbnail, ensuring that the hotel exists,
+/// uploading the thumbnail image, replacing any existing thumbnail, and committing the transaction.
+/// </summary>
 public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThumbnailCommand>
 {
     private readonly IHotelRepository _hotelRepository;
@@ -35,6 +40,19 @@ public class UploadHotelThumbnailCommandHandler : IRequestHandler<UploadHotelThu
         _mapper = mapper;
         _guidProvider = guidProvider;
     }
+
+    /// <summary>
+    /// Handles the uploading of a hotel thumbnail image.
+    /// Validates that the hotel exists, uploads the thumbnail, replaces any existing thumbnail image,
+    /// and commits the transaction to ensure the changes are saved.
+    /// </summary>
+    /// <param name="request">The command containing the data required to upload the thumbnail (hotel ID and image data).</param>
+    /// <param name="cancellationToken">The cancellation token used to cancel the operation if needed.</param>
+    /// <returns>A task representing the asynchronous operation. The result is of type <see cref="Unit"/>.</returns>
+    /// <exception cref="NotFoundException">Thrown if the hotel with the given ID does not exist.</exception>
+    /// <exception cref="Exception">
+    /// Thrown if any error occurs during the image upload or transaction process, causing a rollback.
+    /// </exception>
     public async Task<Unit> Handle(UploadHotelThumbnailCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId, cancellationToken))

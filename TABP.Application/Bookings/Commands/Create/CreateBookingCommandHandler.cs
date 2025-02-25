@@ -12,8 +12,12 @@ using TABP.Domain.Interfaces.Services.Date;
 using TABP.Domain.Interfaces.Services.Email;
 using TABP.Domain.Interfaces.Services.Html;
 using TABP.Domain.Interfaces.Services.Pdf;
+
 namespace TABP.Application.Bookings.Commands.Create;
 
+/// <summary>
+/// Handles the creation of a new booking in the system.
+/// </summary>
 public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, BookingResponse>
 {
     private readonly IUserRepository _userRepository;
@@ -52,6 +56,12 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         _dateTimeProvider = dateTimeProvider;
     }
 
+    /// <summary>
+    /// Handles the booking creation process.
+    /// </summary>
+    /// <param name="request">The booking request details.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The created booking details.</returns>
     public async Task<BookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId, cancellationToken))
@@ -128,6 +138,13 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         }
     }
 
+    /// <summary>
+    /// Calculates the total price of the booking based on room prices and discounts.
+    /// </summary>
+    /// <param name="rooms">The list of rooms included in the booking.</param>
+    /// <param name="checkInDate">The check-in date.</param>
+    /// <param name="checkOutDate">The check-out date.</param>
+    /// <returns>The total price for the stay.</returns>
     private double CalculateTotalPrice(IEnumerable<Room> rooms, DateTime checkInDate, DateTime checkOutDate)
     {
         var currentDate = _dateTimeProvider.UtcNow;

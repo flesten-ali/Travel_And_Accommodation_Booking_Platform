@@ -7,6 +7,10 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.CartItems.Commands.Create;
+
+/// <summary>
+/// Handles the command to create a new cart item.
+/// </summary>
 public class CreateCartItemCommandHandler : IRequestHandler<CreateCartItemCommand>
 {
     private readonly ICartItemRepository _cartItemRepository;
@@ -29,6 +33,13 @@ public class CreateCartItemCommandHandler : IRequestHandler<CreateCartItemComman
         _userRepository = userRepository;
     }
 
+    /// <summary>
+    /// Handles the request to create a new cart item.
+    /// </summary>
+    /// <param name="request">The command containing the cart item details.</param>
+    /// <param name="cancellationToken">The cancellation token for handling task cancellation.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the result of the operation.</returns>
+    /// <exception cref="NotFoundException">Thrown when the user or room class does not exist.</exception>
     public async Task<Unit> Handle(CreateCartItemCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _userRepository.ExistsAsync(x => x.Id == request.UserId, cancellationToken))

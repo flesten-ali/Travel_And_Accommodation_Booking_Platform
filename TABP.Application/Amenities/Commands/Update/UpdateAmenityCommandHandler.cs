@@ -6,6 +6,11 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Amenities.Commands.Update;
+
+/// <summary>
+/// Handles the update of an existing amenity by processing an <see cref="UpdateAmenityCommand"/> request.
+/// Implements <see cref="IRequestHandler{TRequest}"/> to handle the request asynchronously.
+/// </summary>
 public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
 {
     private readonly IAmenityRepository _amenityRepository;
@@ -22,6 +27,20 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Handles the update of an amenity.
+    /// </summary>
+    /// <param name="request">The <see cref="UpdateAmenityCommand"/> containing updated amenity details.</param>
+    /// <param name="cancellationToken">A cancellation token to observe while awaiting the asynchronous operation.</param>
+    /// <returns>
+    /// A task representing the asynchronous operation, returning <see cref="Unit.Value"/> when the operation completes successfully.
+    /// </returns>
+    /// <exception cref="NotFoundException">
+    /// Thrown when the amenity with the specified ID is not found.
+    /// </exception>
+    /// <exception cref="ConflictException">
+    /// Thrown when an amenity with the same name already exists.
+    /// </exception>
     public async Task<Unit> Handle(UpdateAmenityCommand request, CancellationToken cancellationToken = default)
     {
         var amenity = await _amenityRepository.GetByIdAsync(request.Id, cancellationToken)

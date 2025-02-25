@@ -6,6 +6,10 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Rooms.Commands.Update;
+
+/// <summary>
+/// Handles the command to update the details of a room.
+/// </summary>
 public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand>
 {
     private readonly IRoomRepository _roomRepository;
@@ -25,7 +29,16 @@ public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Unit> Handle(UpdateRoomCommand request, CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Handles the request to update the details of a room.
+    /// </summary>
+    /// <param name="request">The command containing the updated room information.</param>
+    /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
+    /// <returns>A task representing the asynchronous operation, returning a unit value when completed.</returns>
+    /// <exception cref="NotFoundException">Thrown if the room class or room is not found.</exception>
+    public async Task<Unit> Handle(
+        UpdateRoomCommand request,
+        CancellationToken cancellationToken = default)
     {
         if (!await _roomClassRepository.ExistsAsync(rc => rc.Id == request.RoomClassId, cancellationToken))
         {

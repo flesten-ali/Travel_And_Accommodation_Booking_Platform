@@ -8,6 +8,10 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Reviews.Commands.Create;
+
+/// <summary>
+/// Handles the command to create a review for a hotel.
+/// </summary>
 public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, ReviewResponse>
 {
     private readonly IReviewRepository _reviewRepository;
@@ -29,6 +33,18 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, R
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
+    /// <summary>
+    /// Handles the request to create a review for a hotel.
+    /// </summary>
+    /// <param name="request">The command containing the data for the review to be created.</param>
+    /// <param name="cancellationToken">A token to cancel the operation if needed.</param>
+    /// <returns>
+    /// A task representing the asynchronous operation, returning the review details mapped to the response DTO.
+    /// </returns>
+    /// <exception cref="NotFoundException">
+    /// Thrown if the specified hotel or user does not exist.
+    /// </exception>
     public async Task<ReviewResponse> Handle(CreateReviewCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId, cancellationToken))

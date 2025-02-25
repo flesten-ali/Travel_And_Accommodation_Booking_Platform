@@ -6,8 +6,13 @@ using TABP.Domain.Entities;
 using TABP.Domain.Exceptions;
 using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
+
 namespace TABP.Application.Amenities.Commands.Create;
 
+/// <summary>
+/// Handles the creation of a new amenity by processing a <see cref="CreateAmenityCommand"/> request.
+/// Implements <see cref="IRequestHandler{TRequest, TResponse}"/> to handle the request asynchronously.
+/// </summary>
 public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand, AmenityResponse>
 {
     private readonly IAmenityRepository _amenityRepository;
@@ -24,6 +29,17 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Handles the creation of an amenity.
+    /// </summary>
+    /// <param name="request">The <see cref="CreateAmenityCommand"/> containing the new amenity details.</param>
+    /// <param name="cancellationToken">A cancellation token to observe while awaiting the asynchronous operation.</param>
+    /// <returns>
+    /// A task representing the asynchronous operation, returning an <see cref="AmenityResponse"/> containing the newly created amenity details.
+    /// </returns>
+    /// <exception cref="ConflictException">
+    /// Thrown when an amenity with the same name already exists in the system.
+    /// </exception>
     public async Task<AmenityResponse> Handle(
         CreateAmenityCommand request,
         CancellationToken cancellationToken = default)

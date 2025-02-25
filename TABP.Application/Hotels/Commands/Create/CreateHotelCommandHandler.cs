@@ -8,6 +8,10 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Hotels.Commands.Create;
+
+/// <summary>
+/// Handles the creation of a new hotel by validating the input and saving it to the database.
+/// </summary>
 public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, HotelResponse>
 {
     private readonly IHotelRepository _hotelRepository;
@@ -30,6 +34,14 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    /// Handles the creation of a hotel by validating the city, owner, and location, then saving the new hotel to the database.
+    /// </summary>
+    /// <param name="request">The command containing the data for creating a hotel.</param>
+    /// <param name="cancellationToken">The cancellation token to cancel the operation if needed.</param>
+    /// <returns>A task representing the asynchronous operation, with a <see cref="HotelResponse"/> as the result.</returns>
+    /// <exception cref="NotFoundException">Thrown if the city or owner does not exist in the database.</exception>
+    /// <exception cref="ConflictException">Thrown if a hotel already exists at the given location (latitude and longitude).</exception>
     public async Task<HotelResponse> Handle(CreateHotelCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _cityRepository.ExistsAsync(c => c.Id == request.CityId, cancellationToken))

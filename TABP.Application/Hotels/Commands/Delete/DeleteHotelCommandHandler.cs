@@ -6,6 +6,11 @@ using TABP.Domain.Interfaces.Persistence;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 
 namespace TABP.Application.Hotels.Commands.Delete;
+
+/// <summary>
+/// Handles the deletion of a hotel by validating the hotel existence and ensuring there are no associated room classes,
+/// then performing the deletion while also handling the related image deletions (e.g., thumbnail and gallery images).
+/// </summary>
 public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
 {
     private readonly IHotelRepository _hotelRepository;
@@ -25,6 +30,16 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
         _imageRepository = imageRepository;
     }
 
+    /// <summary>
+    /// Handles the deletion of a hotel by validating the existence of the hotel and checking if any room classes are associated with it.
+    /// Deletes the hotel and its associated images, and commits the transaction.
+    /// </summary>
+    /// <param name="request">The command containing the hotel ID to be deleted.</param>
+    /// <param name="cancellationToken">The cancellation token for cancelling the operation if necessary.</param>
+    /// <returns>A task representing the asynchronous operation. The result is of type <see cref="Unit"/>.</returns>
+    /// <exception cref="NotFoundException">Thrown if the hotel does not exist.</exception>
+    /// <exception cref="ConflictException">Thrown if the hotel has associated room classes.</exception>
+    /// <exception cref="Exception">Thrown if an error occurs during the operation, causing a rollback of the transaction.</exception>
     public async Task<Unit> Handle(DeleteHotelCommand request, CancellationToken cancellationToken = default)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.Id, cancellationToken))
