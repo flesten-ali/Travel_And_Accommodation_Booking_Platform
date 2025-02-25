@@ -29,7 +29,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
     {
         var hotels = DbSet.Where(filter);
 
-        var selectedResult = orderBy(hotels).Select(h => new SearchHotelResult
+        var selectedResult = orderBy(hotels).Select(h => new SearchHotelResult(default, default, null, default, default, null)
         {
             Name = h.Name,
             Description = h.Description,
@@ -77,7 +77,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
             })
             .OrderBy(x => x.DiscountedPrice)
             .Take(limit)
-            .Select(x => new FeaturedDealResult
+            .Select(x => new FeaturedDealResult(default, default, null, default, default, default, default, default)
             {
                 Description = x.Hotel.Description,
                 CityName = x.Hotel.City.Name,
@@ -113,7 +113,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
     {
         var allHotels = DbSet.AsNoTracking();
 
-        var hotels = orderBy(allHotels).Select(h => new HotelForAdminResult
+        var hotels = orderBy(allHotels).Select(h => new HotelForAdminResult(default, default, default, default, default, default, null)
         {
             Id = h.Id,
             CityName = h.City.Name,

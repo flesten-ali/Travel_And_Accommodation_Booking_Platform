@@ -3,7 +3,7 @@ public record FeaturedDealResponse(
     Guid Id,
     string Name,
     string? Description, 
-    int StarRate,
+    int Rate,
     string CityName, 
     string ThumbnailUrl,
     double OriginalPrice, 

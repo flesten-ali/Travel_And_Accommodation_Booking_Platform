@@ -57,7 +57,7 @@ public class RoomClassRepository(AppDbContext context) : Repository<RoomClass>(c
     {
         var allRoomClasses = DbSet.AsNoTracking();
 
-        var roomClasses = orderBy(allRoomClasses).Select(rc => new RoomClassForAdminResult
+        var roomClasses = orderBy(allRoomClasses).Select(rc => new RoomClassForAdminResult(default, default, null, default, default, default, default)
         {
             Description = rc.Description,
             Id = rc.Id,

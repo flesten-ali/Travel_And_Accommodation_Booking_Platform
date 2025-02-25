@@ -1,3 +1,3 @@
 ﻿namespace TABP.Domain.Models;
 
-public record PaginatedResponse<T>(IEnumerable<T> Items, PaginationMetaData PaginationMetaData);
+public sealed record PaginatedResponse<T>(IEnumerable<T> Items, PaginationMetaData PaginationMetaData);

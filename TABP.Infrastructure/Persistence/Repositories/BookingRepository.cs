@@ -36,7 +36,7 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
                          .ToListAsync(cancellationToken);
 
         var recentlyVisitedHotels = query
-                          .Select(x => new RecentlyVisitedHotelsResult
+                          .Select(x => new RecentlyVisitedHotelsResult(default, default, default, default, default, default, default, default, default, default)
                           {
                               Id = x.hotel.Id,
                               Name = x.hotel.Name,
@@ -79,7 +79,7 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
             .OrderByDescending(g => g.Count())
             .Take(limit)
             .Select(g => new { city = g.Key })
-            .Select(x => new TrendingCitiesResult
+            .Select(x => new TrendingCitiesResult(default, default, default)
             {
                 Id = x.city.Id,
                 Name = x.city.Name,

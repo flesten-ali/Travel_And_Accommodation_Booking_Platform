@@ -25,7 +25,7 @@ public class CityRepository(AppDbContext context) : Repository<City>(context), I
     {
         var allCities = DbSet.AsNoTracking();
 
-        var cities = orderBy(allCities).Select(c => new CityForAdminResult
+        var cities = orderBy(allCities).Select(c => new CityForAdminResult(default, default, default, default, default, default, null)
         {
             Id = c.Id,
             Name = c.Name,

@@ -4,6 +4,6 @@ public sealed record SearchHotelResponse(
     Guid Id, 
     string Name,
     string? ThumbnailUrl,
-    int StarRating, 
+    int Rate, 
     double PricePerNight, 
     string? Description);

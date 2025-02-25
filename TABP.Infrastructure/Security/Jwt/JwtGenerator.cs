@@ -61,7 +61,7 @@ public class JwtGenerator : IJwtGenerator
 
         var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-        return new JwtToken
+        return new JwtToken(default)
         {
             Token = token,
         };
