@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TABP.Domain.Interfaces.Persistence;
 
 namespace TABP.Infrastructure.Persistence.DbContexts;
+
 public static class DatabaseDependencyInjection
 {
     public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)

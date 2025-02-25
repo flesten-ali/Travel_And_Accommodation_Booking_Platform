@@ -5,6 +5,7 @@ using TABP.Infrastructure.Persistence.DbContexts;
 using TABP.Infrastructure.Persistence.Repositories;
 using TABP.Infrastructure.Security;
 using TABP.Infrastructure.Services;
+
 namespace TABP.Infrastructure;
 
 public static class InfrastructureDependencyInjection

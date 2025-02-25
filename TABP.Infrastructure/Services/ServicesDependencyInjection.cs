@@ -16,6 +16,7 @@ using TABP.Infrastructure.Services.Image;
 using TABP.Infrastructure.Services.Pdf;
 
 namespace TABP.Infrastructure.Services;
+
 public static class ServicesDependencyInjection
 {
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)

@@ -6,8 +6,12 @@ using System.Text;
 using TABP.Domain.Entities;
 using TABP.Domain.Interfaces.Security.Jwt;
 using TABP.Domain.Models;
+
 namespace TABP.Infrastructure.Security.Jwt;
 
+/// <summary>
+/// Handles JWT (JSON Web Token) generation for user authentication.
+/// </summary>
 public class JwtGenerator : IJwtGenerator
 {
     private readonly JwtConfig _jwtConfig;
@@ -17,6 +21,23 @@ public class JwtGenerator : IJwtGenerator
         _jwtConfig = jwtConfigOptions.Value;
     }
 
+    /// <summary>
+    /// Generates a JWT access token for the specified user.
+    /// </summary>
+    /// <param name="user">The user for whom the token is being generated.</param>
+    /// <returns>A <see cref="JwtToken"/> containing the generated access token.</returns>
+    /// <remarks>
+    /// The token includes the user's ID (`sub` claim), username, and role. 
+    /// The token is signed using HMAC SHA-256 and is valid for the configured expiration time.
+    /// </remarks>
+    /// <example>
+    /// Example usage:
+    /// <code>
+    /// var jwtGenerator = new JwtGenerator(options);
+    /// var token = jwtGenerator.GenerateToken(user);
+    /// Console.WriteLine(token.Token);
+    /// </code>
+    /// </example>
     public JwtToken GenerateToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));

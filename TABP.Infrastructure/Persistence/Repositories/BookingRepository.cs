@@ -4,10 +4,18 @@ using TABP.Domain.Enums;
 using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 using TABP.Infrastructure.Persistence.DbContexts;
+
 namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class BookingRepository(AppDbContext context) : Repository<Booking>(context), IBookingRepository
 {
+    /// <summary>
+    /// Retrieves a list of recently visited hotels by a guest.
+    /// </summary>
+    /// <param name="guestId">The unique identifier of the guest.</param>
+    /// <param name="limit">The maximum number of results to return.</param>
+    /// <param name="cancellationToken">Cancellation token for async operation.</param>
+    /// <returns>A collection of recently visited hotels.</returns>
     public async Task<IEnumerable<RecentlyVisitedHotelsResult>> GetRecentlyVisitedHotelsAsync(
         Guid guestId,
         int limit,
@@ -51,6 +59,12 @@ public class BookingRepository(AppDbContext context) : Repository<Booking>(conte
         return recentlyVisitedHotels;
     }
 
+    /// <summary>
+    /// Retrieves a list of trending cities based on booking activity.
+    /// </summary>
+    /// <param name="limit">The maximum number of trending cities to return.</param>
+    /// <param name="cancellationToken">Cancellation token for async operation.</param>
+    /// <returns>A collection of trending cities.</returns>
     public async Task<IEnumerable<TrendingCitiesResult>> GetTrendingCitiesAsync(
         int limit,
         CancellationToken cancellationToken = default)

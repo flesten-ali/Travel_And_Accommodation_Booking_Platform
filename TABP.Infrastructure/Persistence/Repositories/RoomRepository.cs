@@ -12,6 +12,14 @@ public class RoomRepository(AppDbContext context, IDateTimeProvider dateTimeProv
 {
     private readonly IDateTimeProvider _dateTimeProvider;
 
+    /// <summary>
+    /// Asynchronously retrieves a paginated list of rooms for administrative purposes, ordered by the specified criteria.
+    /// </summary>
+    /// <param name="orderBy">A function to apply sorting to the rooms.</param>
+    /// <param name="pageSize">The number of rooms to return per page.</param>
+    /// <param name="pageNumber">The page number of results to return.</param>
+    /// <param name="cancellationToken">A cancellation token to observe while awaiting the asynchronous operation.</param>
+    /// <returns>A task representing the asynchronous operation, returning a paginated response with room details for admin.</returns>
     public async Task<PaginatedResponse<RoomForAdminResult>> GetRoomsForAdminAsync(
         Func<IQueryable<Room>, IOrderedQueryable<Room>> orderBy,
         int pageSize,

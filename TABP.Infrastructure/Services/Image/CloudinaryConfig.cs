@@ -1,4 +1,5 @@
-﻿namespace TABP.Infrastructure.Services.Image;
+﻿namespace TABP.Infrastructure.Services.Image; 
+
 public class CloudinaryConfig
 {
     public string Cloud { get; set; }

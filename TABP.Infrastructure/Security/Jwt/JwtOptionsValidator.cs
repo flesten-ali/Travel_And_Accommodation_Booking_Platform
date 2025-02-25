@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+
 namespace TABP.Infrastructure.Security.Jwt;
 
 public class JwtOptionsValidator : AbstractValidator<JwtConfig>

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 
 namespace TABP.Infrastructure.Services.Image;
+
 public class CloudinaryOptionsValidator : AbstractValidator<CloudinaryConfig>
 {
     public CloudinaryOptionsValidator()

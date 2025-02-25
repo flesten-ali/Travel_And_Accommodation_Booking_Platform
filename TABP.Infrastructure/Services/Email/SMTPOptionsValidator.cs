@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 
 namespace TABP.Infrastructure.Services.Email;
+
 public class SMTPOptionsValidator : AbstractValidator<SMTPConfig>
 {
     public SMTPOptionsValidator()

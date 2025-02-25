@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TABP.Domain.Entities;
+
 namespace TABP.Infrastructure.Persistence.DbContexts;
 
 public class AppDbContext : DbContext
@@ -22,7 +23,7 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyReference).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 }

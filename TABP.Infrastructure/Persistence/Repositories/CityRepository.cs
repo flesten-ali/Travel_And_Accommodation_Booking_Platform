@@ -6,8 +6,17 @@ using TABP.Infrastructure.Extensions;
 using TABP.Infrastructure.Persistence.DbContexts;
 
 namespace TABP.Infrastructure.Persistence.Repositories;
+
 public class CityRepository(AppDbContext context) : Repository<City>(context), ICityRepository
 {
+    /// <summary>
+    /// Retrieves a paginated list of cities with their respective hotel count, ordered by the specified function.
+    /// </summary>
+    /// <param name="orderBy">Function to order the cities query.</param>
+    /// <param name="pageSize">Number of items per page.</param>
+    /// <param name="pageNumber">Page number for pagination.</param>
+    /// <param name="cancellationToken">Cancellation token for async operation.</param>
+    /// <returns>A paginated response containing city information and pagination metadata.</returns>
     public async Task<PaginatedResponse<CityForAdminResult>> GetCitiesForAdminAsync(
         Func<IQueryable<City>, IOrderedQueryable<City>> orderBy,
         int pageSize,

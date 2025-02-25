@@ -1,6 +1,7 @@
 ﻿using TABP.Domain.Interfaces.Services.Date;
 
 namespace TABP.Infrastructure.Services.Date;
+
 public class DateTimeProvider : IDateTimeProvider
 {
     private DateTime _date;

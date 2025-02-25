@@ -1,4 +1,5 @@
 ﻿namespace TABP.Infrastructure.Services.Email;
+
 public class SMTPConfig
 {
     public string Host { get; set; }

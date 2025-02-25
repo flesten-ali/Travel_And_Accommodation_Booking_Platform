@@ -2,6 +2,7 @@
 using TABP.Domain.Interfaces.Services.Html;
 
 namespace TABP.Infrastructure.Services.Html;
+
 public class InvoiceHtmlGenerationService : IInvoiceHtmlGenerationService
 {
     public string GenerateHtml(Booking booking)

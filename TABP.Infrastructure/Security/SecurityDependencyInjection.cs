@@ -5,6 +5,7 @@ using TABP.Infrastructure.Security.Jwt;
 using TABP.Infrastructure.Security.Password;
 
 namespace TABP.Infrastructure.Security;
+
 public static class SecurityDependencyInjection
 {
     public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration configuration)

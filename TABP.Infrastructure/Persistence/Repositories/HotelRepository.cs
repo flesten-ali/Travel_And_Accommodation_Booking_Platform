@@ -6,10 +6,20 @@ using TABP.Domain.Interfaces.Persistence.Repositories;
 using TABP.Domain.Models;
 using TABP.Infrastructure.Extensions;
 using TABP.Infrastructure.Persistence.DbContexts;
+
 namespace TABP.Infrastructure.Persistence.Repositories;
 
 public class HotelRepository(AppDbContext context) : Repository<Hotel>(context), IHotelRepository
 {
+    /// <summary>
+    /// Searches for hotels based on a filter and returns a paginated list of hotel search results.
+    /// </summary>
+    /// <param name="filter">The filter expression used to query hotels.</param>
+    /// <param name="orderBy">Function to order the hotels query.</param>
+    /// <param name="pageSize">Number of items per page.</param>
+    /// <param name="pageNumber">Page number for pagination.</param>
+    /// <param name="cancellationToken">Cancellation token for async operation.</param>
+    /// <returns>A paginated response containing hotel search results and pagination metadata.</returns>
     public async Task<PaginatedResponse<SearchHotelResult>> SearchHotelsAsync(
         Expression<Func<Hotel, bool>> filter,
         Func<IQueryable<Hotel>, IOrderedQueryable<Hotel>> orderBy,
@@ -38,6 +48,12 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         return new PaginatedResponse<SearchHotelResult>(await resultToReturn.ToListAsync(cancellationToken), paginationMetaData);
     }
 
+    /// <summary>
+    /// Retrieves a list of featured hotel deals, ordered by discounted price.
+    /// </summary>
+    /// <param name="limit">The maximum number of featured deals to return.</param>
+    /// <param name="cancellationToken">Cancellation token for async operation.</param>
+    /// <returns>A list of featured hotel deals with their details.</returns>
     public async Task<IEnumerable<FeaturedDealResult>> GetFeaturedDealsAsync(
         int limit,
         CancellationToken cancellationToken = default)
@@ -81,6 +97,14 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
         return featuredDeals;
     }
 
+    /// <summary>
+    /// Retrieves a paginated list of hotels for admin management, ordered by the specified function.
+    /// </summary>
+    /// <param name="orderBy">Function to order the hotels query.</param>
+    /// <param name="pageSize">Number of items per page.</param>
+    /// <param name="pageNumber">Page number for pagination.</param>
+    /// <param name="cancellationToken">Cancellation token for async operation.</param>
+    /// <returns>A paginated response containing hotel details for admin management and pagination metadata.</returns>
     public async Task<PaginatedResponse<HotelForAdminResult>> GetHotelsForAdminAsync(
         Func<IQueryable<Hotel>,IOrderedQueryable<Hotel>> orderBy,
         int pageSize,

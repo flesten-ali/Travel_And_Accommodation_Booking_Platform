@@ -1,27 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using TABP.Domain.Interfaces.Persistence;
+
 namespace TABP.Infrastructure.Persistence.DbContexts;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    private readonly AppDbContext _context;
     private IDbContextTransaction _transaction;
-
-    public UnitOfWork(AppDbContext context)
-    {
-        _context = context;
-    }
 
     public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
-        _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+        _transaction = await context.Database.BeginTransactionAsync(cancellationToken);
     }
 
     public async Task CommitAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            await _context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
             await _transaction.CommitAsync(cancellationToken);
         }
         catch
@@ -41,7 +36,7 @@ public class UnitOfWork : IUnitOfWork
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return _context.SaveChangesAsync(cancellationToken);
+        return context.SaveChangesAsync(cancellationToken);
     }
 
     public void Dispose()
