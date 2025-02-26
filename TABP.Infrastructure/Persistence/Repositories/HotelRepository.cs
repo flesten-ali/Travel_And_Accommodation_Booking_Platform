@@ -29,11 +29,11 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
     {
         var hotels = DbSet.Where(filter);
 
-        var selectedResult = orderBy(hotels).Select(h => new SearchHotelResult(default, default, null, default, default, null)
+        var selectedResult = orderBy(hotels).Select(h => new SearchHotelResult 
         {
             Name = h.Name,
             Description = h.Description,
-            StarRating = h.Rate,
+            Rate = h.Rate,
             PricePerNight = h.RoomClasses.Count != 0 ? h.RoomClasses.Min(rc => rc.Price) : 0,
             ThumbnailUrl = context.Images
                    .Where(img => img.ImageableId == h.Id && img.ImageType == ImageType.Thumbnail)
@@ -77,13 +77,13 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
             })
             .OrderBy(x => x.DiscountedPrice)
             .Take(limit)
-            .Select(x => new FeaturedDealResult(default, default, null, default, default, default, default, default)
+            .Select(x => new FeaturedDealResult
             {
                 Description = x.Hotel.Description,
                 CityName = x.Hotel.City.Name,
                 Id = x.Hotel.Id,
                 Name = x.Hotel.Name,
-                StarRate = x.Hotel.Rate,
+                Rate = x.Hotel.Rate,
                 ThumbnailUrl = context.Images
                        .Where(img => img.ImageableId == x.Hotel.Id && img.ImageType == ImageType.Thumbnail)
                        .Select(img => img.ImageUrl)
@@ -113,7 +113,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
     {
         var allHotels = DbSet.AsNoTracking();
 
-        var hotels = orderBy(allHotels).Select(h => new HotelForAdminResult(default, default, default, default, default, default, null)
+        var hotels = orderBy(allHotels).Select(h => new HotelForAdminResult
         {
             Id = h.Id,
             CityName = h.City.Name,

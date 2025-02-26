@@ -1,3 +1,8 @@
 ﻿namespace TABP.Domain.Models;
 
-public sealed record TrendingCitiesResult(Guid Id, string Name, string ThumbnailUrl);
+public class TrendingCitiesResult
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string ThumbnailUrl { get; set; }
+}

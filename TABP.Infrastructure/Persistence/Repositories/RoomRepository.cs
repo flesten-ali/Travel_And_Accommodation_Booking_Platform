@@ -29,7 +29,7 @@ public class RoomRepository(AppDbContext context, IDateTimeProvider dateTimeProv
         var currentDate = _dateTimeProvider.UtcNow;
         var allRooms = DbSet.AsNoTracking();
 
-        var rooms = orderBy(allRooms).Select(room => new RoomForAdminResult(default, default, default, default)
+        var rooms = orderBy(allRooms).Select(room => new RoomForAdminResult 
         {
             RoomNumber = room.RoomNumber,
             Floor = room.Floor,
