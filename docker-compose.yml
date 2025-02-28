@@ -1,0 +1,50 @@
+version: "3.9"
+
+networks:
+  tabp_network:  
+    driver: bridge
+
+services:
+  tabp.webapi:
+    image: tabp.webapi
+    build:
+      context: .
+      dockerfile: TABP.WebAPI/Dockerfile  
+    ports:
+      - "7016:7016"
+    depends_on: 
+      - "sqlserver"
+    environment:
+      - ASPNETCORE__URLS=http://+:7016
+      - JwtAuthConfig__Key=${JwtAuthConfig__Key}
+      - JwtAuthConfig__Issuer=${JwtAuthConfig__Issuer}
+      - JwtAuthConfig__Audience=${JwtAuthConfig__Audience}
+      - ConnectionStrings__SqlServer=${ConnectionStrings__SqlServer}
+      - CloudinaryConfig__Cloud=${CloudinaryConfig__Cloud}
+      - CloudinaryConfig__ApiKey=${CloudinaryConfig__ApiKey}
+      - CloudinaryConfig__ApiSecret=${CloudinaryConfig__ApiSecret}
+      - SMTPConfig__Host=${SMTPConfig__Host}
+      - SMTPConfig__Port=${SMTPConfig__Port}
+      - SMTPConfig__From=${SMTPConfig__From}
+      - SMTPConfig__Password=${SMTPConfig__Password}
+    volumes:
+      - ./TABP.WebAPI/logs:/logs
+    networks:
+      - tabp_network
+
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    ports:
+      - "1433:1433"
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - tabp_network
+ 
+volumes:
+  sqlserver_data:
+
