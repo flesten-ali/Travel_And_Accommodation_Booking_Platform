@@ -11,7 +11,6 @@ public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
             .EmailAddress().WithMessage("Invalid email format.");
 
         RuleFor(x => x.Password)
-            .NotEmpty().WithMessage("Password is required.")
-            .MinimumLength(8).WithMessage("Password must be at least 8 characters long.");
+            .NotEmpty().WithMessage("Password is required.");
     }
 }
