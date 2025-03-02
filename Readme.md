@@ -14,7 +14,7 @@ This project is a **RESTful API** for an advanced **Travel and Accommodation Boo
 - ✅ **Admin Panel** for managing hotels, rooms, and cities
 - ✅ **API Versioning** (Supports multiple API versions)
 - ✅ **Logging & Monitoring** (Serilog integration)
-- ✅ **Role-based Access Control** (Admin, User)
+- ✅ **Role-based Access Control** (Admin, Guest)
 - ✅ **Swagger API Documentation**
 - ✅ **Dockerized for easy deployment**
 
