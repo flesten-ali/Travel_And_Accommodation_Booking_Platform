@@ -11,11 +11,11 @@ services:
       context: .
       dockerfile: TABP.WebAPI/Dockerfile  
     ports:
-      - "7016:7016"
+      - "8080:8080"
     depends_on: 
       - "sqlserver"
     environment:
-      - ASPNETCORE__URLS=http://+:7016
+      - ASPNETCORE__URLS=http://+:8080
       - JwtAuthConfig__Key=${JwtAuthConfig__Key}
       - JwtAuthConfig__Issuer=${JwtAuthConfig__Issuer}
       - JwtAuthConfig__Audience=${JwtAuthConfig__Audience}
