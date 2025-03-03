@@ -39,10 +39,10 @@ jobs:
           name: webapp
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
- deploy:
-  runs-on: windows-latest
-  needs: build
-  steps:
+  deploy:
+   runs-on: windows-latest
+   needs: build
+   steps:
     - name: Log in to Azure
       uses: azure/login@v1
       with:
