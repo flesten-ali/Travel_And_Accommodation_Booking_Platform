@@ -22,21 +22,20 @@ app.UseExceptionHandler();
 
 app.UseSerilogRequestLogging();
 
-if (app.Environment.IsDevelopment())
+
+app.UseSwagger();
+app.UseSwaggerUI(opt =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(opt =>
+    var descriptions = app.DescribeApiVersions();
+    foreach (var desc in descriptions)
     {
-        var descriptions = app.DescribeApiVersions();
-        foreach (var desc in descriptions)
-        {
-            opt.SwaggerEndpoint(
-               $"/swagger/{desc.GroupName}/swagger.json",
-                 desc.GroupName.ToUpperInvariant()
-            );
-        }
-    });
-}
+        opt.SwaggerEndpoint(
+           $"/swagger/{desc.GroupName}/swagger.json",
+             desc.GroupName.ToUpperInvariant()
+        );
+    }
+});
+
 
 app.UseHttpsRedirection();
 
