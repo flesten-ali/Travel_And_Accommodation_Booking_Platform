@@ -244,6 +244,14 @@ To log in as an Admin, use the following credentials:
 - Email: admin@example.com
 - Password: admin
 
+## 🌍 Live Deployment
+
+This project is **deployed to Microsoft Azure**! 🎉
+
+🔗 **Live API URL:** [https://tabp1-fndzfge4b3g3efgp.canadacentral-01.azurewebsites.net/swagger/index.html]
+
+📌 **Note:** The API is hosted on **Azure App Service** and connected to an **Azure SQL Database**.
+
 ## 🤝 Contributing
 
 Contributions are welcome! If you’d like to improve this project, follow these steps:
