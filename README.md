@@ -88,23 +88,26 @@ To run this project, you need to configure your environment variables.
 
 ```ini
 # Database Configuration
-CONNECTION_STRING="Server=your-server;Database=your-db;User Id=your-user;Password=your-password;TrustServerCertificate=True;"
+DB__PASSWORD="your_database_password"
 
-# JWT Authentication
-JWT_SECRET="your-secret-key"
-JwtAuthConfig__Issuer="https://localhost:8080"
-JwtAuthConfig__Audience="TABP"
+# JWT Authentication Configuration
+JwtAuthConfig__Key="your_jwt_secret_key"
+JwtAuthConfig__Issuer="https://your-issuer-url"
+JwtAuthConfig__Audience="your-audience"
+
+# Connection String for SQL Server
+ConnectionStrings__SqlServer="Server=your_server;Database=your_database;User Id=your_user;Password=your_password;TrustServerCertificate=True;"
 
 # Cloudinary Configuration
-CLOUDINARY_CLOUD_NAME="your-cloud-name"
-CLOUDINARY_API_KEY="your-api-key"
-CLOUDINARY_API_SECRET="your-api-secret"
+CloudinaryConfig__Cloud="your_cloudinary_cloud"
+CloudinaryConfig__ApiKey="your_cloudinary_api_key"
+CloudinaryConfig__ApiSecret="your_cloudinary_api_secret"
 
 # SMTP Email Configuration
-SMTPConfig__Host="smtp.gmail.com"
+SMTPConfig__Host="smtp.your-email-provider.com"
 SMTPConfig__Port=587
-SMTPConfig__From="your-email@gmail.com"
-SMTPConfig__Password="your-email-app-password"
+SMTPConfig__From="your_email@example.com"
+SMTPConfig__Password="your_email_app_password"
 ```
 
 3.  Run the Application
