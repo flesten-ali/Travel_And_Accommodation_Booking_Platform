@@ -1,0 +1,49 @@
+﻿using FluentValidation;
+using TABP.Presentation.DTOs.Hotel;
+using TABP.Presentation.Validators.Common;
+
+namespace TABP.Presentation.Validators.Hotel;
+public class SearchHotelRequestValidator : AbstractValidator<SearchHotelRequest>
+{
+    public SearchHotelRequestValidator()
+    {
+        RuleFor(x => x.City)
+           .NotEmpty().WithMessage("City is required.")
+           .MaximumLength(100).WithMessage("City name cannot exceed 100 characters.");
+
+        RuleFor(x => x.CheckInDate)
+            .NotEmpty().WithMessage("Check-in date is required. Format: MM-dd-yyyy.")
+            .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Check-in date cannot be in the past.")
+            .LessThan(x => x.CheckOutDate)
+            .WithMessage("Check-in date must be before the check-out date.");
+
+        RuleFor(x => x.CheckOutDate)
+            .NotEmpty().WithMessage("Check-out date is required. Format: MM-dd-yyyy.")
+            .GreaterThan(x => x.CheckInDate)
+            .WithMessage("Check-out date must be after the check-in date.");
+
+        RuleFor(x => x.ChildrenCapacity)
+            .GreaterThanOrEqualTo(0).WithMessage("Children capacity cannot be negative.");
+
+        RuleFor(x => x.AdultsCapacity)
+            .GreaterThan(0).WithMessage("Adults capacity must be at least 1.");
+
+        RuleFor(x => x.NumberOfRooms)
+            .GreaterThan(0).WithMessage("Number of rooms must be at least 1.");
+
+        RuleFor(x => x.MinPrice)
+            .GreaterThanOrEqualTo(0).WithMessage("Min price cannot be negative.")
+            .LessThanOrEqualTo(x => x.MaxPrice).When(x => x.MaxPrice.HasValue)
+            .WithMessage("Min price cannot be greater than max price.");
+
+        RuleFor(x => x.MaxPrice)
+            .GreaterThanOrEqualTo(0).WithMessage("Max price cannot be negative.");
+
+        RuleFor(x => x.StarRating)
+            .InclusiveBetween(1, 5).When(x => x.StarRating.HasValue)
+            .WithMessage("Star rating must be between 1 and 5.");
+
+        RuleFor(r => r.PaginationParameters)
+           .SetValidator(new PaginationParametersValidator());
+    }
+}
