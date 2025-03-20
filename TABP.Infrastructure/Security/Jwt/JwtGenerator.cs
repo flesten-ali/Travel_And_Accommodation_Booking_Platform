@@ -41,7 +41,7 @@ public class JwtGenerator : IJwtGenerator
     public JwtToken GenerateToken(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
-        var signingCredantials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>()
         {
@@ -56,14 +56,11 @@ public class JwtGenerator : IJwtGenerator
             claims,
             DateTime.UtcNow,
             DateTime.UtcNow.AddMinutes(_jwtConfig.ExpirationTimeInMinutes),
-            signingCredantials
+            signingCredentials
         );
 
         var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
-        return new JwtToken(default)
-        {
-            Token = token,
-        };
+        return new JwtToken(token);
     }
 }

@@ -158,8 +158,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
                                .DefaultIfEmpty(0)
                                .Max();
 
-            var discoutedPrice = price * (1 - discount / 100);
-            return discoutedPrice;
+            var discountedPrice = price * (1 - discount / 100);
+            return discountedPrice;
         });
 
         var stayDuration = (checkOutDate - checkInDate).Days;

@@ -13,17 +13,17 @@ public static class ApplicationDependencyInjection
                        .AddPipelineBehavior();
     }
 
-    public static IServiceCollection AddMediator(this IServiceCollection services)
+    private static IServiceCollection AddMediator(this IServiceCollection services)
     {
         return services.AddMediatR(Assembly.GetExecutingAssembly());
     }
 
-    public static IServiceCollection AddMapper(this IServiceCollection services)
+    private static IServiceCollection AddMapper(this IServiceCollection services)
     {
         return services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
- 
-    public static IServiceCollection AddPipelineBehavior(this IServiceCollection services)
+
+    private static IServiceCollection AddPipelineBehavior(this IServiceCollection services)
     {
         return services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
     }

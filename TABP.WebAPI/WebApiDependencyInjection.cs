@@ -13,9 +13,9 @@ public static class WebApiDependencyInjection
                        .AddExceptionHandler<GlobalExceptionHandler>();
     }
 
-    public static IServiceCollection AddControllers(this IServiceCollection services)
+    private static IServiceCollection AddControllers(this IServiceCollection services)
     {
-        var presentaionAssembly = typeof(Presentation.AssemblyReference).Assembly;
+        var presentationAssembly = typeof(Presentation.AssemblyReference).Assembly;
 
         services.AddControllers(opt =>
         {
@@ -26,7 +26,7 @@ public static class WebApiDependencyInjection
            opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
            opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
        })
-       .AddApplicationPart(presentaionAssembly);
+       .AddApplicationPart(presentationAssembly);
 
         return services;
     }

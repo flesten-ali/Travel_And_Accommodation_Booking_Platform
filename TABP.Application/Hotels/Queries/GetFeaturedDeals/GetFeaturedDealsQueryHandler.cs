@@ -28,7 +28,6 @@ public class GetFeaturedDealsQueryHandler : IRequestHandler<GetFeaturedDealsQuer
     /// A task representing the asynchronous operation. The result is a collection of <see cref="FeaturedDealResponse"/>.
     /// </returns>
     /// <exception cref="ArgumentException">Thrown if the limit specified in the query is less than 1.</exception>
-    /// <exception cref="NotFoundException">Thrown if no featured deals are found.</exception>
     public async Task<IEnumerable<FeaturedDealResponse>> Handle(
         GetFeaturedDealsQuery request,
         CancellationToken cancellationToken = default)

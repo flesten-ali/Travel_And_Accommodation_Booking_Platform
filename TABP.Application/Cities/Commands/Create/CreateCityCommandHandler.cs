@@ -9,7 +9,7 @@ namespace TABP.Application.Cities.Commands.Create;
 
 /// <summary>
 /// Handles the command to create a new city.
-/// </summar
+/// </summary>
 public class CreateCityCommandHandler : IRequestHandler<CreateCityCommand, CityResponse>
 {
     private readonly ICityRepository _cityRepository;

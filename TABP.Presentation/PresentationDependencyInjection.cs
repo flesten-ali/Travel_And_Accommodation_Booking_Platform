@@ -19,7 +19,7 @@ public static class PresentationDependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddApiVersioning(this IServiceCollection services)
+    private static IServiceCollection AddApiVersioning(this IServiceCollection services)
     {
         services.AddApiVersioning(opt =>
         {
@@ -38,7 +38,7 @@ public static class PresentationDependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    private static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         var apiVersionDescriptionProvider = services.BuildServiceProvider()
                 .GetRequiredService<IApiVersionDescriptionProvider>();
@@ -90,7 +90,7 @@ public static class PresentationDependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddFluentValidations(this IServiceCollection services)
+    private static IServiceCollection AddFluentValidations(this IServiceCollection services)
     {
         return services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AssemblyReference>());
     }

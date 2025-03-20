@@ -21,7 +21,7 @@ public static class ClaimPrincipalExtensions
     /// </exception>
     public static Guid GetUserId(this ClaimsPrincipal? principal)
     {
-        string? userId = principal?.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = principal?.FindFirstValue(ClaimTypes.NameIdentifier);
 
         return Guid.TryParse(userId, out var result) ? result : throw new ArgumentNullException();
     }
