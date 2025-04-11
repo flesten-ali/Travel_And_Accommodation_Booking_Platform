@@ -162,8 +162,6 @@ docker-compose up --build
 
 ### Discounts
 
-## Discounts Endpoints
-
 | HTTP Method | Endpoint                                                                         | Description                                                                            |
 | ----------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | **POST**    | `/api/v{version:apiVersion}/room-classes/{roomClassId:guid}/discounts`           | Creates a new discount for a specific room class.                                      |
