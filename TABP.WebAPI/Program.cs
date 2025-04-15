@@ -36,7 +36,6 @@ app.UseSwaggerUI(opt =>
     }
 });
 
-
 app.UseHttpsRedirection();
 
 await app.ApplyMigrationAsync();
