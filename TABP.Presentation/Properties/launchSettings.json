@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "TABP.Presentation": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:53999;http://localhost:54000"
+    }
+  }
+}
