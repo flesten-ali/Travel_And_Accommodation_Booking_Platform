@@ -22,8 +22,8 @@ app.UseExceptionHandler();
 
 app.UseSerilogRequestLogging();
 
-
 app.UseSwagger();
+
 app.UseSwaggerUI(opt =>
 {
     var descriptions = app.DescribeApiVersions();

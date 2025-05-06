@@ -9,7 +9,7 @@ using TABP.Infrastructure.Common;
 
 namespace TABP.Infrastructure.Security.Jwt;
 
-public static class JwtAuthConfiguration
+public static class JwtDependencyInjection
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {

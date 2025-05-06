@@ -15,11 +15,16 @@ public class HotelProfile : Profile
     public HotelProfile()
     {
         CreateMap<CreateHotelRequest, CreateHotelCommand>();
+
         CreateMap<UploadHotelThumbnailRequest, UploadHotelThumbnailCommand>();
+
         CreateMap<UploadHotelImageGalleryRequest, UploadHotelImageGalleryCommand>();
         CreateMap<SearchHotelRequest, SearchHotelsQuery>();
+
         CreateMap<GetHotelsForAdminRequest, GetHotelsForAdminQuery>();
+
         CreateMap<UpdateHotelRequest, UpdateHotelCommand>();
+
         CreateMap<GetHotelRoomClassesRequest, GetHotelRoomClassesQuery>();
     }
 }

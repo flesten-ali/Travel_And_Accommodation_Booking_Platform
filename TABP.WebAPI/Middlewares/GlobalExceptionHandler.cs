@@ -22,7 +22,10 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
     /// <returns>
     /// A <see cref="ValueTask{TResult}"/> that resolves to <c>true</c> indicating the exception has been handled.
     /// </returns>
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext,
+        Exception exception, 
+        CancellationToken cancellationToken)
     {
         logger.LogError(
             exception,

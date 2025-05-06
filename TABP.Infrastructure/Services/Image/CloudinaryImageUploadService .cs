@@ -34,10 +34,6 @@ public class CloudinaryImageUploadService : IImageUploadService
     /// <exception cref="Exception">Thrown if an error occurs during the upload process.</exception>
     public async Task<string> UploadAsync(IFormFile file, string publicId, CancellationToken cancellationToken = default)
     {
-        using var memoryStream = new MemoryStream();
-        await file.CopyToAsync(memoryStream, cancellationToken);
-        memoryStream.Position = 0;
-
         var uploadparams = new ImageUploadParams
         {
             File = new FileDescription(file.FileName, file.OpenReadStream()),

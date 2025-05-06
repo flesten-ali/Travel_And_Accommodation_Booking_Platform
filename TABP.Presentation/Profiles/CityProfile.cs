@@ -11,8 +11,11 @@ public class CityProfile : Profile
     public CityProfile()
     {
         CreateMap<GetCitiesForAdminRequest, GetCitiesForAdminQuery>();
+
         CreateMap<CreateCityRequest, CreateCityCommand>();
+
         CreateMap<UpdateCityRequest, UpdateCityCommand>();
+
         CreateMap<UploadCityThumbnailRequest, UploadCityThumbnailCommand>();
     }
 }

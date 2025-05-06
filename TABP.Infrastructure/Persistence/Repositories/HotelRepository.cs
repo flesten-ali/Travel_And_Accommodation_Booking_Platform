@@ -70,9 +70,7 @@ public class HotelRepository(AppDbContext context) : Repository<Hotel>(context),
                 Hotel = h,
                 DiscountedPrice = h.RoomClasses.Min(rc =>
                     rc.Discounts.Count != 0
-                    ? rc.Price * (1 - (rc.Discounts
-                    .Where(d => d.StartDate <= currentDate && d.EndDate > currentDate)
-                    .Max(d => d.Percentage) / 100))
+                    ? rc.Price * (1 - (rc.Discounts.Where(d => d.StartDate <= currentDate && d.EndDate > currentDate).Max(d => d.Percentage) / 100))
                     : rc.Price)
             })
             .OrderBy(x => x.DiscountedPrice)
