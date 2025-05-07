@@ -40,15 +40,14 @@ public static class WebApiDependencyInjection
     {
         services.AddOptions<RateLimiterConfig>()
            .Bind(configuration.GetSection(nameof(RateLimiterConfig)));
+        
+        var config = configuration.GetSection(nameof(RateLimiterConfig))
+            .Get<RateLimiterConfig>();
 
-        var scope = services.BuildServiceProvider().CreateScope();
-
-        var config = scope.ServiceProvider.GetRequiredService<IOptions<RateLimiterConfig>>().Value;
-
-        services.AddRateLimiter(_ =>
+        services.AddRateLimiter(options =>
         {
-            _.RejectionStatusCode = 429;
-            _.AddTokenBucketLimiter(
+            options.RejectionStatusCode = 429;
+            options.AddTokenBucketLimiter(
                      "Rate limiter",
                     options =>
                     {

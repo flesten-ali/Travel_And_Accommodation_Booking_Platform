@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TABP.Domain.Interfaces.Security.Jwt;
@@ -25,9 +24,7 @@ public static class JwtDependencyInjection
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
-            using var scope = services.BuildServiceProvider().CreateScope();
-
-            var config = scope.ServiceProvider.GetRequiredService<IOptions<JwtConfig>>().Value;
+            var config = configuration.GetSection(nameof(JwtConfig)).Get<JwtConfig>();
 
             var key = Encoding.UTF8.GetBytes(config.Key);
 
