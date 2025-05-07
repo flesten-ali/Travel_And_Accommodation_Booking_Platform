@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplication()
                 .AddInfrastructure(builder.Configuration)
                 .AddPresentation()
-                .AddWebApi();
+                .AddWebApi(builder.Configuration);
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
@@ -43,6 +43,8 @@ await app.ApplyMigrationAsync();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 
